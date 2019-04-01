@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charsetgoyang dombret="utf-8">
+        <title>Tutorial HTML 5 Canvas</title>
+    </head>
+    <body>
+        
+           
+        
+        <script src="https://www.marvinj.org/releases/marvinj-0.8.js"></script>
+          <canvas id="canvas"></canvas>
+
+                  <script type="text/javascript">
+
+                    var canvas = document.getElementById("canvas");
+                    canvas.width = 4000;
+                    canvas.height = 4000;
+                    image1 = new MarvinImage();
+                    image1.load("1.png", imageLoaded);
+                    image2 = new MarvinImage();
+                    image2.load("2.png", imageLoaded);
+                    image3 = new MarvinImage();
+                    image3.load("3.png", imageLoaded);
+
+                    var loaded=0;
+
+                    function imageLoaded(){
+                      if(++loaded == 3){
+                        var image = new MarvinImage(image1.getWidth(), image1.getHeight());
+                        Marvin.combineByAlpha(image1, image2, image, 0, 0);
+                        Marvin.combineByAlpha(image, image3, image, 0, 0);
+                        image.draw(canvas);
+                  }
+                }
+
+         </script>
+            
+      </body>
+</html>

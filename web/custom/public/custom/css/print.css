@@ -1,0 +1,17 @@
+header,
+main {
+  display: none;
+}
+
+#img-out,
+#print-measurement {
+  display: block !important;
+}
+
+#img-out > img {
+  width: 100%;
+}
+
+#print-measurement p {
+  margin-bottom: 0;
+}

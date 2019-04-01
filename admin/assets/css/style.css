@@ -1,0 +1,53 @@
+/*
+
+* Override Pages default styles or create your own styles here
+
+*/
+
+/* BUTTON CUSTOM */
+.btn-outline-primary {
+    color : #6d5cae !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    border-color: #6d5cae !important;
+}
+.btn-outline-danger {
+    color : #f55753 !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    border-color: #f55753 !important;
+}
+.btn-outline-info {
+    color : #3b4752 !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    border-color: #3b4752 !important;
+}
+.btn-outline-warning {
+    color : #f8d053 !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    border-color: #f8d053 !important;
+}
+
+/* Preview data detail */
+.detail-container label, .show-details label{
+    font-weight: normal;
+    line-height: 20px;
+    font-size: 11px !important;
+    text-transform: uppercase !important;
+    margin: 0 !important;
+}
+
+.detail-container h5, .show-details h5{
+    font-size: 16px !important;
+    margin-top: 0 !important;
+    font-weight: 400 !important;
+    line-height: 25.88px;
+}
+
+/*Max Height*/
+.h-500{
+    max-height: 505px;
+    overflow-y: scroll;
+}

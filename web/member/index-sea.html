@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta charset="utf-8" />
+    <title>SeaGods Member Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
+    <link rel="apple-touch-icon" href="pages/ico/60.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="pages/ico/76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="pages/ico/120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="pages/ico/152.png">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="assets/plugins/switchery/css/switchery.min.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="assets/plugins/nvd3/nv.d3.min.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="assets/plugins/mapplic/css/mapplic.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/rickshaw/rickshaw.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="assets/css/dashboard.widgets.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="pages/css/pages-icons.css" rel="stylesheet" type="text/css">
+    <link class="main-stylesheet" href="pages/css/pages.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body class="fixed-header horizontal-menu horizontal-app-menu dashboard">
+    <!-- START HEADER -->
+    <div class="header">
+      <div class="container">
+        <div class="header-inner header-md-height">
+          <a href="#" class="btn-link toggle-sidebar hidden-lg-up pg pg-menu" data-toggle="horizontal-menu">
+          </a>
+          <div class="">
+            <a href="#" class="" data-toggle="search"><i class=""></i><span class="bold"></span></a>
+          </div>
+          <div class="d-flex align-items-center">
+            <!-- START User Info-->
+            <div class="pull-left p-r-10 fs-14 font-heading hidden-md-down">
+              <span class="semi-bold">Member</span> <span class="">Name</span>
+            </div>
+            <div class="dropdown pull-right sm-m-r-5">
+              <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span >
+                  <img src="assets/img/profiles/avatar.jpg" alt=""  width="32" height="32">
+                  </span>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
+                <a href="#" class="dropdown-item"><i class="pg-settings_small"></i> Settings</a>
+                <a href="#" class="dropdown-item"><i class="pg-outdent"></i> Feedback</a>
+                <a href="#" class="dropdown-item"><i class="pg-signals"></i> Help</a>
+                <a href="#" class="clearfix bg-master-lighter dropdown-item">
+                  <span class="pull-left">Logout</span>
+                  <span class="pull-right"><i class="pg-power"></i></span>
+                </a>
+              </div>
+            </div>
+            <!-- END User Info
+            <a href="#" class="header-icon pg pg-alt_menu btn-link m-l-10 sm-no-margin d-inline-block" data-toggle="quickview" data-toggle-element="#quickview"></a>
+          --></div>
+        </div>
+        <div class="header-inner justify-content-start header-lg-height title-bar">
+          <div class="brand inline align-self-end">
+            <img src="assets/img/s-logo.png" style="width:35px;" >
+          </div>
+          <h2 class="page-title align-self-end">
+                dashboard memberpage
+              </h2>
+        </div>
+        <div class="menu-bar header-sm-height" data-pages-init='horizontal-menu' data-hide-extra-li="0">
+          <a href="#" class="btn-link toggle-sidebar hidden-lg-up pg pg-close" data-toggle="horizontal-menu">
+          </a>
+          <ul>
+            <li class=" active">
+              <a href="index.php">Dashboard</a>
+            </li>
+            <li>
+              <a href="profile.php"><span class="title">Profile</span></a>
+            </li>
+            
+            
+            <li class="">
+                  <a href="list-transaction.php">List Transaction</a>
+            </li>
+            <li>
+              <a href="wishlist.php"><span class="title">Wishlist</span></a>
+            </li>
+			<li>
+              <a href="customemade.php"><span class="title">Custom Made</span></a>
+            </li>
+            
+            
+          </ul>
+          <a href="#" class="search-link d-flex justify-content-between align-items-center hidden-lg-up" data-toggle="search">Tap here to search <i class="pg-search float-right"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="page-container ">
+      <!-- START PAGE CONTENT WRAPPER -->
+      <div class="page-content-wrapper ">
+        <!-- START PAGE CONTENT -->
+        <div class="content sm-gutter">
+          <!-- START JUMBOTRON -->
+          <div data-pages="parallax">
+            <div class=" container no-padding    container-fixed-lg">
+              <div class="inner">
+                <!-- START BREADCRUMB -->
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <!-- END JUMBOTRON -->
+          <!-- START CONTAINER FLUID -->
+          <div class="container sm-padding-10 no-padding">
+            <!-- START ROW -->
+            <div class="row">
+              <div class="col-lg-3 col-sm-6 d-flex flex-column">
+                <!-- START WIDGET widget_map_sales-->
+                <!-- START ITEM -->
+                
+                <!-- END ITEM -->
+                <!-- END WIDGET -->
+                <!-- START WIDGET widget_weekly_sales_card-->
+                
+                <!-- END WIDGET -->
+                <!-- START WIDGET widget_weekly_sales_card-->
+                
+                <!-- END WIDGET -->
+              </div>
+              <div class="col-lg-3 col-sm-6 d-flex flex-column">
+                <!-- START ITEM -->
+               
+                <!-- END ITEM -->
+                <!-- START ITEM -->
+                
+                <!-- END ITEM -->
+              </div>
+              <div class="col-lg-6 m-b-10 d-flex flex-column">
+                <!-- START WIDGET widget_tableRankings-->
+                
+                <!-- END WIDGET -->
+              </div>
+            </div>
+            <!-- END ROW -->
+            <!-- START ROW -->
+            <div class="row m-b-30">
+              
+              <div class="col-lg-5 sm-m-t-10 d-flex align-items-stretch">
+                <!-- START WIDGET widget_pendingComments.tpl-->
+                <div class="widget-11-2 card no-border card-condensed no-margin widget-loader-circle d-flex flex-column align-self-stretch">
+                  <div class="card-header top-right">
+                    <div class="card-controls">
+                      <ul>
+                        <li><a data-toggle="refresh" class="portlet-refresh text-black" href="#"><i
+										class="portlet-icon portlet-icon-refresh"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="padding-25">
+                    <div class="pull-left">
+                      <h2 class="text-success no-margin">Whislist</h2>
+                      <p class="no-margin">My Whishlist</p>
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="auto-overflow widget-11-2-table">
+                    <table class="table table-condensed table-hover">
+                      <tbody>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">PRODUCT NAME</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">view</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">MLG</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">IND</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">PRODUCT NAME</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">view</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">MLG</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">IND</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">PRODUCT NAME</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">view</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">MLG</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">IND</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">PRODUCT NAME</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">view</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">MLG</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">IND</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">PRODUCT NAME</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">view</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">MLG</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">IND</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">PRODUCT NAME</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">view</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">MLG</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">IND</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">PRODUCT NAME</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">view</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">MLG</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">IND</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">PRODUCT NAME</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">view</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">MLG</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">IND</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">PRODUCT NAME</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">view</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">MLG</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">IND</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">PRODUCT NAME</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">view</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">MLG</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">IND</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="padding-25 mt-auto">
+                    <p class="small no-margin">
+                      <a href="#"><i class="fa fs-16 fa-arrow-circle-o-down text-success m-r-10"></i></a>
+                      <span class="hint-text ">Show more details</span>
+                    </p>
+                  </div>
+                </div>
+                <!-- END WIDGET -->
+              </div>
+			  
+			  
+			  <div class="col-lg-5 sm-m-t-10 d-flex align-items-stretch">
+                <!-- START WIDGET widget_pendingComments.tpl-->
+                <div class="widget-11-2 card no-border card-condensed no-margin widget-loader-circle d-flex flex-column align-self-stretch">
+                  <div class="card-header top-right">
+                    <div class="card-controls">
+                      <ul>
+                        <li><a data-toggle="refresh" class="portlet-refresh text-black" href="#"><i
+										class="portlet-icon portlet-icon-refresh"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="padding-25">
+                    <div class="pull-left">
+                      <h2 class="text-success no-margin">Transactions</h2>
+                      <p class="no-margin">Last Transaction</p>
+                    </div>
+                    <h3 class="pull-right semi-bold"><sup>
+							<small class="">total</small>
+						</sup> 44
+						</h3>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="auto-overflow widget-11-2-table">
+                    <table class="table table-condensed table-hover">
+                      <tbody>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">BLUE WETSUIT</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">Member</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">IDR 123K</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">Proses</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">BLUE WETSUIT</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">Member</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">IDR 123K</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">Proses</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">BLUE WETSUIT</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">Member</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">IDR 123K</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">Proses</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">BLUE WETSUIT</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">Member</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">IDR 123K</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">Proses</span>
+                          </td>
+                        </tr><tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">BLUE WETSUIT</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">Member</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">IDR 123K</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">Proses</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">BLUE WETSUIT</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">Member</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">IDR 123K</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">Proses</span>
+                          </td>
+                        </tr><tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">BLUE WETSUIT</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">Member</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">IDR 123K</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">Proses</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="font-montserrat all-caps fs-12 w-50">BLUE WETSUIT</td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">Member</span>
+                          </td>
+                          <td class="text-right b-r b-dashed b-grey w-25">
+                            <span class="hint-text small">IDR 123K</span>
+                          </td>
+                          <td class="w-25">
+                            <span class="font-montserrat fs-18">Proses</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="padding-25 mt-auto">
+                    <p class="small no-margin">
+                      <a href="#"><i class="fa fs-16 fa-arrow-circle-o-down text-success m-r-10"></i></a>
+                      <span class="hint-text ">Show more details</span>
+                    </p>
+                  </div>
+                </div>
+                <!-- END WIDGET -->
+              </div>
+			  
+			  
+            </div>
+            <!-- END ROW -->
+          </div>
+          <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+        <!-- START COPYRIGHT -->
+        <!-- START CONTAINER FLUID -->
+        <!-- START CONTAINER FLUID -->
+        <div class=" container   container-fixed-lg footer">
+          <div class="copyright sm-text-center">
+            <p class="small no-margin pull-left sm-pull-reset">
+              <span class="hint-text">SeaGods Administrator Page &copy; 2018 </span>
+              <span class="font-montserrat"></span>.
+              <span class="hint-text">All rights reserved. </span>
+              <span class="sm-block"><a href="#" class="m-l-10 m-r-10">Terms of use</a> <span class="muted">|</span> <a href="#" class="m-l-10">Privacy Policy</a></span>
+            </p>
+            <p class="small no-margin pull-right sm-pull-reset">
+              Supported by <span class="hint-text"> XtremeWeb Solution</span>
+            </p>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <!-- END COPYRIGHT -->
+      </div>
+      <!-- END PAGE CONTENT WRAPPER -->
+    </div>
+    <!-- END PAGE CONTAINER -->
+    <!--START QUICKVIEW -->
+
+      
+    
+    <!-- END OVERLAY -->
+    <!-- BEGIN VENDOR JS -->
+    <script src="assets/plugins/feather-icons/feather.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/pace/pace.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/modernizr.custom.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/tether/js/tether.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-actual/jquery.actual.min.js"></script>
+    <script src="assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/select2/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/classie/classie.js"></script>
+    <script src="assets/plugins/switchery/js/switchery.min.js" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp" type="text/javascript"></script>
+    <script src="assets/plugins/nvd3/lib/d3.v3.js" type="text/javascript"></script>
+    <script src="assets/plugins/nvd3/nv.d3.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/nvd3/src/utils.js" type="text/javascript"></script>
+    <script src="assets/plugins/nvd3/src/tooltip.js" type="text/javascript"></script>
+    <script src="assets/plugins/nvd3/src/interactiveLayer.js" type="text/javascript"></script>
+    <script src="assets/plugins/nvd3/src/models/axis.js" type="text/javascript"></script>
+    <script src="assets/plugins/nvd3/src/models/line.js" type="text/javascript"></script>
+    <script src="assets/plugins/nvd3/src/models/lineWithFocusChart.js" type="text/javascript"></script>
+    <script src="assets/plugins/mapplic/js/hammer.js"></script>
+    <script src="assets/plugins/mapplic/js/jquery.mousewheel.js"></script>
+    <script src="assets/plugins/mapplic/js/mapplic.js"></script>
+    <script src="assets/plugins/rickshaw/rickshaw.min.js"></script>
+    <script src="assets/plugins/jquery-metrojs/MetroJs.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/skycons/skycons.js" type="text/javascript"></script>
+    <script src="assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+    <script src="assets/plugins/moment/moment.min.js"></script>
+    <script src="assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+    <script type="text/javascript" src="assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+    <!-- END VENDOR JS -->
+    <!-- BEGIN CORE TEMPLATE JS -->
+    <script src="pages/js/pages.min.js"></script>
+    <!-- END CORE TEMPLATE JS -->
+    <!-- BEGIN PAGE LEVEL JS -->
+    <script src="assets/js/dashboard.js" type="text/javascript"></script>
+    <script src="assets/js/scripts.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL JS -->
+  </body>
+</html>
