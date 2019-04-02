@@ -7,6 +7,7 @@
  * Email: adit@globalxtreme.net
  */
 include("config/configuration.php");
+include("config/currency_types.php");
 session_start();
 ob_start();
 
@@ -18,10 +19,18 @@ if (isset($_POST['nilai'])) {
 
 if($loggedin = logged_in()){ // Check if they are logged in
 
+    // Set price custom item
+    function get_price($name)
+    {
+        $query_setting_price = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = '$name' LIMIT 0,1");
+        $row_setting_price = mysql_fetch_array($query_setting_price);
+        return $row_setting_price['value'];
+    }
+
     $titlebar = "Detail Custom Made";
     $titlepage = "Detail Custom Made";
     $menu = "";
-    $user = '' . $loggedin['firstname'] . ' ' . $loggedin['lastname'] . '';
+    $user = '' . $loggedin['username'];
 
     if (isset($_GET["id"])) {
 
@@ -40,10 +49,43 @@ if($loggedin = logged_in()){ // Check if they are logged in
 
     }
 
+    // Default currency
+    $currency_code = CURRENCY_USD_CODE;
+
+    // Set currency from session
+    if (isset($_SESSION['currency_code'])) {
+        $currency_code = $_SESSION['currency_code'];
+    }
+
+    // Set currency from database
+    if ($loggedin) {
+        $currency_code = $loggedin['currency_code'];
+    }
+
+    // Set currency
+    $currency = get_currency($currency_code);
+
+    // Set nominal curs from USD to IDR
+    $USDtoIDR = get_price('currency-value-usd-to-idr');
+
+    // Set current price
+    $current_price = get_price('price-custom-item');
+
     $content = '
         <div class="container container-fixed-lg">
             <div class="row">
-                <div class="col-lg-10 m-b-10">
+                <div class="col-lg-12 m-b-12">
+                    <div class="card card-default">
+                    <div class="card-header ">
+                        <div class="card-title">
+                            <h4><b>DETAIL WETSUIT</b></h4>
+                        </div>
+                        <a href="custommade.php' . (isset($_GET['page']) ? '?page=' . $_GET['page'] : '') . '" class="btn btn-default pull-right" name="">Back to List</a>
+                    </div>
+                    </div>
+                </div>
+                        
+                <div class="col-lg-12 m-b-12">
                     <div class="card card-default filter-item">
                         <div class="card-header ">
                             <div class="card-title">Employee Information</div>
@@ -109,8 +151,11 @@ if($loggedin = logged_in()){ // Check if they are logged in
                                 <label>Ankle Zipper</label>
                                 <h5>' . $row_collection["ankle_zipper"] . '</h5>
         
-                                <label>Price</label>
-                                <h5>$ ' . $row_collection["price"] . '</h5>
+                                <label>Old Price</label>
+                                <h5> ' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_collection["price"] : number_format(($row_collection["price"] * $USDtoIDR), 0, '.', ',')) . '</h5>
+                                
+                                <label>Current Price</label>
+                                <h5> ' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $current_price : number_format(($current_price * $USDtoIDR), 0, '.', ',')) . '</h5>
                                 
                                 <label>Status</label>
                                 <h5>' . $row_collection["status"] . '</h5>

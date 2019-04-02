@@ -7,10 +7,19 @@
  * Email: adit@globalxtreme.net
  */
 include("config/configuration.php");
+include("config/currency_types.php");
 session_start();
 ob_start();
 
 if ($loggedin = logged_in()) {
+
+    // Set price custom item
+    function get_price($name)
+    {
+        $query_setting_price = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = '$name' LIMIT 0,1");
+        $row_setting_price = mysql_fetch_array($query_setting_price);
+        return $row_setting_price['value'];
+    }
 
     if (isset($_POST['nilai'])) {
         $_SESSION['nilai_login'] = $_POST['nilai'] + 1;
@@ -18,10 +27,18 @@ if ($loggedin = logged_in()) {
         $_SESSION['nilai_login'] = 0;
     }
 
+    $perhalaman = 10;
+    if (isset($_GET['page'])) {
+        $page = (int)$_GET['page'];
+        $start = ($page - 1) * $perhalaman;
+    } else {
+        $start = 0;
+    }
+
     $titlebar = "Custom Made ";
     $titlepage = "Custom Made ";
     $menu = "";
-    $user = '' . $_SESSION['user'];
+    $user = '' . $loggedin['username'];
 
     if (isset($_GET['action']) && isset($_GET['id']) && $_GET['action'] == 'deleted') {
         $id_collection = isset($_GET['id']) ? strip_tags(trim($_GET['id'])) : '';
@@ -50,6 +67,25 @@ if ($loggedin = logged_in()) {
             </script>";
     }
 
+    // Default currency
+    $currency_code = CURRENCY_USD_CODE;
+
+    // Set currency from session
+    if (isset($_SESSION['currency_code'])) {
+        $currency_code = $_SESSION['currency_code'];
+    }
+
+    // Set currency from database
+    if ($loggedin) {
+        $currency_code = $loggedin['currency_code'];
+    }
+
+    // Set currency
+    $currency = get_currency($currency_code);
+
+    // Set nominal curs from USD to IDR
+    $USDtoIDR = get_price('currency-value-usd-to-idr');
+
     $content = '
         <div class="page-container ">
             <!-- START PAGE CONTENT WRAPPER -->
@@ -75,7 +111,7 @@ if ($loggedin = logged_in()) {
                                             <th style="width:15%">Wet Suit Type</th>
                                             <th style="width:15%">Arm Zipper</th>
                                             <th style="width:15%">Ankle Zipper</th>
-                                            <th style="width:15%">Price</th>
+                                            <th style="width:15%">Current Price</th>
                                             <th style="width:5%">View</th>
                                             <th style="width:10%"></th>
                                             <th style="width:5%"></th>
@@ -83,13 +119,13 @@ if ($loggedin = logged_in()) {
                                     </thead>
                                     <tbody>';
 
-    $query_custom_collection = mysql_query("SELECT * FROM `custom_collection` 
-        WHERE `id_member` = '" . $loggedin["id_member"] . "'
-        AND `level` = '0' ORDER BY `id_custom_collection` DESC;");
+    $query_custom_collection = mysql_query("SELECT * FROM `custom_collection` WHERE `id_member` = '" . $loggedin["id_member"] . "' AND `level` = '0' ORDER BY `id_custom_collection` DESC LIMIT $start,$perhalaman;");
+    $sql_total_data = mysql_num_rows(mysql_query("SELECT * FROM `custom_collection` WHERE `id_member` = '" . $loggedin["id_member"] . "' AND `level` = '0' ORDER BY `id_custom_collection` DESC;"));
 
-    $query_custom_price = mysql_query("SELECT `value` FROM `custom_price` WHERE `name` = 'custom-price-item' LIMIT 0,1;");
-    $row_custom_price = mysql_fetch_array($query_custom_price);
+    // Set custom price
+    $current_price = get_price('price-custom-item');
 
+    $key = 0;
     while ($row_collection = mysql_fetch_array($query_custom_collection)) {
         $content .= '
             <form method="post" action="../cart.php?code=' . ($row_collection["code"]) . '">
@@ -112,27 +148,29 @@ if ($loggedin = logged_in()) {
                         <p>' . strtoupper($row_collection["ankle_zipper"]) . '</p>
                     </td>
                     <td class="v-align-middle">
-                        $ ' . $row_custom_price["value"] . '
+                        ' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? round($current_price, 2) : number_format(($current_price * $USDtoIDR), 0, '.', ',')) . '
                     </td>
                     <td class="v-align-middle">
 					    <div class="btn-group">
-                            <a href="detail_custom_made.php?id=' . $row_collection["id_custom_collection"] . '" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> View</a>
+                            <a href="detail_custom_made.php?id=' . $row_collection["id_custom_collection"] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> View</a>
                         </div>
                     </td>
                     <td class="v-align-middle">
 					  <div class="btn-group">
-                        <button type="submit" name="custom_cart" class="btn btn-primary btn-xs"><i class="fa fa-credit-card-alt"></i> Add to Cart</button>
+                        <button type="button" onclick="add_to_cart(' . $row_collection['id_custom_collection'] . ', ' . $key . ');" id="add_custom_cart' . $key . '" class="btn btn-primary btn-xs"><i class="fa fa-credit-card-alt"></i> Add to Cart</button>
 					  <a href="?action=deleted&id=' . $row_collection["id_custom_collection"] . '" class="btn btn-danger btn-xs">Deleted</a>
 					  </div>
                     </td>
                 </tr>
 
             </form>';
+        $key++;
     }
 
     $content .= '
                                     </tbody>
                                 </table>
+                                ' . (halaman($sql_total_data, $perhalaman, 1, '?')) . '
                                                 <p style="font-size:12px;">
 *the price is already including the custom tailoring fee, but not including ankle/arm/genital zipper</p>
                             </div>
@@ -164,6 +202,23 @@ if ($loggedin = logged_in()) {
                             $("#status_" + id_collection).text(data.status);
                         }
                         window.alert(data.message);
+                    }
+                });
+            }
+            
+            function add_to_cart(id_collection, key) {
+                $.ajax({
+                    type: "POST",
+                    url: "action_cart.php",
+                    data: {action: "add_cart_collection", id_collection: id_collection},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.status == "error") {
+                            alert(data.msg);
+                        } else {
+                            alert(data.msg);
+                            $("#add_custom_cart"+key).attr("disabled", true);
+                        }
                     }
                 });
             }

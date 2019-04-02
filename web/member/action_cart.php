@@ -7,11 +7,20 @@
  * Email: adit@globalxtreme.net
  */
 include("config/configuration.php");
+include("config/currency_types.php");
 session_start();
 ob_start();
 
 // Set logged in
 $loggedin = logged_in();
+
+// Set price custom item
+function get_price($name)
+{
+    $query_setting_price = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = '$name' LIMIT 0,1");
+    $row_setting_price = mysql_fetch_array($query_setting_price);
+    return $row_setting_price['value'];
+}
 
 // Check action
 if (isset($_POST['action'])) {
@@ -20,7 +29,7 @@ if (isset($_POST['action'])) {
     $action = isset($_POST['action']) ? mysql_real_escape_string(trim($_POST['action'])) : '';
 
     // Action for add cart
-    if (isset($_POST['id_item']) && $action = 'add_cart') {
+    if (isset($_POST['id_item']) && $action == 'add_cart') {
 
         try {
 
@@ -139,6 +148,94 @@ if (isset($_POST['action'])) {
 
         } catch (\Exception $exception) {
             $msg = 'Unable to add item in cart';
+            echo json_encode(error_response($msg));
+            exit();
+        }
+
+    }
+
+    // Action for add cart from collection
+    if (isset($_POST['id_collection']) && $action == 'add_cart_collection') {
+
+        // Check login
+        if ($loggedin) {
+
+            try {
+
+                // Set value id collection
+                $id_collection = isset($_POST['id_collection']) ? mysql_real_escape_string(trim($_POST['id_collection'])) : '';
+
+                if (!empty($id_collection)) {
+
+                    // Set collection
+                    $collection_query = mysql_query("SELECT * FROM `custom_collection` WHERE `id_custom_collection` = '$id_collection' AND `level` = '0' LIMIT 0,1;");
+
+                    // Error
+                    if (mysql_num_rows($collection_query) == 0) {
+                        $msg = 'Custom collection not found';
+                        echo json_encode(error_response($msg));
+                        exit();
+                    }
+
+                    // Set custom price
+                    $current_price = get_price('price-custom-item');
+
+                    // Check cart exists or no
+                    $custom_cart_query = mysql_query("SELECT * FROM `cart` 
+                        WHERE ISNULL(id_transaction) AND `is_custom_cart` = '1' AND `id_item` = '$id_collection' AND `id_member` = '" . $loggedin["id_member"] . "' AND `level` = '0' LIMIT 0,1;");
+                    if (mysql_num_rows($custom_cart_query) == 0) {
+
+                        // Insert cart
+                        $insert_cart_query = "INSERT INTO `cart` (`id_member`, `id_item`, `is_custom_cart`, `qty`, `amount`, `date_add`, `date_upd`, `level`)
+                            VALUES('" . $loggedin["id_member"] . "', '$id_collection', '1', '1', '$current_price', NOW(), NOW(), '0');";
+
+                        // Error
+                        if (!mysql_query($insert_cart_query)) {
+                            $msg = 'Unable to add collection in cart';
+                            echo json_encode(error_response($msg));
+                        }
+
+                    } else {
+
+                        // Set row cart
+                        $row_custom_cart = mysql_fetch_array($custom_cart_query);
+
+                        // Set last amount cart and quantity
+                        $last_amount_cart = (float)$current_price + (float)$row_custom_cart['amount'];
+                        $last_quantity = (float)1 + (float)$row_custom_cart['qty'];
+
+                        // Update cart
+                        $update_cart_query = "UPDATE `cart` SET `qty` = '$last_quantity', `amount` = '$last_amount_cart', `date_upd` = NOW()
+                        WHERE `id_cart` = '" . $row_custom_cart["id_cart"] . "';";
+
+                        // Error
+                        if (!mysql_query($update_cart_query)) {
+                            $msg = 'Unable to add collection in cart';
+                            echo json_encode(error_response($msg));
+                            exit();
+                        }
+
+                    }
+
+                    // Success
+                    $msg = 'Success add collection to cart';
+                    echo json_encode(success_response($msg));
+                    exit();
+
+                } else {
+                    $msg = 'Collection ID parameter required';
+                    echo json_encode(error_response($msg));
+                    exit();
+                }
+
+            } catch (\Exception $exception) {
+                $msg = 'Unable to add collection cart.';
+                echo json_encode(error_response($msg));
+                exit();
+            }
+
+        } else {
+            $msg = 'Must be signed in to process';
             echo json_encode(error_response($msg));
             exit();
         }
