@@ -465,4 +465,25 @@ function getBrowserNew() {
         'pattern' => $pattern
     );
 }
+
+function generate_item_number()
+{
+    date_default_timezone_set('Asia/Jakarta');
+
+    // Set first number
+    $custom_number = 'ITM';
+
+    // Set number with date time
+    $custom_number .= date('ymdHis');
+
+    // Set random number
+    $custom_number .= rand(10,99);
+
+    // Set number with last custom collection
+    $total_custom = mysql_fetch_array(mysql_query("SELECT count(id_custom_collection) AS total FROM custom_collection;"));
+    $custom_number .= $total_custom['total'] + 1;
+
+    return $custom_number;
+}
+
 ?>

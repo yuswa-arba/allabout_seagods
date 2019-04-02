@@ -84,7 +84,7 @@ if (isset($_POST['canvasData'])) {
             'wet_suit_type' => $wetsuit,
             'arm_zipper' => $armZipper,
             'ankle_zipper' => $ankleZipper,
-            'img' => $img,
+            'image' => $img,
             'price' => $row_price['value'],
             'status' => 'saved'
         ],

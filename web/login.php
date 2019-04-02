@@ -74,33 +74,69 @@ if ($loggedin = logged_in()) { // Check if they are logged in
 
                                 foreach ($_SESSION['cart_item'] as $key => $cart_item) {
 
-                                    // Check cart
-                                    $cart_query = mysql_query("SELECT * FROM `cart` 
-                                        WHERE ISNULL(id_transaction) AND `id_item` = '" . $cart_item["id_item"] . "' AND `id_member` = '$id_member' AND `level` = '0' LIMIT 0,1;");
-                                    if (mysql_num_rows($cart_query) == 0) {
+                                    // Check if cart is custom
+                                    if ($cart_item['is_custom_cart'] || $cart_item['is_custom_cart'] == true) {
 
-                                        // Add cart
-                                        mysql_query("INSERT INTO `cart` (`id_item`, `qty`, `amount`, `id_member`, `date_add`, `date_upd`, `level`)
-                                            VALUES('" . $cart_item["id_item"] . "', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', '$id_member', NOW(), NOW(), '0');");
+                                        // Set cart collection value
+                                        $cart_collection = $cart_item['collection'];
+
+                                        // Insert custom collection
+                                        mysql_query("INSERT INTO `custom_collection` (`code`, `id_member`, `is_guest`, `gender`, `wet_suit_type`, `arm_zipper`, `ankle_zipper`, `image`, `price`, `status`, `date_add`, `date_upd`, `level`)
+                                            VALUES('" . $cart_collection["code"] . "', '$id_member', '0', '" . $cart_collection["gender"] . "', '" . $cart_collection["wet_suit_type"] . "', '" . $cart_collection["arm_zipper"] . "', '" . $cart_collection["ankle_zipper"] . "', '" . $cart_collection["image"] . "', '" . $cart_collection["price"] . "', '" . $cart_collection["status"] . "', NOW(), NOW(), '0');");
+
+                                        // Get custom collection
+                                        $custom_collection_query = mysql_query("SELECT * FROM `custom_collection` WHERE `code` = '" . $cart_collection["code"] . "' AND `id_member` = '$id_member' AND `level` = '0' ORDER BY `id_custom_collection` DESC LIMIT 0,1;");
+                                        $row_custom_collection = mysql_fetch_array($custom_collection_query);
+
+                                        // Set collection measure
+                                        $collection_measure = $cart_item['measure'];
+
+                                        // Insert custom measure
+                                        mysql_query("INSERT INTO `custom_measure` (`id_custom_collection`, `id_member`, `total_body_height`, `head`, `neck`, `bust_chest`, `waist`, `stomach`, `abdomen`, `hip`, `shoulder`, `shoulder_elbow`, `shoulder_wrist`, `arm_hole`, `upper_arm`, 
+                                            `bicep`, `elbow`, `forarm`, `wrist`, `outside_leg_length`, `inside_leg_length`, `upper_thigh`, `thigh`, `above_knee`, `knee`, `below_knee`, `calf`, `below_calf`, 
+                                            `above_ankle`, `shoulder_burst`, `shoulder_waist`, `shoulder_hip`, `hip_knee_length`, `knee_ankle_length`, `back_shoulder`, `dorsum`, `crotch_point`)
+                                            VALUES('" . $row_custom_collection["id_custom_collection"] . "', '$id_member', '" . $collection_measure["total_body_height"] . "', '" . $collection_measure["head"] . "', '" . $collection_measure["neck"] . "', '" . $collection_measure["bust_chest"] . "', '" . $collection_measure["waist"] . "', '" . $collection_measure["stomach"] . "', '" . $collection_measure["abdomen"] . "', '" . $collection_measure["hip"] . "', '" . $collection_measure["shoulder"] . "', '" . $collection_measure["shoulder_elbow"] . "', '" . $collection_measure["shoulder_wrist"] . "', '" . $collection_measure["arm_hole"] . "', '" . $collection_measure["upper_arm"] . "', 
+                                            '" . $collection_measure["bicep"] . "', '" . $collection_measure["elbow"] . "', '" . $collection_measure["forarm"] . "', '" . $collection_measure["wrist"] . "', '" . $collection_measure["outside_leg_length"] . "', '" . $collection_measure["inside_leg_length"] . "', '" . $collection_measure["upper_thigh"] . "', '" . $collection_measure["thigh"] . "', '" . $collection_measure["above_knee"] . "', '" . $collection_measure["knee"] . "', '" . $collection_measure["below_knee"] . "', '" . $collection_measure["calf"] . "', '" . $collection_measure["below_calf"] . "', 
+                                            '" . $collection_measure["above_ankle"] . "', '" . $collection_measure["shoulder_burst"] . "', '" . $collection_measure["shoulder_waist"] . "', '" . $collection_measure["shoulder_hip"] . "', '" . $collection_measure["hip_knee_length"] . "', '" . $collection_measure["knee_ankle_length"] . "', '" . $collection_measure["back_shoulder"] . "', '" . $collection_measure["dorsum"] . "', '" . $collection_measure["crotch_point"] . "');");
+
+                                        // Insert cart
+                                        mysql_query("INSERT INTO `cart` (`id_item`, `id_member`, `is_custom_cart`, `qty`, `amount`, `date_add`, `date_upd`, `level`)
+                                            VALUES('" . $row_custom_collection["id_custom_collection"] . "', '$id_member', '1', '1', '" . $cart_collection["price"] . "', NOW(), NOW(), '0')");
 
                                         // Remove session
                                         unset($_SESSION['cart_item'][$key]);
 
                                     } else {
 
-                                        // Set row cart
-                                        $row_cart = mysql_fetch_array($cart_query);
+                                        // Check cart
+                                        $cart_query = mysql_query("SELECT * FROM `cart` 
+                                            WHERE ISNULL(id_transaction) AND `id_item` = '" . $cart_item["id_item"] . "' AND `id_member` = '$id_member' AND `level` = '0' LIMIT 0,1;");
+                                        if (mysql_num_rows($cart_query) == 0) {
 
-                                        // Set last amount cart and quantity
-                                        $last_amount_cart = (float)$cart_item['amount'] + (float)$row_cart['amount'];
-                                        $last_quantity = (float)$cart_item['quantity'] + (float)$row_cart['qty'];
+                                            // Add cart
+                                            mysql_query("INSERT INTO `cart` (`id_item`, `qty`, `amount`, `id_member`, `date_add`, `date_upd`, `level`)
+                                                VALUES('" . $cart_item["id_item"] . "', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', '$id_member', NOW(), NOW(), '0');");
 
-                                        // Update cart
-                                        mysql_query("UPDATE `cart` SET `qty` = '$last_quantity', `amount` = '$last_amount_cart', `date_upd` = NOW()
-                                            WHERE `id_cart` = '" . $row_cart["id_cart"] . "';");
+                                            // Remove session
+                                            unset($_SESSION['cart_item'][$key]);
 
-                                        // Remove session
-                                        unset($_SESSION['cart_item'][$key]);
+                                        } else {
+
+                                            // Set row cart
+                                            $row_cart = mysql_fetch_array($cart_query);
+
+                                            // Set last amount cart and quantity
+                                            $last_amount_cart = (float)$cart_item['amount'] + (float)$row_cart['amount'];
+                                            $last_quantity = (float)$cart_item['quantity'] + (float)$row_cart['qty'];
+
+                                            // Update cart
+                                            mysql_query("UPDATE `cart` SET `qty` = '$last_quantity', `amount` = '$last_amount_cart', `date_upd` = NOW()
+                                                WHERE `id_cart` = '" . $row_cart["id_cart"] . "';");
+
+                                            // Remove session
+                                            unset($_SESSION['cart_item'][$key]);
+
+                                        }
 
                                     }
 

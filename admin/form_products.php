@@ -74,7 +74,7 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         $price = isset($_POST['price']) ? strip_tags(trim($_POST["price"])) : "";
         $detail = isset($_POST['detail']) ? $_POST["detail"] : "";
         $describe = isset($_POST['describe']) ? $_POST["describe"] : "";
-        $code = isset($_POST['code']) ? $_POST["code"] : "";
+        $code = generate_item_number();
 
         // Set value id category and sub category
         $id_cat = $category[0];
@@ -161,14 +161,13 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         $price = isset($_POST['price']) ? strip_tags(trim($_POST["price"])) : "";
         $detail = isset($_POST['detail']) ? $_POST["detail"] : "";
         $describe = isset($_POST['describe']) ? $_POST["describe"] : "";
-        $code = isset($_POST['code']) ? $_POST["code"] : "";
         $id_photo = isset($_POST['id_photo']) ? $_POST["id_photo"] : "";
 
         // Set value id category and sub category
         $id_cat = $category[0];
         $id_category = $category[1];
 
-        $queryproduct = "UPDATE `item` SET `title` = '$title', `code` = '$code', `id_category` = '$id_cat' ,
+        $queryproduct = "UPDATE `item` SET `title` = '$title', `id_category` = '$id_cat' ,
 	    											  `id_cat` = '$id_category',  `price` = '$price',
 													  `detail` = '$detail', `description` = '$describe',
 													  `date_upd` = NOW()
@@ -352,12 +351,6 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                             <form class="" method="post" name="product" id="product" role="form" enctype="multipart/form-data">
                                 <div class="row">  
                                     <div class="col-md-6 b-r b-dashed b-grey p-r-15">';
-
-    if (isset($_GET['id'])) {
-        $content .= '<input type="hidden" name="code" value="' . randomString() . '">';
-    } else {
-        $content .= '<input type="hidden" name="code" value="' . randomString() . '">';
-    }
 
     $content .= '
                                         <div class="form-group form-group-default required ">

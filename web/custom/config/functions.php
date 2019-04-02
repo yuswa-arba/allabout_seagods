@@ -472,10 +472,6 @@ function getBrowserNew()
     );
 }
 
-function generate_item_number()
-{
-}
-
 function generate_custom_item_number()
 {
     date_default_timezone_set('Asia/Jakarta');
