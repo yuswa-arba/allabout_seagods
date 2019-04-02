@@ -97,6 +97,7 @@ if (isset($_POST['action'])) {
 
                 // Set value for session
                 $item_array = array(
+                    'is_custom_cart' => false,
                     'id_item' => $id_item,
                     'quantity' => $quantity,
                     'amount' => $amount

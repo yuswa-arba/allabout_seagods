@@ -72,15 +72,59 @@ if (isset($_POST['canvasData'])) {
     // Custom cart number
     $custom_item_number = generate_custom_item_number();
 
+    // Set price custom item
+    $custom_price_query = mysql_query("SELECT * FROM `setting_seagods` WHERE `name` = 'price-custom-item' LIMIT 0,1;");
+    $row_price = mysql_fetch_array($custom_price_query);
+
     $_SESSION['cart_item'][] = [
+        'is_custom_cart' => true,
         'collection' => [
             'code' => $custom_item_number,
             'gender' => $gender,
             'wet_suit_type' => $wetsuit,
             'arm_zipper' => $armZipper,
             'ankle_zipper' => $ankleZipper,
+            'img' => $img,
+            'price' => $row_price['value'],
+            'status' => 'saved'
         ],
-        'measure' => []
+        'measure' => [
+            'total_body_height' => $measureTotalBodyHeight,
+            'head' => $measureHead,
+            'neck' => $measureNeck,
+            'bust_chest' => $measureBustChest,
+            'waist' => $measureWaist,
+            'stomach' => $measureStomach,
+            'abdomen' => $measureAbdomen,
+            'hip' => $measureHip,
+            'shoulder' => $measureShoulder,
+            'shoulder_elbow' => $measureShoulderToElbow,
+            'shoulder_wrist' => $measureShoulderToWrist,
+            'arm_hole' => $measureArmHole,
+            'upper_arm' => $measureUpperArm,
+            'bicep' => $measureBicep,
+            'elbow' => $measureElbow,
+            'forarm' => $measureForarm,
+            'wrist' => $measureWrist,
+            'outside_leg_length' => $measureOutsideLegLength,
+            'inside_leg_length' => $measureInsideLegLength,
+            'upper_thigh' => $measureUpperThigh,
+            'thigh' => $measureThigh,
+            'above_knee' => $measureAboveKnee,
+            'knee' => $measureKnee,
+            'below_knee' => $measureBelowKnee,
+            'calf' => $measureCalf,
+            'below_calf' => $measureBelowCalf,
+            'above_ankle' => $measureAboveAnkle,
+            'shoulder_burst' => $measureShoulderToBust,
+            'shoulder_waist' => $measureShoulderToWaist,
+            'shoulder_hip' => $measureShoulderToHip,
+            'hip_knee_length' => $measureHipToKneeLength,
+            'knee_ankle_length' => $measureKneeToAnkleLength,
+            'back_shoulder' => $measureBackShoulder,
+            'dorsum' => $measureDorsum,
+            'crotch_point' => $measureCrotchPoint,
+        ]
     ];
 
     // Success

@@ -235,7 +235,12 @@ if ($loggedin = logged_in()) {
                     },
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data);
+                        if (data.status == 'error') {
+                            alert(data.msg);
+                        } else {
+                            alert(data.msg);
+                            window.location.href = '../cart.php';
+                        }
                     }
                 });
             }

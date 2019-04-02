@@ -21,8 +21,8 @@ ob_start();
 //    $_SESSION['cart_item'][] = $item_array;
 //}
 //
-//echo "<pre>";
-//print_r($_SESSION['cart_item']);
-//echo "</pre>";
+echo "<pre>";
+print_r($_SESSION['cart_item']);
+echo "</pre>";
 
-echo  generate_custom_item_number();
+//echo  generate_custom_item_number();
