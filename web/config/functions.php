@@ -480,4 +480,25 @@ function getBrowserNew() {
         'pattern' => $pattern
     );
 }
+
+function generate_transaction_number()
+{
+    date_default_timezone_set('Asia/Jakarta');
+
+    // Set first number
+    $transaction_number = 'TRS';
+
+    // Set number with date time
+    $transaction_number .= date('ymdHis');
+
+    // Set random number
+    $transaction_number .= rand(10,99);
+
+    // Set number with last custom collection
+    $total_transaction = mysql_fetch_array(mysql_query("SELECT count(id_transaction) AS total FROM transaction;"));
+    $transaction_number .= $total_transaction['total'] + 1;
+
+    return $transaction_number;
+}
+
 ?>

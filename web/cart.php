@@ -88,6 +88,11 @@ $content .= '
                                                     <div class="mcb-wrap-inner">
                                                         <table class="table table-condensed">';
 
+$total_amount_shipping = 0;
+$total_shipping = 0;
+$total_weight = 0;
+$total_quantity = 0;
+$total_amount = 0;
 if ($loggedin) {
 
     // Set member
@@ -104,12 +109,8 @@ if ($loggedin) {
 
     // Get cart
     $cart_query = mysql_query("SELECT * FROM `cart` WHERE ISNULL(id_transaction) 
-        AND `id_member` = '" . $loggedin["id_member"] . "' AND `level` = '0';");
+        AND `id_member` = '" . $loggedin["id_member"] . "' AND `level` = '0' ORDER BY `id_cart` DESC;");
 
-    $total_shipping = 0;
-    $total_weight = 0;
-    $total_quantity = 0;
-    $total_amount = 0;
     $key = 0;
     while ($row_cart = mysql_fetch_array($cart_query)) {
 
@@ -154,41 +155,154 @@ if ($loggedin) {
                                                             </tr>';
 
         // Set weight
-        $weight = (!$row_cart['is_custom_cart'] ? $row_item['weight'] : get_price('default-weight-custom-item'));
+        $weight = (!$row_cart['is_custom_cart'] ? ($row_cart['qty'] * $row_item['weight']) : ($row_cart['qty'] * get_price('default-weight-custom-item')));
 
         // Set total weight
         $total_weight = round(($total_weight + $weight), 2);
 
         // Set quantity amount
         $total_quantity = ($total_quantity + $row_cart['qty']);
-        $total_amount = $total_amount + $row_cart['amount'];
+        $total_amount = $total_amount + (($currency_code == CURRENCY_USD_CODE) ? $row_cart['amount'] : $row_cart['amount'] * $USDtoIDR);
 
         $key++;
     }
 
+    // Shipping
+    $shipping = ($row_member['idkota']) ? (($currency_code == CURRENCY_USD_CODE) ? round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) : $row_city['ongkos_kirim']) : 0;
+
     // Set total
-    $total_shipping = ($row_member['idkota']) ? round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) : '';
+    $total_shipping = (((round($total_weight) < 1) ? 1 : round($total_weight)) * (float)$shipping);
     $total_amount_shipping = $total_amount + (!empty($total_shipping) ? $total_shipping : 0);
 
-    $total_shipping = (!empty($total_shipping) ? (($currency_code == CURRENCY_USD_CODE) ? $total_shipping : number_format(($total_shipping * $USDtoIDR), 0, '.', ',')) : '');
-    $total_amount_shipping = (($currency_code == CURRENCY_USD_CODE) ? $total_amount_shipping : ($total_amount_shipping * $USDtoIDR));
-
 } else {
+
+    if (!empty($_SESSION['cart_item'])) {
+
+        // Check session guest
+        $guest = isset($_SESSION['guest']) ? $_SESSION['guest'] : [];
+
+        // Set shipping
+        if (isset($guest['idkota'])) {
+
+            // Set Kota
+            $city_query = mysql_query("SELECT * FROM `kota` WHERE `idKota` = '" . $guest["idkota"] . "' AND `level` = '0' LIMIT 0,1;");
+            $row_city = mysql_fetch_array($city_query);
+        }
+
+        foreach ($_SESSION['cart_item'] as $key => $cart_item) {
+
+            // check cart is custom or no
+            if (!$cart_item['is_custom_cart']) {
+
+                // Set item
+                $item_query = mysql_query("SELECT * FROM `item` WHERE `id_item` = '" . $cart_item["id_item"] . "' LIMIT 0,1;");
+                $row_item = mysql_fetch_array($item_query);
+
+                // Set photo
+                $photo_query = mysql_query("SELECT * FROM `photo` WHERE `id_item` = '" . $row_item["id_item"] . "' AND `level` = '0' ORDER BY `id_item` ASC LIMIT 0,1");
+                $row_photo = mysql_fetch_array($photo_query);
+
+            } else {
+
+                // Set collection
+                $row_item = $cart_item['collection'];
+
+            }
+
+            $content .= '
+                                                            <tr>
+                                                                <td style="width: 20%;">';
+
+            $content .= ($cart_item['is_custom_cart'] ?
+                '<img src="custom/public/images/custom_cart/' . $row_item['image'] . '" style="width: 100px;" />' :
+                '<img src="../admin/images/product/150/thumb_' . $row_photo['photo'] . '" style="width: 100px;" />');
+
+            $content .= '
+                                                                </td>
+                                                                <td >
+                                                                    <span>' . (!$cart_item['is_custom_cart'] ? $row_item['title'] : 'Custom Wetsuit') . '</span>
+                                                                </td>
+                                                                <td style="width: 10%;">
+                                                                    <input type="number" onchange="changeQuantity(' . null . ', ' . $key . ')" id="quantity' . $key . '" class="form-control" style="width: 60px;" value="' . $cart_item['quantity'] . '">
+                                                                </td>
+                                                                <td style="width: 30%;">
+                                                                    <h4 class="text-primary no-margin font-montserrat">' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? round($cart_item['amount'], 2) : number_format(($cart_item['amount'] * $USDtoIDR), 2, '.', ',')) . '</h4>
+                                                                </td>
+                                                            </tr>';
+
+            // Set weight
+            $weight = (!$cart_item['is_custom_cart'] ? ($cart_item['quantity'] * $row_item['weight']) : ($cart_item['quantity'] * get_price('default-weight-custom-item')));
+
+            // Set total weight
+            $total_weight = round(($total_weight + $weight), 2);
+
+            // Set quantity amount
+            $total_quantity = ($total_quantity + $cart_item['quantity']);
+            $total_amount = $total_amount + (($currency_code == CURRENCY_USD_CODE) ? $cart_item['amount'] : $cart_item['amount'] * $USDtoIDR);
+
+        }
+
+        // Shipping
+        $shipping = (isset($guest['idkota'])) ? (($currency_code == CURRENCY_USD_CODE) ? round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) : $row_city['ongkos_kirim']) : 0;
+
+        // Set total
+        $total_shipping = (((round($total_weight) < 1) ? 1 : round($total_weight)) * (float)$shipping);
+        $total_amount_shipping = $total_amount + (!empty($total_shipping) ? $total_shipping : 0);
+
+    }
+
 }
 
-$content .= '
+if ($total_amount_shipping != 0) {
+
+    $content .= '
                                                             <tr>
                                                                 <td colspan="2" style="text-align: left;"><b>Shipping</b></td>
-                                                                <td><b>' . $total_weight . ' Kg</b></td>
-                                                                <td>' . (!empty($total_shipping) ? '<b>' . $total_shipping . '</b>' : 'You have not registered your city') . '</td>
+                                                                <td><b>' . $total_weight . ' Kg</b></td>';
+
+    if (isset($row_city['idKota'])) {
+        $content .= '
+                                                                <td>' . (!empty($total_shipping) ? '<h4>' . $currency . ' ' . number_format($total_shipping, 2, '.', ',') . '</h4>' : 'You have not registered your city') . '</td>';
+    } else {
+        $content .= '
+                                                                <td>
+                                                                    <select class="full-width" data-placeholder="Select Category" id="province" data-init-plugin="select2" onchange="changeProvince()">
+                                                                        <option>Choose province for shipping</option>';
+
+        $all_province_query = mysql_query("SELECT * FROM `provinsi`;");
+        while ($row_all_province = mysql_fetch_array($all_province_query)) {
+            $content .= '<option value="' . $row_all_province['idProvinsi'] . '">' . $row_all_province['namaProvinsi'] . '</option>';
+        }
+
+        $content .= '
+                                                                    </select>
+                                                                    <select class="full-width" data-placeholder="Select Category" id="city" data-init-plugin="select2" onchange="changeCity()">
+                                                                        <option>Choose city for shipping</option>';
+
+        $all_city_query = mysql_query("SELECT * FROM `kota` WHERE `level` = '0';");
+        while ($row_all_city = mysql_fetch_array($all_city_query)) {
+            $content .= '<option value="' . $row_all_city['idKota'] . '">' . $row_all_city['namaKota'] . '</option>';
+        }
+
+        $content .= '
+                                                                    </select>
+                                                                </td>';
+    }
+
+    $content .= '
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2" style="text-align: left;"><b>Total</b></td>
                                                                 <td><b>' . $total_quantity . '</b></td>
                                                                 <td><h4>' . $currency . ' ' . number_format($total_amount_shipping, 2, '.', ',') . '</h4></td>
-                                                            </tr>
+                                                            </tr>';
+
+}
+
+$content .= '
                                                         </table>
                                                     </div>
+                                                <a class="btn btn-primary" href="' . ($loggedin ? 'checkout.php' : 'login_checkout.php') . '">Checkout</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -202,7 +316,59 @@ $content .= '
         </div>
     </div>';
 
-$plugin = '';
+$plugin = '
+    <script>
+        function changeProvince() {
+            var id_province = jQuery("#province").val();
+            console.log(id_province);
+            
+            jQuery.ajax({
+                type: "POST",
+                url: "member/change_city.php",
+                data: {
+                    action: "change_province",
+                    id_province: id_province
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.status == "error") {
+                        alert(data.msg);
+                    } else {
+                        var city = jQuery("#city");
+                        city.html("");
+                        city.append("<option>Choose city for shipping</option>");
+                        for (var i = 0; i < data.results.length; i++) {
+                            city.append(
+                                \'<option value="\' + data.results[i].idKota + \'">\' + data.results[i].namaKota + \'</option>\'
+                            );
+                        }
+                    }
+                }
+            });
+        }
+        
+        function changeCity() {
+            var id_city = jQuery("#city").val();
+            
+            jQuery.ajax({
+                type: "POST",
+                url: "member/change_city.php",
+                data: {
+                    action: "change_city",
+                    id_city: id_city
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.status == "error") {
+                        alert(data.msg);
+                    } else {
+                        alert(data.msg);
+                        window.location.reload();
+                    }
+                }
+            });
+        }    
+    </script>';
 
 $template = admin_template($content, $titlebar, $titlepage = "", $user = "", $menu, $plugin);
 

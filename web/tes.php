@@ -21,6 +21,8 @@ ob_start();
 //    $_SESSION['cart_item'][] = $item_array;
 //}
 //
+unset($_SESSION['cart_item']);
+//$_SESSION['guest'] = ['idkota' => 1];
 echo "<pre>";
 print_r($_SESSION['cart_item']);
 echo "</pre>";

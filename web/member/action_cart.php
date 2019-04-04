@@ -121,10 +121,12 @@ if (isset($_POST['action'])) {
 
                         foreach ($_SESSION["cart_item"] as $key => $cart_item) {
 
-                            // If item is exists in session
-                            if ($cart_item['id_item'] == $id_item) {
-                                $_SESSION["cart_item"][$key]['quantity'] = (float)$cart_item["quantity"] + (float)$quantity;
-                                $_SESSION["cart_item"][$key]['amount'] = (float)$cart_item['amount'] + $amount;
+                            if (!$cart_item['is_custom_cart']) {
+                                // If item is exists in session
+                                if ($cart_item['id_item'] == $id_item) {
+                                    $_SESSION["cart_item"][$key]['quantity'] = (float)$cart_item["quantity"] + (float)$quantity;
+                                    $_SESSION["cart_item"][$key]['amount'] = (float)$cart_item['amount'] + $amount;
+                                }
                             }
 
                         }

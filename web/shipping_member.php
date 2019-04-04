@@ -1,6 +1,10 @@
 <?php
 
 require "config/configuration.php";
+session_start();
+ob_start();
+
+$loggedin = logged_in();
 
 if (isset($_GET["select_country"]) && $_GET["select_country"] == "select_country") {
     $id_country = isset($_GET['id_country']) ? strip_tags(trim($_GET['id_country'])) : "";
@@ -72,8 +76,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'update_member') {
 }
 
 if (isset($_POST['action']) && $_POST['action'] == 'save_payment') {
+
+    // Set value request
     $paymentId = isset($_POST['paymentId']) ? strip_tags(trim($_POST['paymentId'])) : '';
-    $transactionId = isset($_POST['id_transaction']) ? strip_tags(trim($_POST['id_transaction'])) : '';
+//    $transactionId = isset($_POST['id_transaction']) ? strip_tags(trim($_POST['id_transaction'])) : '';
     $state = isset($_POST['state']) ? strip_tags(trim($_POST['state'])) : '';
     $amount = isset($_POST['amount']['total']) ? $_POST['amount']['total'] : '';
     $shipping = isset($_POST['amount']['details']['shipping']) ? $_POST['amount']['details']['shipping'] : '';
@@ -81,50 +87,141 @@ if (isset($_POST['action']) && $_POST['action'] == 'save_payment') {
 
     $return_update_payment['failed'] = false;
 
-    if ($paymentId != '' && $transactionId != '' && $state != '' && $amount != '') {
-        $query_transaction = mysql_query("SELECT * FROM `transaction` WHERE `id_transaction` = '$transactionId' LIMIT 0,1;");
-        $row_transaction = mysql_fetch_array($query_transaction);
+    // Begin transaction
+    begin_transaction();
 
-        if (mysql_num_rows($query_transaction)) {
+    // Set transaction number
+    $transaction_number = generate_transaction_number();
 
-            $query_transaction_update = mysql_query("UPDATE `transaction` SET `status` = '$state', `konfirm` = 'Confirmated'
-                    WHERE `id_transaction` = '$transactionId';");
-            if (!$query_transaction_update) {
-                $return_update_payment['failed'] = true;
-            }
-
-            $query_paypal = mysql_query("INSERT INTO `paypals` (`paymentId`, `id_transaction`, `id_member`, `status`, `amount`, `description`, `date_add`, `date_upd`, `level`)
-                VALUES ('" . $paymentId . "', '" . $transactionId . "', '" . $row_transaction["id_member"] . "', '" . $state . "', '" . $amount . "', '" . $description . "', NOW(), NOW(), '0')");
-            if (!$query_paypal) {
-                $return_update_payment['failed'] = true;
-            }
-
-            $query_paypal_get = mysql_query("SELECT * FROM `paypals` 
-                WHERE `paymentId` = '" . $paymentId . "' AND `id_transaction` = '" . $transactionId . "' AND `level` = '0';");
-            $row_paypal = mysql_fetch_array($query_paypal_get);
-
-            $query_cart = mysql_query("SELECT * FROM `cart` WHERE `id_transaction` = '" . $transactionId . "' AND `level` = '0';");
-            while ($row_cart = mysql_fetch_array($query_cart)) {
-
-                $query_item = mysql_query("SELECT * FROM `item` WHERE `id_item` = '" . $row_cart["id_item"] . "';");
-                $row_item = mysql_fetch_array($query_item);
-
-                $query_paypal_item = mysql_query("INSERT INTO `paypal_items` (`id_paypal`, `id_item`, `price`, `quantity`, `date_add`, `date_upd`, `level`)
-                    VALUES ('" . $row_paypal["id_paypal"] . "', '" . $row_cart["id_item"] . "', '" . $row_item["price"] . "', '" . $row_cart["qty"] . "', NOW(), NOW(), '0')");
-                if (!$query_paypal_item) {
-                    echo json_encode(['failed' => true]);
-                }
-            }
-
-            if ($shipping != '') {
-                $query_paypal_shipping = mysql_query("INSERT INTO `paypal_items` (`id_paypal`, `id_item`, `price`, `quantity`, `date_add`, `date_upd`, `level`)
-                    VALUES ('" . $row_paypal["id_paypal"] . "', '', '" . $shipping . "', '', NOW(), NOW(), '0')");
-                if (!$query_paypal_shipping) {
-                    echo json_encode(['failed' => true]);
-                }
-            }
-        }
+    // Insert transaction
+    $insert_transaction_query = "INSERT INTO `transaction` (`kode_transaction`, `id_member`, `status`, `konfirm`, `total`, `date_add`, `date_upd`) 
+        VALUES('$transaction_number', '" . $loggedin["id_member"] . "', 'process', 'Confirmated', '$amount', NOW(), NOW());";
+    if (!mysql_query($insert_transaction_query)) {
+        roll_back();
+        $msg = 'Unable to save transaction';
+        echo json_encode(error_response($msg));
+        exit();
     }
 
-    echo json_encode($return_update_payment);
+    // Select transaction
+    $transaction_query = mysql_query("SELECT * FROM `transaction` WHERE `kode_transaction` = '$transaction_number' AND `id_member` = '" . $loggedin["id_member"] . "' 
+        AND `status` = 'process' AND `konfirm` = 'Confirmated' ORDER BY `id_transaction` DESC LIMIT 0,1;");
+    $row_transaction = mysql_fetch_array($transaction_query);
+
+    if ($paymentId != '' && $state != '' && $amount != '') {
+
+        // Update transaction
+        $query_transaction_update = "UPDATE `transaction` SET `status` = '$state' WHERE `id_transaction` = '" . $row_transaction["id_transaction"] . "';";
+        if (!mysql_query($query_transaction_update)) {
+            roll_back();
+            $msg = 'Unable to update status transaction';
+            echo json_encode(error_response($msg));
+            exit();
+        }
+
+        // Insert paypals
+        $insert_paypal_query = "INSERT INTO `paypals` (`paymentId`, `id_transaction`, `id_member`, `status`, `amount`, `description`, `date_add`, `date_upd`, `level`)
+                VALUES ('" . $paymentId . "', '" . $row_transaction["id_transaction"] . "', '" . $row_transaction["id_member"] . "', '" . $state . "', '" . $amount . "', '" . $description . "', NOW(), NOW(), '0');";
+        if (!mysql_query($insert_paypal_query)) {
+            roll_back();
+            $msg = 'Unable to save paypal';
+            echo json_encode(error_response($msg));
+            exit();
+        }
+
+        // Select paypal
+        $paypal_query = mysql_query("SELECT * FROM `paypals` 
+                WHERE `paymentId` = '" . $paymentId . "' AND `id_transaction` = '" . $row_transaction["id_transaction"] . "' AND `level` = '0' LIMIT 0,1;");
+        if (mysql_num_rows($paypal_query) == 0) {
+            roll_back();
+            $msg = 'Paypal not found';
+            echo json_encode(error_response($msg));
+            exit();
+        }
+        $row_paypal = mysql_fetch_array($paypal_query);
+
+        // Assigned transaction to cart
+        $assigned_transaction_cart_query = "UPDATE `cart` SET `id_transaction` = '" . $row_transaction["id_transaction"] . "'
+            WHERE ISNULL(id_transaction) AND `id_member` = '" . $loggedin["id_member"] . "' AND `level` = '0';";
+        if (!mysql_query($assigned_transaction_cart_query)) {
+            roll_back();
+            $msg = 'Unable to assigned transaction in cart';
+            echo json_encode(error_response($msg));
+            exit();
+        }
+
+        // Get cart
+        $cart_query = mysql_query("SELECT * FROM `cart` WHERE `id_transaction` = '" . $row_transaction["id_transaction"] . "' AND `level` = '0';");
+        if (mysql_num_rows($cart_query) == 0) {
+            roll_back();
+            $msg = 'Cart not found';
+            echo json_encode(error_response($msg));
+            exit();
+        }
+        while ($row_cart = mysql_fetch_array($cart_query)) {
+
+            if ($row_cart['is_custom_cart']) {
+
+                // Set item collection
+                $collection_query = mysql_query("SELECT * FROM `custom_collection` WHERE `id_custom_collection` = '" . $row_cart["id_item"] . "';");
+                if (mysql_num_rows($collection_query) == 0) {
+                    roll_back();
+                    $msg = 'Item not found';
+                    echo json_encode(error_response($msg));
+                    exit();
+                }
+                $row_item = mysql_fetch_array($collection_query);
+
+            } else {
+
+                // Set item
+                $item_query = mysql_query("SELECT * FROM `item` WHERE `id_item` = '" . $row_cart["id_item"] . "';");
+                if (mysql_num_rows($item_query) == 0) {
+                    roll_back();
+                    $msg = 'Item not found';
+                    echo json_encode(error_response($msg));
+                    exit();
+                }
+                $row_item = mysql_fetch_array($item_query);
+
+            }
+            // Insert paypal item
+            $insert_paypal_item_query = "INSERT INTO `paypal_items` (`id_paypal`, `id_item`, `price`, `quantity`, `date_add`, `date_upd`, `level`)
+                    VALUES ('" . $row_paypal["id_paypal"] . "', '" . $row_cart["id_item"] . "', '" . $row_item["price"] . "', '" . $row_cart["qty"] . "', NOW(), NOW(), '0');";
+            if (!mysql_query($insert_paypal_item_query)) {
+                roll_back();
+                $msg = 'Unable to save paypal item';
+                echo json_encode(error_response($msg));
+                exit();
+            }
+        }
+
+        // Save shipping
+        if ($shipping != '') {
+
+            // Insert paypal item shipping
+            $insert_paypal_item_shipping_query = "INSERT INTO `paypal_items` (`id_paypal`, `id_item`, `price`, `quantity`, `date_add`, `date_upd`, `level`)
+                    VALUES ('" . $row_paypal["id_paypal"] . "', '', '" . $shipping . "', '', NOW(), NOW(), '0');";
+            if (!mysql_query($insert_paypal_item_shipping_query)) {
+                roll_back();
+                $msg = 'Unable to save shipping in paypal item';
+                echo json_encode(error_response($msg));
+                exit();
+            }
+        }
+
+    } else {
+        roll_back();
+        $msg = 'All parameter rquired';
+        echo json_encode(error_response($msg));
+        exit();
+    }
+
+    // commit
+    commit();
+
+    // Success
+    $msg = 'Save payment successfully';
+    echo json_encode(success_response($msg));
+    exit();
 }

@@ -1,11 +1,39 @@
 <?php
 session_start();
 include("config/configuration.php");
+include("config/currency_types.php");
 
 if ($loggedin = logged_in()) {
-    $user = '' . $_SESSION['user'] . '';
-    $id_member = '' . $_SESSION['id_member'] . '';
 
+    // Set price custom item
+    function get_price($name)
+    {
+        $query_setting_price = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = '$name' LIMIT 0,1");
+        $row_setting_price = mysql_fetch_array($query_setting_price);
+        return $row_setting_price['value'];
+    }
+
+    // Default currency
+    $currency_code = CURRENCY_USD_CODE;
+
+    // Set currency from session
+    if (isset($_SESSION['currency_code'])) {
+        $currency_code = $_SESSION['currency_code'];
+    }
+
+    // Set currency from database
+    if ($loggedin) {
+        $currency_code = $loggedin['currency_code'];
+    }
+
+    // Set currency
+    $currency = get_currency($currency_code);
+
+    // Set nominal curs from USD to IDR
+    $USDtoIDR = get_price('currency-value-usd-to-idr');
+
+    $user = '' . $loggedin['username'] . '';
+    $id_member = '' . $loggedin['id_member'] . '';
 
     if (isset($_GET['action']) && $_GET['action'] == 'update_member') {
         echo json_encode(['testing' => 'testing']);
@@ -34,20 +62,18 @@ if ($loggedin = logged_in()) {
         }
     }
 
-    $query_transaction = mysql_query("SELECT * FROM `transaction` 
-        WHERE `id_member` = '" . $loggedin["id_member"] . "' AND `status` = 'process' AND `konfirm` = 'not confirmated' 
-        ORDER BY `id_transaction` DESC LIMIT 0,1;");
-
-    $count_transaction = mysql_num_rows($query_transaction) == 1;
-    $row_transaction = mysql_fetch_array($query_transaction);
-
     $row_member = array();
     $row_provinsi = array();
     $row_kota = array();
     $update_member = true;
     $kurs = 0;
 
-    if ($count_transaction) {
+    // Get cart
+    $query_cart = mysql_query("SELECT * FROM `cart` 
+          WHERE ISNULL(id_transaction) AND `id_member` = '" . $loggedin["id_member"] . "' AND `level` = '0';");
+    $count_cart = mysql_num_rows($query_cart) > 0;
+
+    if ($count_cart) {
         $query_member = mysql_query("SELECT `member`.*, `users`.`email` FROM `member`, `users`
             WHERE `member`.`id_member` = `users`.`id_member` 
             AND `member`.`id_member` = '" . $loggedin["id_member"] . "' LIMIT 0,1;");
@@ -57,14 +83,17 @@ if ($loggedin = logged_in()) {
             WHERE `id_country` = '" . $row_member["idCountry"] . "' LIMIT 0,1;");
         $row_country = mysql_fetch_array($query_country);
 
+        // Set country ID
+        $id_country = ($row_member['idCountry'] ? $row_member['idCountry'] : 'ID');
+
         $query_provinsi = mysql_query("SELECT * FROM `provinsi`
-            WHERE `idProvinsi` = '" . $row_member["idpropinsi"] . "' AND `idCountry` = '" . $row_member["idCountry"] . "' LIMIT 0,1;");
+            WHERE `idProvinsi` = '" . $row_member["idpropinsi"] . "' AND `idCountry` = '" . $id_country . "' LIMIT 0,1;");
         $row_provinsi = mysql_fetch_array($query_provinsi);
 
         $query_kota = mysql_query("SELECT * FROM `kota`
             WHERE `idKota` = '" . $row_member["idkota"] . "' LIMIT 0,1;");
         $row_kota = mysql_fetch_array($query_kota);
-        $kurs = round($row_kota["ongkos_kirim"] / 13887);
+        $kurs = (($currency_code == CURRENCY_USD_CODE) ? round(($row_kota["ongkos_kirim"] / $USDtoIDR), 2) : $row_kota['ongkos_kirim']);
 
         if ($row_member['firstname'] && $row_member['lastname'] && $row_member['alamat'] && $row_member['kode_pos'] &&
             $row_member['idCountry'] && $row_member['idpropinsi'] && $row_member['idkota']
@@ -219,7 +248,7 @@ if ($loggedin = logged_in()) {
                             <div class="row row-same-height">
                                 <div class="col-md-5 b-r b-dashed b-grey sm-b-b">
                                     <?php
-                                    if ($count_transaction != 0) { ?>
+                                    if ($count_cart != 0) { ?>
                                         <div class="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
                                             <i class="fa fa-shopping-cart fa-2x hint-text"></i>
                                             <h2>Your Bags are ready to check out!</h2>
@@ -242,12 +271,9 @@ if ($loggedin = logged_in()) {
                                 <div class="col-md-7">
                                     <div class="padding-30 sm-padding-5">
                                         <?php
-                                        if ($count_transaction != 0) {
+                                        if ($count_cart != 0) {
                                             $item_total = 0;
-
-                                            $query_cart = mysql_query("SELECT * FROM `cart` 
-                                                 WHERE `id_transaction` = '" . $row_transaction["id_transaction"] . "'
-                                                 AND `level` = '0';");
+                                            $total_weight = 0;
 
                                             ?>
                                             <table class="table table-condensed">
@@ -268,19 +294,19 @@ if ($loggedin = logged_in()) {
 
                                                     ?>
                                                     <tr class="form_items[]">
-                                                        <td class="col-lg-8 col-md-6 col-sm-7 ">
-                                                            <span class="m-l-10 font-montserrat fs-11 all-caps"><?php echo(isset($row_item["title"]) ? $row_item["title"] : 'Custom Cart'); ?></span>
+                                                        <td style="width: 45%;">
+                                                            <span class="m-l-10 font-montserrat fs-11 all-caps"><?php echo(isset($row_item["title"]) ? $row_item["title"] : 'Custom Wetsuit'); ?></span>
                                                         </td>
-                                                        <td class=" col-lg-2 col-md-3 col-sm-3 text-right">
+                                                        <td style="width: 15%;">
                                                             <span>Qty <?php echo $row_cart['qty']; ?></span>
                                                         </td>
-                                                        <td class=" col-lg-2 col-md-3 col-sm-2 text-right">
-                                                            <h4 class="text-primary no-margin font-montserrat">
-                                                                $ <?php echo $row_item['price'] ?></h4>
+                                                        <td style="width: 40%; text-align: right;">
+                                                            <h5 class="text-primary no-margin font-montserrat">
+                                                                <?php echo $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? round($row_cart['amount'], 2) : number_format(($row_cart['amount'] * $USDtoIDR), 0, '.', ',')) ?></h5>
                                                         </td>
 
                                                         <input type="hidden"
-                                                               value="<?php echo(isset($row_item['title']) ? $row_item['title'] : 'Custom Cart'); ?>"
+                                                               value="<?php echo(isset($row_item['title']) ? $row_item['title'] : 'Custom Wetsuit'); ?>"
                                                                id="title_<?php echo $a; ?>" name="title[]">
                                                         <input type="hidden"
                                                                value="<?php echo $row_cart['qty']; ?>"
@@ -290,9 +316,19 @@ if ($loggedin = logged_in()) {
                                                                id="price_<?php echo $a; ?>" name="price[]">
                                                     </tr>
                                                     <?php
+
+                                                    // Set item total
                                                     $item_total += ($row_item["price"] * $row_cart["qty"]);
+
+                                                    // Set weight
+                                                    $weight = ($row_cart['is_custom_cart'] ? get_price('default-weight-custom-item') : $row_item["weight"]);
+                                                    $total_weight += ($weight * $row_cart['qty']);
+
                                                     $a++;
                                                 }
+
+                                                // round out total weight
+                                                $total_weight = round($total_weight);
                                                 ?>
                                                 <input type="hidden" name="subtotal" id="subtotal"
                                                        value="<?php echo $item_total; ?>">
@@ -311,22 +347,22 @@ if ($loggedin = logged_in()) {
                                                         <p class="no-margin">$ 0</p>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 col-middle sm-padding-15 align-items-center d-flex">
+                                                <div class="col-md-3 col-middle sm-padding-15 align-items-center d-flex">
                                                     <div>
                                                         <h5 class="font-montserrat all-caps small no-margin hint-text bold">
                                                             Shipping Cost</h5>
-                                                        <p class="no-margin">$<?php echo $kurs; ?></p>
+                                                        <p class="no-margin"><?php echo $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? ($total_weight * $kurs) : number_format(($total_weight * $kurs), 0, '.', ',')); ?></p>
                                                         <input type="hidden" name="shipping" id="shipping"
-                                                               value="<?php echo $kurs; ?>">
+                                                               value="<?php echo($total_weight * $kurs); ?>">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 text-right bg-primary padding-10">
+                                                <div class="col-md-6 text-right bg-primary padding-10">
                                                     <h5 class="font-montserrat all-caps small no-margin hint-text text-white bold">
                                                         Total</h5>
-                                                    <h4 class="no-margin text-white">
-                                                        $ <?php echo $item_total + $kurs; ?></h4>
+                                                    <h5 class="no-margin text-white">
+                                                        <?php echo $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? number_format(($item_total + ($total_weight * $kurs)), 2, '.', ',') : number_format((($item_total * $USDtoIDR) + ($total_weight * $kurs)), 0, '.', ',')); ?></h5>
                                                     <input type="hidden" name="amount" id="amount"
-                                                           value="<?php echo $item_total + $kurs; ?>">
+                                                           value="<?php echo $item_total + ((($currency_code == CURRENCY_USD_CODE) ? ($total_weight * $kurs) : (($total_weight * $kurs) / $USDtoIDR))); ?>">
                                                 </div>
                                             </div>
                                             <?php
@@ -334,7 +370,7 @@ if ($loggedin = logged_in()) {
                                         ?>
                                         <br>
                                         <?php
-                                        if ($count_transaction != 0) { ?>
+                                        if ($count_cart != 0) { ?>
                                             <button class="btn btn-primary pull-right"
                                                     id="next-information"
                                                     type="button">Next
@@ -369,7 +405,7 @@ if ($loggedin = logged_in()) {
                                                                class="form-control" <?php echo ($row_member["firstname"]) ? "readonly" : "" ?>
                                                                name="firs_name"
                                                                placeholder="First Name" id="first_name"
-                                                               value="<?php echo ($count_transaction != 0) ? $row_member["firstname"] : ""; ?>">
+                                                               value="<?php echo ($count_cart != 0) ? $row_member["firstname"] : ""; ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
@@ -379,7 +415,7 @@ if ($loggedin = logged_in()) {
                                                                class="form-control" <?php echo ($row_member["lastname"]) ? "readonly" : "" ?>
                                                                name="last_name"
                                                                placeholder="Last Name" id="last_name"
-                                                               value="<?php echo ($count_transaction != 0) ? $row_member["lastname"] : ""; ?>">
+                                                               value="<?php echo ($count_cart != 0) ? $row_member["lastname"] : ""; ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -389,7 +425,7 @@ if ($loggedin = logged_in()) {
                                                        class="form-control" <?php echo ($row_member["email"]) ? "readonly" : "" ?>
                                                        name="email"
                                                        placeholder="E-mail" id="email"
-                                                       value="<?php echo ($count_transaction != 0) ? $row_member["email"] : ""; ?>">
+                                                       value="<?php echo ($count_cart != 0) ? $row_member["email"] : ""; ?>">
                                             </div>
                                             <div class="form-group form-group-default">
                                                 <label>Phone Number</label>
@@ -397,7 +433,7 @@ if ($loggedin = logged_in()) {
                                                        class="form-control" <?php echo ($row_member["notelp"]) ? "readonly" : "" ?>
                                                        name="phone_number"
                                                        placeholder="Phone Number" id="phone_number"
-                                                       value="<?php echo ($count_transaction != 0) ? $row_member["notelp"] : ""; ?>">
+                                                       value="<?php echo ($count_cart != 0) ? $row_member["notelp"] : ""; ?>">
                                             </div>
                                         </div>
                                         <br>
@@ -409,7 +445,7 @@ if ($loggedin = logged_in()) {
                                                        class="form-control" <?php echo ($row_member["alamat"]) ? "readonly" : "" ?>
                                                        name="category"
                                                        placeholder="Address" id="address"
-                                                       value="<?php echo ($count_transaction != 0) ? $row_member["alamat"] : ""; ?>">
+                                                       value="<?php echo ($count_cart != 0) ? $row_member["alamat"] : ""; ?>">
                                             </div>
                                             <div class="row clearfix">
                                                 <?php if ($row_member["idCountry"]) { ?>
@@ -447,13 +483,17 @@ if ($loggedin = logged_in()) {
                                                             <option value="<?php echo $row_provinsi["namaProvinsi"] . '-' . $row_provinsi["idProvinsi"]; ?>"><?php echo $row_provinsi["namaProvinsi"]; ?></option>
                                                         </select>
                                                     </div>
-                                                <?php } else { ?>
+                                                <?php } else {
+                                                    $all_province_query = mysql_query("SELECT * FROM `provinsi` WHERE `idCountry` = '" . ($row_member["idCountry"] ? $row_member["idCountry"] : "ID") . "';"); ?>
                                                     <div class="form-group form-group-default form-group-default-select2">
                                                         <label class="">Select Province</label>
                                                         <select class="full-width" id="province"
-                                                                data-placeholder="Pilih Provinsi"
+                                                                data-placeholder="Chose Province"
                                                                 name="province" data-init-plugin="select2">
                                                             <option type="hidden" value="">Chose Province</option>
+                                                            <?php while ($row_all_province = mysql_fetch_array($all_province_query)) {
+                                                                echo '<option value="' . $row_all_province["namaProvinsi"] . '-' . $row_all_province["idProvinsi"] . '">' . $row_all_province["namaProvinsi"] . '</option>';
+                                                            } ?>
                                                         </select>
                                                     </div>
                                                 <?php } ?>
@@ -474,7 +514,7 @@ if ($loggedin = logged_in()) {
                                                         <div class="form-group form-group-default form-group-default-select2 required">
                                                             <label class="">Select City</label>
                                                             <select class="full-width" id="city"
-                                                                    data-placeholder="Pilih Provinsi"
+                                                                    data-placeholder="Chose City"
                                                                     name="city" data-init-plugin="select2">
                                                                 <option type="hidden" value="">Chose City</option>
                                                             </select>
@@ -488,7 +528,7 @@ if ($loggedin = logged_in()) {
                                                                class="form-control" <?php echo ($row_member["kode_pos"]) ? "readonly" : "" ?>
                                                                name="postal_code"
                                                                placeholder="Postal Code" id="postal_code"
-                                                               value="<?php echo ($count_transaction != 0) ? $row_member["kode_pos"] : ""; ?>">
+                                                               value="<?php echo ($count_cart != 0) ? $row_member["kode_pos"] : ""; ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -506,39 +546,53 @@ if ($loggedin = logged_in()) {
                         </div>
 
                         <div class="tab-pane padding-20 sm-no-padding slide-left" id="tab-paypal">
-                           <div class="row row-same-height">
-                                <div class="col-md-5 b-r b-dashed b-grey sm-b-b">
-                                    <div class="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
-                                        <h2>Please make a payment through your paypal account!</h2>
-                                    </div>
-                                    <div class="padding-30 sm-padding-5">
-                                        <div class="from-left pull-right" id="paypal-button"></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-7 b-r b-dashed b-grey sm-b-b">
-                                    <div class="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
-                                        <h5>Or You Can Transfer To Us Via</h5>
-                                    </div>
-                                    <div class="padding-10 sm-padding-5">
-                                        <div><img src="images/mandiri.jpg" height="30px">Account Number : <strong>145-0010-897-318</strong></div><br><br>
-                                        <div><img src="images/bca.jpg" height="30px">Account Number : <strong>146-668-4848</strong></div>
-                                        <br><br>
-                                         <table><tr>
-                                             <td>
-                                             <p style="font-size:12px;">After transferring, please confirm to us and send us the proof of payment by confirming us</p>
-                                             </td><td>
-                                                 <a href="member/form_confirmation.php" class="btn btn-primary pull-right"
-                                                    type="button" >Confirmation </a>
-                                             
-                                         </td></tr></table> 
-                                            
-                                    </div>
-                                </div>
-                                
+                            <div class="row row-same-height">
+                                <?php if ($currency_code == CURRENCY_USD_CODE) {
+                                    echo '
+                                        <div class="col-md-5 b-r b-dashed b-grey sm-b-b">
+                                            <div class="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
+                                                <h2>Please make a payment through your paypal account!</h2>
+                                            </div>
+                                            <div class="padding-30 sm-padding-5">
+                                                <div class="from-left pull-right" id="paypal-button"></div>
+                                            </div>
+                                        </div>';
+                                } else {
+                                    echo '
+                                        <div class="col-md-7 b-r b-dashed b-grey sm-b-b">
+                                            <div class="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
+                                                <h5>Or You Can Transfer To Us Via</h5>
+                                            </div>
+                                            <div class="padding-10 sm-padding-5">
+                                                <div><img src="images/mandiri.jpg" height="30px">Account Number : <strong>145-0010-897-318</strong>
+                                                </div>
+                                                <br><br>
+                                                <div><img src="images/bca.jpg" height="30px">Account Number : <strong>146-668-4848</strong>
+                                                </div>
+                                                <br><br>
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <p style="font-size:12px;">After transferring, please confirm to us
+                                                                and send us the proof of payment by confirming us</p>
+                                                        </td>
+                                                        <td>
+                                                            <a href="member/form_confirmation.php"
+                                                               class="btn btn-primary pull-right"
+                                                               type="button">Confirmation </a>
+        
+                                                        </td>
+                                                    </tr>
+                                                </table>
+        
+                                            </div>
+                                        </div>';
+                                } ?>
+
 
                             </div>
                         </div>
-                        
+
 
                     </div>
 
@@ -623,8 +677,10 @@ if ($loggedin = logged_in()) {
                 dataType: 'json',
                 success: function (data) {
                     if (!data.failed) {
+                        var province = $('#province');
+                        province.html("");
                         for (var i = 0; i < data.results.length; i++) {
-                            $('#province').append(
+                            province.append(
                                 '<option value="' + data.results[i].namaProvinsi + '-' + data.results[i].idProvinsi + '">' + data.results[i].namaProvinsi + '</option>'
                             );
                         }
@@ -644,8 +700,10 @@ if ($loggedin = logged_in()) {
                 success: function (data) {
                     if (!data.failed) {
                         $('#state').val(province[0]);
+                        var city = $('#city');
+                        city.html("");
                         for (var i = 0; i < data.results.length; i++) {
-                            $('#city').append(
+                            city.append(
                                 '<option value="' + data.results[i].namaKota + '-' + data.results[i].idKota + '">' + data.results[i].namaKota + '</option>'
                             );
                         }
@@ -676,7 +734,7 @@ if ($loggedin = logged_in()) {
                 city == '' ||
                 postal_code == '') {
 
-                notifyAlert('Isi semua data yang masih kosong..!!','danger','top-right');
+                notifyAlert('Isi semua data yang masih kosong..!!', 'danger', 'top-right');
 
             } else {
 
@@ -737,7 +795,7 @@ if ($loggedin = logged_in()) {
                 city == '' ||
                 postal_code == '') {
 
-                notifyAlert('Isi semua data yang masih kosong..!!','danger','top-right');
+                notifyAlert('Isi semua data yang masih kosong..!!', 'danger', 'top-right');
 
             } else {
                 $('#item-shipping-information').removeClass('active');
@@ -821,6 +879,7 @@ if ($loggedin = logged_in()) {
 
             onAuthorize: function (success, actions) {
                 return actions.payment.execute().then(function () {
+                    notifyAlert('Please wait, it\'s being processed.', 'success', 'top-right', 600000000);
 
                     $.ajax({
                         type: 'POST',
@@ -848,16 +907,15 @@ if ($loggedin = logged_in()) {
                                             state: payment.transactions[0].related_resources[0].sale.state,
                                             amount: payment.transactions[0].related_resources[0].sale.amount,
                                             description: payment.transactions[0].description,
-                                            id_transaction: $('#id_transaction').val(),
                                             paymentId: payment.id
                                         },
                                         dataType: 'json',
                                         success: function (data) {
-                                            if (!data.failed) {
-                                                notifyAlert('Process payment finished!','success','top-right');
+                                            if (data.status == "success") {
+                                                notifyAlert(data.msg, 'success', 'top-right');
                                                 window.location.href = 'member/list-transaction.php';
                                             } else {
-                                                notifyAlert('Process payment failed!','danger','top-right');
+                                                notifyAlert(data.msg, 'danger', 'top-right');
                                             }
                                         }
                                     });
@@ -874,12 +932,12 @@ if ($loggedin = logged_in()) {
         }, '#paypal-button');
     });
 
-    function notifyAlert(message, type, position) {
+    function notifyAlert(message, type, position, timeout = 3600) {
         $('.page-container').pgNotification({
             style: 'flip',
             message: message,
             position: position ? position : 'top-right',
-            timeout: 3200,
+            timeout: timeout,
             type: type
         }).show();
     }
@@ -887,3 +945,14 @@ if ($loggedin = logged_in()) {
 </script>
 </body>
 </html>
+
+<!-- Acounts paypal for testing
+ "ron@hogwarts.com",            "qwer1234"
+ "sallyjones1234@gmail.com",    "p@ssword1234"
+ "joe@boe.com",                 "123456789"
+ "hermione@hogwarts.com",       "123456789"
+ "lunalovegood@hogwarts.com",   "123456789"
+ "ginnyweasley@hogwarts.com",   "123456789"
+ "bellaswan@awesome.com",       "qwer1234"
+ "edwardcullen@gmail.com",      "qwer1234"
+ --!>

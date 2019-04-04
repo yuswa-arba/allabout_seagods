@@ -305,9 +305,10 @@ $plugin = '
               action: "add_cart",
               id_item: id_item, 
               quantity: quantity
-         },
+          },
           dataType: "json",
           success: function(data) {
+              console.log(data);
               if (data.status == "error") {
                   alert(data.msg);
               } else {

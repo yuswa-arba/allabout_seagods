@@ -78,6 +78,8 @@ if (isset($_POST['canvasData'])) {
 
     $_SESSION['cart_item'][] = [
         'is_custom_cart' => true,
+        'quantity' => 1,
+        'amount' => (1 * (float)$row_price['value']),
         'collection' => [
             'code' => $custom_item_number,
             'gender' => $gender,
