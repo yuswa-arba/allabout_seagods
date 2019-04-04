@@ -7,10 +7,39 @@
  * Email: adit@globalxtreme.net
  */
 include("config/configuration.php");
+include("config/currency_types.php");
 session_start();
 ob_start();
 
 if ($loggedin = logged_in()) {
+
+    // Set price custom item
+    function get_price($name)
+    {
+        $query_setting_price = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = '$name' LIMIT 0,1");
+        $row_setting_price = mysql_fetch_array($query_setting_price);
+        return $row_setting_price['value'];
+    }
+
+    // Default currency
+    $currency_code = CURRENCY_USD_CODE;
+
+    // Set currency from session
+    if (isset($_SESSION['currency_code'])) {
+        $currency_code = $_SESSION['currency_code'];
+    }
+
+    // Set currency from database
+    if ($loggedin) {
+        $currency_code = $loggedin['currency_code'];
+    }
+
+    // Set currency
+    $currency = get_currency($currency_code);
+
+    // Set nominal curs from USD to IDR
+    $USDtoIDR = get_price('currency-value-usd-to-idr');
+
     if (isset($_POST['nilai'])) {
         $_SESSION['nilai_login'] = $_POST['nilai'] + 1;
     } else {
@@ -19,13 +48,12 @@ if ($loggedin = logged_in()) {
 
     $titlebar = "Detail Wishlist";
     $titlepage = "Detail Wishlist";
-
     $menu = "";
-    $user = '' . $_SESSION['user'] . '';
+    $user = '' . $loggedin['username'] . '';
 
-    if (isset($_GET["id"])) {
+    if (isset($_GET["id_wishlist"])) {
 
-        $id_wishlist = isset($_GET['id']) ? strip_tags(trim($_GET['id'])) : "";
+        $id_wishlist = isset($_GET['id_wishlist']) ? strip_tags(trim($_GET['id_wishlist'])) : "";
 
         $sql_wishlist = mysql_query("SELECT * FROM `wishlist` WHERE `id_member`='" . $loggedin["id_member"] . "' AND `id_wishlist` = '$id_wishlist'");
         $row_wishlist = mysql_fetch_array($sql_wishlist);
@@ -52,7 +80,7 @@ if ($loggedin = logged_in()) {
                                     <br><br>Buyer  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <strong>' . $row_member['firstname'] . ' ' . $row_member['lastname'] . ' </strong>
                                 </div>
-                                <div class="pull-right"></div>
+                                <div class="clearfix pull-right"><a class="btn btn-default" href="wishlist.php' . (isset($_GET['page']) ? '?page=' . $_GET['page'] : '') . '">Back to List</a></div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="card-block">
@@ -62,11 +90,13 @@ if ($loggedin = logged_in()) {
                                             <th >Product Name</th>
                                             <th style="width:15%">Qty</th>
                                             <th style="width:25%">Price</th>
+                                            <th style="width:25%">Amount</th>
+                                            <th style="width:10%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>';
 
-    if (isset($_GET["id"])) {
+    if (isset($_GET["id_wishlist"])) {
 
         $query_item = mysql_query("SELECT * FROM `item` WHERE `code` = '" . $row_wishlist["code"] . "' LIMIT 0,1;");
         $row_item = mysql_fetch_array($query_item);
@@ -80,7 +110,13 @@ if ($loggedin = logged_in()) {
                     <p>' . $row_wishlist['qty'] . '</p>
                 </td>
                 <td class="v-align-middle">
-                    <p>$ ' . $row_item['price'] . '</p>
+                    <p>' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_item['price'] : number_format(($row_item['price'] * $USDtoIDR), 0, '.', ',')) . '</p>
+                </td>
+                <td class="v-align-middle">
+                    <p>' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_wishlist['amount'] : number_format(($row_wishlist['amount'] * $USDtoIDR), 0, '.', ',')) . '</p>
+                </td>
+                <td class="v-align-middle">
+                    <a class="btn btn-xs btn-success pull-right" href="detail-wishlist-item.php?id_wishlist=' . $row_wishlist['id_wishlist'] . '&id_item=' . $row_item['id_item'] . '">Detail Item</a>
                 </td>
             </tr>';
 
@@ -88,7 +124,7 @@ if ($loggedin = logged_in()) {
 
     $content .= '
                                         <tr> 
-                                            <td colspan="3" >Total : $ ' . $row_wishlist['amount'] . '</td> 
+                                            <td colspan="5" >Total : ' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_wishlist['amount'] : number_format(($row_wishlist['amount'] * $USDtoIDR), 0, '.', ',')) . '</td> 
                                         </tr>
                                     </tbody>
                                 </table>

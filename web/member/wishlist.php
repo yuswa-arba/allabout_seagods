@@ -7,10 +7,38 @@
  * Email: adit@globalxtreme.net
  */
 include("config/configuration.php");
+include("config/currency_types.php");
 session_start();
 ob_start();
 
 if ($loggedin = logged_in()) {
+
+    // Set price custom item
+    function get_price($name)
+    {
+        $query_setting_price = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = '$name' LIMIT 0,1");
+        $row_setting_price = mysql_fetch_array($query_setting_price);
+        return $row_setting_price['value'];
+    }
+
+    // Default currency
+    $currency_code = CURRENCY_USD_CODE;
+
+    // Set currency from session
+    if (isset($_SESSION['currency_code'])) {
+        $currency_code = $_SESSION['currency_code'];
+    }
+
+    // Set currency from database
+    if ($loggedin) {
+        $currency_code = $loggedin['currency_code'];
+    }
+
+    // Set currency
+    $currency = get_currency($currency_code);
+
+    // Set nominal curs from USD to IDR
+    $USDtoIDR = get_price('currency-value-usd-to-idr');
 
     if (isset($_POST['nilai'])) {
         $_SESSION['nilai_login'] = $_POST['nilai'] + 1;
@@ -20,12 +48,10 @@ if ($loggedin = logged_in()) {
 
     $titlebar = "Wishlist";
     $titlepage = "Wishlist";
-
     $menu = "";
-    $user = '' . $_SESSION['user'] . '';
+    $user = '' . $loggedin['username'] . '';
 
     $perhalaman = 10;
-
     if (isset($_GET['page'])) {
         $page = (int)$_GET['page'];
         $start = ($page - 1) * $perhalaman;
@@ -94,11 +120,11 @@ if ($loggedin = logged_in()) {
                         <p>' . $row_wishlist['title'] . '</p>
                     </td>
                     <td class="v-align-middle">
-                        <p>$ ' . $row_wishlist['amount'] . '</p>
+                        <p>' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_wishlist['amount'] : number_format(($row_wishlist['amount'] * $USDtoIDR), 0, '.', ',')) . '</p>
                     </td>
                     <td class="v-align-middle">
                         <div class="btn-group">
-                            <a href="detail-wishlist.php?id=' . $row_wishlist["id_wishlist"] . '" class="btn btn-success"><i class="fa fa-eye"></i></a>
+                            <a href="detail-wishlist.php?id_wishlist=' . $row_wishlist["id_wishlist"] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '" class="btn btn-success"><i class="fa fa-eye"></i></a>
                             <button type="submit" class="btn btn-danger" name="delete" value="Delete"><i class="fa fa-trash-o"></i></button>
                         </div>
                     </td>

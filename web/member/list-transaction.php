@@ -14,18 +14,6 @@ ob_start();
 
 if ($loggedin = logged_in()) {
 
-    // Set price custom item
-    function get_price($name)
-    {
-        $query_setting_price = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = '$name' LIMIT 0,1");
-        $row_setting_price = mysql_fetch_array($query_setting_price);
-        return $row_setting_price['value'];
-    }
-
-    // Set currency
-    $currency = get_currency($loggedin['currency_code']);
-    $currency_code = $loggedin['currency_code'];
-
     if (isset($_POST['nilai'])) {
         $_SESSION['nilai_login'] = $_POST['nilai'] + 1;
     } else {
@@ -41,17 +29,43 @@ if ($loggedin = logged_in()) {
         $start = 0;
     }
 
-    $titlebar = "List Transaction";
-    $titlepage = "List Transaction";
-
+    $titlebar = "Transaction List";
+    $titlepage = "Transaction List";
     $menu = "";
-    $user = '' . $_SESSION['user'] . '';
+    $user = '' . $loggedin['username'] . '';
 
     $sql_transaction = mysql_query("SELECT * FROM `transaction` where `id_member` ='" . $loggedin["id_member"] . "' ORDER BY `date_add` DESC LIMIT $start,$perhalaman");
     $sql_total_data = mysql_num_rows(mysql_query("SELECT * FROM `transaction` where `id_member` ='" . $loggedin["id_member"] . "' ORDER BY `date_add`"));
 
     $sql_member = mysql_query("SELECT * FROM `member` where `id_member` ='" . $loggedin["id_member"] . "' ");
     $row_member = mysql_fetch_array($sql_member);
+
+    // Set price custom item
+    function get_price($name)
+    {
+        $query_setting_price = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = '$name' LIMIT 0,1");
+        $row_setting_price = mysql_fetch_array($query_setting_price);
+        return $row_setting_price['value'];
+    }
+
+    // Default currency
+    $currency_code = CURRENCY_USD_CODE;
+
+    // Set currency from session
+    if (isset($_SESSION['currency_code'])) {
+        $currency_code = $_SESSION['currency_code'];
+    }
+
+    // Set currency from database
+    if ($loggedin) {
+        $currency_code = $loggedin['currency_code'];
+    }
+
+    // Set currency
+    $currency = get_currency($currency_code);
+
+    // Set nominal curs from USD to IDR
+    $USDtoIDR = get_price('currency-value-usd-to-idr');
 
     $content = '
         <div class="page-container ">
@@ -64,7 +78,7 @@ if ($loggedin = logged_in()) {
                         <!-- START card -->
                         <div class="card card-transparent">
                             <div class="card-header ">
-                                <div class="card-title">List Transaction</div>
+                                <div class="card-title">Transaction List</div>
                                 <div class="pull-right"></div>
                                 <div class="clearfix"></div>
                             </div>
@@ -84,13 +98,7 @@ if ($loggedin = logged_in()) {
                                     </thead>
                                     <tbody>';
 
-    // Set nominal curs from USD to IDR
-    $USDtoIDR = get_price('currency-value-usd-to-idr');
-
     while ($row_transaction = mysql_fetch_array($sql_transaction)) {
-
-        // Set total price
-        $total_price = ($currency_code == CURRENCY_USD_CODE) ? round($row_transaction['total'], 2) : number_format(($row_transaction['total'] * $USDtoIDR), 2, '.', ',');
 
         $content .= '
                                         <tr>
@@ -104,16 +112,24 @@ if ($loggedin = logged_in()) {
                                                 <p>' . $row_transaction['date_add'] . '</p>
                                             </td>
                                             <td class="v-align-middle">
-                                                <p>' .$currency. ' ' . $total_price . '</p>
+                                                <p>' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_transaction['total'] : number_format(($row_transaction['total'] * $USDtoIDR), 0, '.', ',')) . '</p>
                                             </td>
                                             <td class="v-align-middle">
                                                 <p>' . $row_transaction['status'] . '</p>
                                             </td>
-                                            <td class="v-align-middle">
-                                                <p>' . $row_transaction['konfirm'] . '</p>
+                                            <td class="v-align-middle">';
+
+        if ($row_transaction['konfirm'] == 'not confirmated') {
+            $content .= '<span class="btn btn-danger">not confirm</span>';
+        } else {
+            $content .= '<span class="btn btn-warning">Confirmed</span>';
+        }
+
+        $content .= '
+                                                
                                             </td>
                                             <td class="v-align-middle">
-                                                <a class="btn btn-success" href="detail-transaction.php?id_transaction=' . $row_transaction['id_transaction'] . '">view</a>
+                                                <a class="btn btn-success" href="detail-transaction.php?id_transaction=' . $row_transaction['id_transaction'] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '">view</a>
                                             </td>
                                         </tr>';
     }

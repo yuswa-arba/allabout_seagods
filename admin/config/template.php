@@ -93,6 +93,10 @@ $menu = '
             
             </li>
             <li>
+              <a href="settings.php"><span class="title">Settings</span></a>
+            
+            </li>
+            <li>
               <a href="javascript:;"><span class="title">Subscriber</span>
             <span class=" arrow"></span></a>
             <ul class="">
