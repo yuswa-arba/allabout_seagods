@@ -486,7 +486,7 @@ function generate_transaction_number()
     date_default_timezone_set('Asia/Jakarta');
 
     // Set first number
-    $transaction_number = 'TRS';
+    $transaction_number = 'INV';
 
     // Set number with date time
     $transaction_number .= date('ymdHis');

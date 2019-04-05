@@ -275,7 +275,7 @@ $plugin = '
   
       function changeCurrency(id_cat) {
           
-          var currency_code = jQuery("#currency_code").val();8
+          var currency_code = jQuery("#currency_code").val();
           
           jQuery.ajax({
             type: "POST",

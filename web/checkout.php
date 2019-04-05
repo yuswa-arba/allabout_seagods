@@ -563,24 +563,51 @@ if ($loggedin = logged_in()) {
                                             <div class="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
                                                 <h5>Or You Can Transfer To Us Via</h5>
                                             </div>
-                                            <div class="padding-10 sm-padding-5">
+                                            <div class="cpadding-7 sm-padding-1">
                                                 <div><img src="images/mandiri.jpg" height="30px">Account Number : <strong>145-0010-897-318</strong>
                                                 </div>
                                                 <br><br>
                                                 <div><img src="images/bca.jpg" height="30px">Account Number : <strong>146-668-4848</strong>
                                                 </div>
                                                 <br><br>
-                                                <table>
+                                                <table class="col-12">
                                                     <tr>
-                                                        <td>
+                                                        <td colspan="2">
                                                             <p style="font-size:12px;">After transferring, please confirm to us
                                                                 and send us the proof of payment by confirming us</p>
                                                         </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <div class="row b-a b-grey no-margin">
+                                                                <div class="col-md-3 p-l-10 sm-padding-15 align-items-center d-flex">
+                                                                    <div>
+                                                                        <h6 class="font-montserrat all-caps small no-margin hint-text bold">
+                                                                            Discount</h6>
+                                                                        <p class="no-margin">$ 0</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3 col-middle sm-padding-15 align-items-center d-flex">
+                                                                    <div>
+                                                                        <h6 class="font-montserrat all-caps small no-margin hint-text bold">
+                                                                            Shipping Cost</h6>
+                                                                        <p class="no-margin">' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? ($total_weight * $kurs) : number_format(($total_weight * $kurs), 0, '.', ',')) . '</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 text-right bg-primary padding-10">
+                                                                    <h6 class="font-montserrat all-caps small no-margin hint-text text-white bold">
+                                                                        Total</h6>
+                                                                    <h6 class="no-margin text-white">'.$currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? number_format(($item_total + ($total_weight * $kurs)), 2, '.', ',') : number_format((($item_total * $USDtoIDR) + ($total_weight * $kurs)), 0, '.', ',')).'</h6>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
                                                         <td>
                                                             <a href="member/form_confirmation.php"
                                                                class="btn btn-primary pull-right"
                                                                type="button">Confirmation </a>
-        
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -588,7 +615,6 @@ if ($loggedin = logged_in()) {
                                             </div>
                                         </div>';
                                 } ?>
-
 
                             </div>
                         </div>

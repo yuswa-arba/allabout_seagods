@@ -88,7 +88,7 @@ function logged_in()
     $sess_id = (isset($_COOKIE["PHPSESSID"])!="") ? ($_COOKIE["PHPSESSID"]) : ""; // Remove any injection and bugout stuff from the session
     // Retrieve the sessions tables wheres the session id above matches the session id in the sessions table
 
-    $sess_check = mysql_query("SELECT `sessions`.* FROM `sessions`, `users`
+    $sess_check = mysql_query("SELECT * FROM `sessions`, `users`
 			      WHERE `sessions`.`uid` = `users`.`id_user`
 			      AND `users`.`group` != 'admin' AND `sessions`.`sess_id` = '" . $sess_id ."'
 			      AND `sessions`.`logged` = '0'");
@@ -467,4 +467,25 @@ function getBrowserNew() {
         'pattern' => $pattern
     );
 }
+
+function generate_transaction_number()
+{
+    date_default_timezone_set('Asia/Jakarta');
+
+    // Set first number
+    $transaction_number = 'INV';
+
+    // Set number with date time
+    $transaction_number .= date('ymdHis');
+
+    // Set random number
+    $transaction_number .= rand(10,99);
+
+    // Set number with last custom collection
+    $total_transaction = mysql_fetch_array(mysql_query("SELECT count(id_transaction) AS total FROM transaction;"));
+    $transaction_number .= $total_transaction['total'] + 1;
+
+    return $transaction_number;
+}
+
 ?>

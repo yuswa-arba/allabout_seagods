@@ -94,8 +94,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'save_payment') {
     $transaction_number = generate_transaction_number();
 
     // Insert transaction
-    $insert_transaction_query = "INSERT INTO `transaction` (`kode_transaction`, `id_member`, `status`, `konfirm`, `total`, `date_add`, `date_upd`) 
-        VALUES('$transaction_number', '" . $loggedin["id_member"] . "', 'process', 'Confirmated', '$amount', NOW(), NOW());";
+    $insert_transaction_query = "INSERT INTO `transaction` (`kode_transaction`, `id_member`, `status`, `konfirm`, `payment_method`, `total`, `date_add`, `date_upd`) 
+        VALUES('$transaction_number', '" . $loggedin["id_member"] . "', 'process', 'Confirmated', 'Paypal', '$amount', NOW(), NOW());";
     if (!mysql_query($insert_transaction_query)) {
         roll_back();
         $msg = 'Unable to save transaction';
