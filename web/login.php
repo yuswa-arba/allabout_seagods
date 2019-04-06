@@ -144,7 +144,15 @@ if ($loggedin = logged_in()) { // Check if they are logged in
 
                             }
 
-                            header("Location: member/index.php");
+                            if (isset($_GET['action'])) {
+                                if ($_GET['action'] == 'checkout') {
+                                    header("Location: checkout.php");
+                                } else {
+                                    header("Location: member/index.php");
+                                }
+                            } else {
+                                header("Location: member/index.php");
+                            }
                         } else {
                             header("Location: " . $_GET['r']);
                         }
@@ -250,7 +258,7 @@ if ($loggedin = logged_in()) { // Check if they are logged in
                  data-src-retina="member/assets/img/s-logo.png" height="22px"> <b>SEAGODS WETSUIT</b>
             <p class="p-t-35">Sign into your pages account</p>
             <!-- START Login Form -->
-            <form id="form-login" class="p-t-15" role="form" method="post" action="">
+            <form id="form-login" class="p-t-15" role="form" method="post" action="<?php echo (isset($_GET['action']) ? '?action=' . $_GET['action'] : '');?>">
                 <!-- START Form Control-->
                 <div class="form-group form-group-default">
                     <label>Login</label>

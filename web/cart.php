@@ -45,48 +45,97 @@ $currency = get_currency($currency_code);
 // Set nominal curs from USD to IDR
 $USDtoIDR = get_price('currency-value-usd-to-idr');
 
-$content = '
-    <div class="sidebar four columns">
-         <div class="widget-area">
-             <div class="widget woocommerce widget_product_categories">
-                 <h3>CATEGORIES</h3>
-                 <ul class="product-categories">';
+if (isset($_POST['remove'])) {
 
-$sql_caregory = mysql_query("SELECT * FROM `category` WHERE `id_parent` = '0' AND `level` = '0' ORDER BY `no_order` ASC  ;");
+    // Set value
+    $action = isset($_POST['action']) ? mysql_real_escape_string(trim($_POST['action'])) : '';
+    $id_cart = isset($_POST['id_cart']) ? mysql_real_escape_string(trim($_POST['id_cart'])) : '';
 
-while ($row_category = mysql_fetch_array($sql_caregory)) {
+    if (!empty($action) && !empty($id_cart)) {
 
-    $content .= '<li><a href="list_product.php?id_cats=' . $row_category['id_cat'] . '">' . $row_category["category"] . '';
+        // Action
+        if ($action == 'session') {
 
-    $sql_subcaregory = mysql_query("SELECT * FROM `category` WHERE `id_parent` = '$row_category[id_cat]' AND `level` = '0' ORDER BY `no_order` ASC  ;");
-    while ($row_sucategory = mysql_fetch_array($sql_subcaregory)) {
+            // If is custom cart
+            if ($_SESSION['cart_item'][$id_cart]['is_custom_cart']) {
 
-        $content .= '<ul><li><a href="list_product.php?id_cat=' . $row_sucategory['id_cat'] . '">' . $row_sucategory["category"] . '</a></li></ul>';
+                // Image
+                $image = $_SESSION['cart_item'][$id_cart]['collection']['image'];
 
+                // Unlink
+                unlink('custom/public/images/custom_cart/' . $image);
+            }
+
+            // Unset cart in session
+            unset($_SESSION['cart_item'][$id_cart]);
+
+            // Success
+            echo "<script>
+                alert('Remove cart success');
+                window.history.back(-1);
+            </script>";
+            exit();
+
+        } else {
+
+            // Set cart
+            $cart_query = mysql_query("SELECT * FROM `cart` WHERE `id_cart` = '$id_cart' LIMIT 0,1;");
+
+            // Error
+            if (!mysql_num_rows($cart_query)) {
+                echo "<script>
+                    alert('Cart not found');
+                    window.history.back(-1);
+                </script>";
+                exit();
+            }
+            $row_cart = mysql_fetch_array($cart_query);
+
+            // Check if 
+
+            // Delete cart
+            $delete_cart_query = "UPDATE `cart` SET `level` = '1' WHERE `id_cart` = '$id_cart';";
+
+            // Error
+            if (!mysql_query($delete_cart_query)) {
+                echo "<script>
+                    alert('Unable to delete cart');
+                    window.history.back(-1);
+                </script>";
+                exit();
+            }
+
+            // Success
+            echo "<script>
+                alert('Remove cart success');
+                window.history.back(-1);
+            </script>";
+            exit();
+
+        }
+
+    } else {
+        echo "<script>
+            alert('Action or cart ID parameter required.');
+            window.history.back(-1);
+        </script>";
+        exit();
     }
 
-    $content .= '</li>';
 }
 
-$content .= '
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div id="Content">
+$content = '
+    <div id="Content" class="p-t-0">
         <div class="content_wrapper clearfix">
-            <div class="sections_group">
-                <div class="section">
-                    <div class="section_wrapper clearfix">
-                        <div class="items_group clearfix">
-                            <div class="column one woocommerce-content">
-                                <div class="product has-post-thumbnail">
-                                    <div class="post-content">
-                                        <div class="section mcb-section" style="padding-top:0px; padding-bottom:20px">
-                                            <div class="section_wrapper mcb-section-inner">
-                                                <div class="wrap mcb-wrap one valign-top clearfix">
-                                                    <div class="mcb-wrap-inner">
-                                                        <table class="table table-condensed">';
+            <div class="" style="margin: 0 auto; width: 90%">
+                <div class="section mcb-section p-t-0 p-b-20  full-width">
+                    <div class="section_wrapper mcb-section-inner one m-l-0 m-r-0">
+                        <div class="wrap mcb-wrap one valign-top clearfix">
+                            <div class="column three-fourth full-width m-b-0">
+                                <h4>Cart</h4>
+                            </div>
+                            
+                            <div class="column three-fourth" style="width: 69%">';
 
 $total_amount_shipping = 0;
 $total_shipping = 0;
@@ -134,25 +183,46 @@ if ($loggedin) {
         }
 
         $content .= '
-                                                            <tr>
-                                                                <td style="width: 20%;">';
+                                <div class="wrap mcb-wrap one valign-top clearfix bg-white m-b-10 border-grey box-shadow-hover">
+                                    <div class="column one-fifth the_content_wrapper m-b-5 m-t-5">';
 
         $content .= ($row_cart['is_custom_cart'] ?
-            '<img src="custom/public/images/custom_cart/' . $row_item['image'] . '" style="width: 100px;" />' :
-            '<img src="../admin/images/product/150/thumb_' . $row_photo['photo'] . '" style="width: 100px;" />');
+            '<img src="custom/public/images/custom_cart/' . $row_item['image'] . '" />' :
+            '<img src="../admin/images/product/150/thumb_' . $row_photo['photo'] . '" />');
 
         $content .= '
-                                                                </td>
-                                                                <td >
-                                                                    <span>' . (!$row_cart['is_custom_cart'] ? $row_item['title'] : 'Custom Wetsuit') . '</span>
-                                                                </td>
-                                                                <td style="width: 10%;">
-                                                                    <input type="number" onchange="changeQuantity(' . $row_cart['id_cart'] . ', ' . $key . ')" id="quantity' . $key . '" class="form-control" style="width: 60px;" value="' . $row_cart['qty'] . '">
-                                                                </td>
-                                                                <td style="width: 30%;">
-                                                                    <h4 class="text-primary no-margin font-montserrat">' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_cart['amount'] : number_format(($row_cart['amount'] * $USDtoIDR), 0, '.', ',')) . '</h4>
-                                                                </td>
-                                                            </tr>';
+                                    </div>
+                                    <div class="column one-second the_content_wrapper m-t-35 p-l-0 b-r-grey m-b-10 p-r-5" style="width: 45%">
+                                        <h4 class="title m-t-0 m-b-5 break-word fs-17">' . (!$row_cart['is_custom_cart'] ? $row_item['title'] : 'Custom Wetsuit') . '</h4>
+                                        <p class="fs-18 bold m-b-5 fs-13">
+                                            <span class="woocommerce-Price-amount text-blue">
+                                                <span class="woocommerce-Price-currencySymbol">' . $currency . '</span>
+                                                ' . (($currency_code == CURRENCY_USD_CODE) ? $row_item['price'] : number_format(($row_item['price'] * $USDtoIDR), 0, '.', ',')) . '
+                                            </span>
+                                        </p>
+                                        
+                                        <div class="quantity">
+                                            <label class="text-grey fw-500 fs-13">Quantity</label>
+                                            <span class="woocommerce-Price-amount"><b>' . $row_cart['qty'] . '</b></span>
+                                        </div>
+                                    </div>
+                                    <div class="column one-fifth the_content_wrapper m-t-35 p-l-0" style="width: 29%">
+                                        <p class="fs-13 fw-500 m-b-0 text-grey">Amount</p>
+                                        <p class="fs-14 fw-600 text-black break-word">
+                                            <span class="woocommerce-Price-amount">
+                                                <span class="woocommerce-Price-currencySymbol">' . $currency . '</span> 
+                                                ' . (($currency_code == CURRENCY_USD_CODE) ? $row_cart['amount'] : number_format(($row_cart['amount'] * $USDtoIDR), 0, '.', ',')) . '
+                                            </span>
+                                        </p>
+                                        <div class="full-width">
+                                            <form action="" method="post">
+                                                <input type="hidden" name="action" value="cart">
+                                                <input type="hidden" name="id_cart" value="' . $row_cart['id_cart'] . '">
+                                                <button type="submit" class="btn-red-light pull-left m-l-5 fs-12" name="remove">Remove</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                               </div>';
 
         // Set weight
         $weight = (!$row_cart['is_custom_cart'] ? ($row_cart['qty'] * $row_item['weight']) : ($row_cart['qty'] * get_price('default-weight-custom-item')));
@@ -210,25 +280,46 @@ if ($loggedin) {
             }
 
             $content .= '
-                                                            <tr>
-                                                                <td style="width: 20%;">';
+                                <div class="wrap mcb-wrap one valign-top clearfix bg-white m-b-10 border-grey box-shadow-hover">
+                                    <div class="column one-fifth the_content_wrapper m-b-5 m-t-5">';
 
             $content .= ($cart_item['is_custom_cart'] ?
-                '<img src="custom/public/images/custom_cart/' . $row_item['image'] . '" style="width: 100px;" />' :
-                '<img src="../admin/images/product/150/thumb_' . $row_photo['photo'] . '" style="width: 100px;" />');
+                '<img src="custom/public/images/custom_cart/' . $row_item['image'] . '" />' :
+                '<img src="../admin/images/product/150/thumb_' . $row_photo['photo'] . '" />');
 
             $content .= '
-                                                                </td>
-                                                                <td >
-                                                                    <span>' . (!$cart_item['is_custom_cart'] ? $row_item['title'] : 'Custom Wetsuit') . '</span>
-                                                                </td>
-                                                                <td style="width: 10%;">
-                                                                    <input type="number" onchange="changeQuantity(' . null . ', ' . $key . ')" id="quantity' . $key . '" class="form-control" style="width: 60px;" value="' . $cart_item['quantity'] . '">
-                                                                </td>
-                                                                <td style="width: 30%;">
-                                                                    <h4 class="text-primary no-margin font-montserrat">' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? round($cart_item['amount'], 2) : number_format(($cart_item['amount'] * $USDtoIDR), 2, '.', ',')) . '</h4>
-                                                                </td>
-                                                            </tr>';
+                                    </div>
+                                    <div class="column one-second the_content_wrapper m-t-35 p-l-0 b-r-grey m-b-10 p-r-5" style="width: 45%">
+                                        <h4 class="title m-t-0 m-b-5 break-word fs-17">' . (!$cart_item['is_custom_cart'] ? $row_item['title'] : 'Custom Wetsuit') . '</h4>
+                                        <p class="fs-18 bold m-b-5 fs-13">
+                                            <span class="woocommerce-Price-amount text-blue">
+                                                <span class="woocommerce-Price-currencySymbol">' . $currency . '</span>
+                                                ' . (($currency_code == CURRENCY_USD_CODE) ? $row_item['price'] : number_format(($row_item['price'] * $USDtoIDR), 0, '.', ',')) . '
+                                            </span>
+                                        </p>
+                                        
+                                        <div class="quantity">
+                                            <label class="text-grey fw-500 fs-13">Quantity</label>
+                                            <span class="woocommerce-Price-amount"><b>' . $cart_item['quantity'] . '</b></span>
+                                        </div>
+                                    </div>
+                                    <div class="column one-fifth the_content_wrapper m-t-35 p-l-0" style="width: 29%">
+                                        <p class="fs-13 fw-500 m-b-0 text-grey">Amount</p>
+                                        <p class="fs-14 fw-600 text-black break-word">
+                                            <span class="woocommerce-Price-amount">
+                                                <span class="woocommerce-Price-currencySymbol">' . $currency . '</span> 
+                                                ' . (($currency_code == CURRENCY_USD_CODE) ? $cart_item['amount'] : number_format(($cart_item['amount'] * $USDtoIDR), 0, '.', ',')) . '
+                                            </span>
+                                        </p>
+                                        <div class="full-width">
+                                            <form action="" method="post">
+                                                <input type="hidden" name="action" value="session">
+                                                <input type="hidden" name="id_cart" value="' . $key . '">
+                                                <button type="submit" class="btn-red-light pull-left m-l-5 fs-12" name="remove">Remove</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                               </div>';
 
             // Set weight
             $weight = (!$cart_item['is_custom_cart'] ? ($cart_item['quantity'] * $row_item['weight']) : ($cart_item['quantity'] * get_price('default-weight-custom-item')));
@@ -253,21 +344,32 @@ if ($loggedin) {
 
 }
 
-if ($total_amount_shipping != 0) {
+$content .= '               </div>';
+
+if ($total_amount != 0) {
 
     $content .= '
-                                                            <tr>
-                                                                <td colspan="2" style="text-align: left;"><b>Shipping</b></td>
-                                                                <td><b>' . $total_weight . ' Kg</b></td>';
+                            <div class="column one-fourth bg-white m-l-0 m-r-0 p-l-15 p-t-35 p-r-15 border-grey" style="width: 25%">
+                                <div class="full-width clearfix b-b-grey p-b-10 m-b-10">
+                                    <label class="fs-11 fw-500 m-b-0 pull-left">Total Item</label>
+                                    <p class="fs-14 text-black fw-600 pull-right m-b-0">' . $total_quantity . '</p>
+                                </div>
+                                <div class="full-width clearfix b-b-grey p-b-10 m-b-10">
+                                    <label class="fs-11 fw-500 m-b-0 pull-left">Total Weight <span class="text-black">(Kg)</span></label>
+                                    <p class="fs-14 text-black fw-600 pull-right m-b-0">
+                                        <span class="woocommerce-Price-amount">' . $total_weight . '</span>
+                                    </p>
+                                </div>
+                                <div class="full-width clearfix b-b-grey p-b-10 m-b-10">';
 
-    if (isset($row_city['idKota'])) {
+    if (!isset($row_city['idKota'])) {
+
         $content .= '
-                                                                <td>' . (!empty($total_shipping) ? '<h4>' . $currency . ' ' . number_format($total_shipping, 2, '.', ',') . '</h4>' : 'You have not registered your city') . '</td>';
-    } else {
-        $content .= '
-                                                                <td>
-                                                                    <select class="full-width" data-placeholder="Select Category" id="province" data-init-plugin="select2" onchange="changeProvince()">
-                                                                        <option>Choose province for shipping</option>';
+                                    <p class="fs-14 fw-600 text-black m-b-0">Shipping Address</p>
+                                    <label class="fs-11 fw-500 m-b-0">Province <span class="text-black fw-600">*</span></label>
+                                    <p class="fs-13 text-black fw-600 m-b-0">
+                                        <select name="selectItem" class="m-b-0 full-width" id="province" onchange="changeProvince()">
+                                            <option hidden>province</option>';
 
         $all_province_query = mysql_query("SELECT * FROM `provinsi`;");
         while ($row_all_province = mysql_fetch_array($all_province_query)) {
@@ -275,9 +377,13 @@ if ($total_amount_shipping != 0) {
         }
 
         $content .= '
-                                                                    </select>
-                                                                    <select class="full-width" data-placeholder="Select Category" id="city" data-init-plugin="select2" onchange="changeCity()">
-                                                                        <option>Choose city for shipping</option>';
+                                        </select>
+                                    </p>
+                                    
+                                    <label class="fs-11 fw-500 m-b-0">City <span class="text-black fw-600">*</span></label>
+                                    <p class="fs-13 text-black fw-600">
+                                        <select name="selectItem" class="m-b-0 full-width" id="city" onchange="changeCity()">
+                                            <option hidden>city</option>';
 
         $all_city_query = mysql_query("SELECT * FROM `kota` WHERE `level` = '0';");
         while ($row_all_city = mysql_fetch_array($all_city_query)) {
@@ -285,30 +391,47 @@ if ($total_amount_shipping != 0) {
         }
 
         $content .= '
-                                                                    </select>
-                                                                </td>';
+                                        </select>
+                                    </p>';
+
     }
 
-    $content .= '
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="2" style="text-align: left;"><b>Total</b></td>
-                                                                <td><b>' . $total_quantity . '</b></td>
-                                                                <td><h4>' . $currency . ' ' . number_format($total_amount_shipping, 2, '.', ',') . '</h4></td>
-                                                            </tr>';
+    $content .= '    
+                                    <label class="fs-11 fw-500 m-b-0 pull-left">Shipping Costs</label>
+                                    <p class="fs-14 text-black fw-600 pull-right m-b-0">
+                                        <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">' . (isset($row_city['idKota']) ? $currency : '') . '</span> ' . (!empty($total_shipping) ? number_format($total_shipping, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') : 'You have not registered your city') . '</span>
+                                    </p>
+                                </div>
+
+                                <div class="full-width clearfix b-b-grey p-b-10 m-b-10">
+                                    <label class="fs-11 fw-500 m-b-0 pull-left">Subtotal</label>
+                                    <p class="fs-14 text-black fw-600 pull-right m-b-0">
+                                        <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . number_format($total_amount, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') . '</span>
+                                    </p>
+                                </div>
+                                        
+                                <div class="full-width clearfix p-b-5 m-b-20">
+                                    <label class="fs-14 fw-500 m-b-0 pull-left">Total</label>
+                                    <p class="fs-16 text-black fw-600 pull-right m-b-0">
+                                        <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . number_format($total_amount_shipping, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') . '</span>
+                                    </p>
+                                </div>
+                                        
+                                <div class="full-width">
+                                    <a href="' . ($loggedin ? 'checkout.php' : 'login_checkout.php?action=checkout') . '" class="btn btn-blue-light full-width wrap mcb-wrap">Check Out</a>
+                                </div>
+                                                                    
+                                <div class="full-width">
+                                    <p class="fs-12 text-red fw-700 m-b-0">Noted *</p>
+                                    <p class="fs-14">
+                                        The shipping fee will be determined according to the shipping address and the weight of the item you choose
+                                    </p>
+                                </div>
+                            </div>';
 
 }
 
 $content .= '
-                                                        </table>
-                                                    </div>
-                                                <a class="btn btn-primary" href="' . ($loggedin ? 'checkout.php' : 'login_checkout.php') . '">Checkout</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -318,6 +441,7 @@ $content .= '
 
 $plugin = '
     <script>
+        
         function changeProvince() {
             var id_province = jQuery("#province").val();
             console.log(id_province);
@@ -336,7 +460,7 @@ $plugin = '
                     } else {
                         var city = jQuery("#city");
                         city.html("");
-                        city.append("<option>Choose city for shipping</option>");
+                        city.append("<option>city</option>");
                         for (var i = 0; i < data.results.length; i++) {
                             city.append(
                                 \'<option value="\' + data.results[i].idKota + \'">\' + data.results[i].namaKota + \'</option>\'
@@ -368,6 +492,7 @@ $plugin = '
                 }
             });
         }    
+        
     </script>';
 
 $template = admin_template($content, $titlebar, $titlepage = "", $user = "", $menu, $plugin);
