@@ -328,13 +328,16 @@ if ($loggedin = logged_in()) {
                                                 }
 
                                                 // round out total weight
-                                                $total_weight = round($total_weight);
+                                                $total_weight_round = round($total_weight);
                                                 ?>
                                                 <input type="hidden" name="subtotal" id="subtotal"
                                                        value="<?php echo $item_total; ?>">
                                                 <input type="hidden"
                                                        value="<?php echo $row_transaction["id_transaction"]; ?>"
                                                        id="id_transaction">
+                                                <input type="hidden"
+                                                       value="<?php echo $total_weight; ?>"
+                                                       id="weight">
                                             </table>
 
                                             <div class="row"></div>
@@ -351,18 +354,20 @@ if ($loggedin = logged_in()) {
                                                     <div>
                                                         <h5 class="font-montserrat all-caps small no-margin hint-text bold">
                                                             Shipping Cost</h5>
-                                                        <p class="no-margin"><?php echo $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? ($total_weight * $kurs) : number_format(($total_weight * $kurs), 0, '.', ',')); ?></p>
+                                                        <p class="no-margin"><?php echo $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? ($total_weight_round * $kurs) : number_format(($total_weight_round * $kurs), 0, '.', ',')); ?></p>
+                                                        <input type="hidden" name="shipping" id="price_shipping"
+                                                               value="<?php echo$kurs; ?>">
                                                         <input type="hidden" name="shipping" id="shipping"
-                                                               value="<?php echo($total_weight * $kurs); ?>">
+                                                               value="<?php echo($total_weight_round * $kurs); ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 text-right bg-primary padding-10">
                                                     <h5 class="font-montserrat all-caps small no-margin hint-text text-white bold">
                                                         Total</h5>
                                                     <h5 class="no-margin text-white">
-                                                        <?php echo $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? number_format(($item_total + ($total_weight * $kurs)), 2, '.', ',') : number_format((($item_total * $USDtoIDR) + ($total_weight * $kurs)), 0, '.', ',')); ?></h5>
+                                                        <?php echo $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? number_format(($item_total + ($total_weight_round * $kurs)), 2, '.', ',') : number_format((($item_total * $USDtoIDR) + ($total_weight_round * $kurs)), 0, '.', ',')); ?></h5>
                                                     <input type="hidden" name="amount" id="amount"
-                                                           value="<?php echo $item_total + ((($currency_code == CURRENCY_USD_CODE) ? ($total_weight * $kurs) : (($total_weight * $kurs) / $USDtoIDR))); ?>">
+                                                           value="<?php echo $item_total + ((($currency_code == CURRENCY_USD_CODE) ? ($total_weight_round * $kurs) : (($total_weight_round * $kurs) / $USDtoIDR))); ?>">
                                                 </div>
                                             </div>
                                             <?php
@@ -591,13 +596,13 @@ if ($loggedin = logged_in()) {
                                                                     <div>
                                                                         <h6 class="font-montserrat all-caps small no-margin hint-text bold">
                                                                             Shipping Cost</h6>
-                                                                        <p class="no-margin">' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? ($total_weight * $kurs) : number_format(($total_weight * $kurs), 0, '.', ',')) . '</p>
+                                                                        <p class="no-margin">' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? ($total_weight_round * $kurs) : number_format(($total_weight_round * $kurs), 0, '.', ',')) . '</p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6 text-right bg-primary padding-10">
                                                                     <h6 class="font-montserrat all-caps small no-margin hint-text text-white bold">
                                                                         Total</h6>
-                                                                    <h6 class="no-margin text-white">'.$currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? number_format(($item_total + ($total_weight * $kurs)), 2, '.', ',') : number_format((($item_total * $USDtoIDR) + ($total_weight * $kurs)), 0, '.', ',')).'</h6>
+                                                                    <h6 class="no-margin text-white">'.$currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? number_format(($item_total + ($total_weight_round * $kurs)), 2, '.', ',') : number_format((($item_total * $USDtoIDR) + ($total_weight_round * $kurs)), 0, '.', ',')).'</h6>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -933,7 +938,9 @@ if ($loggedin = logged_in()) {
                                             state: payment.transactions[0].related_resources[0].sale.state,
                                             amount: payment.transactions[0].related_resources[0].sale.amount,
                                             description: payment.transactions[0].description,
-                                            paymentId: payment.id
+                                            paymentId: payment.id,
+                                            weight: $('#weight').val(),
+                                            price_shipping: $('#price_shipping').val()
                                         },
                                         dataType: 'json',
                                         success: function (data) {

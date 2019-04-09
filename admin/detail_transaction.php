@@ -41,9 +41,46 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         $sql_transaction = mysql_query("SELECT * FROM `transaction` WHERE `id_transaction` = '$id_transaction' ORDER BY `date_add` ");
         $row_transaction = mysql_fetch_array($sql_transaction);
 
-        $sql_member = mysql_query("SELECT * FROM `member` where `id_member` = '$row_transaction[id_member]'");
-        $row_member = mysql_fetch_array($sql_member);
+        if ($row_transaction['is_guest']) {
 
+            // Set guest
+            $guest_query = mysql_query("SELECT * FROM `guest` WHERE `id` = '" . $row_transaction["id_guest"] . "' LIMIT 0,1;");
+            $row_guest = mysql_fetch_array($guest_query);
+
+            // Set holder name
+            $holder_name = $row_guest['first_name'] . ' ' . $row_guest['last_name'];
+
+        } else {
+
+            // Set member
+            $sql_member = mysql_query("SELECT * FROM `member` where `id_member` ='" . $row_transaction["id_member"] . "' ");
+            $row_member = mysql_fetch_array($sql_member);
+
+            // Set holder name
+            $holder_name = $row_member['firstname'] . ' ' . $row_member['lastname'];
+
+        }
+
+
+        if ($row_transaction['payment_method'] == 'Bank Transfer') {
+
+            // Set bank transfer
+            $bank_transfer_query = mysql_query("SELECT * FROM `bank_transfer` WHERE `id_transaction` = '" . $row_transaction["id_transaction"] . "' AND `level` = '0' ORDER BY `id` DESC LIMIT 0,1;");
+            $row_bank_transfer = mysql_fetch_array($bank_transfer_query);
+
+            // Set bank account
+            $bank_query = mysql_query("SELECT * FROM `bank_account` WHERE `id` = '" . $row_bank_transfer["id_bank"] . "' LIMIT 0,1;");
+            $row_bank = mysql_fetch_array($bank_query);
+
+        }
+
+
+    } else {
+        echo "<script>
+            alert('Transaction ID parameter required');
+            window.history.back(-1);
+        </script>";
+        exit();
     }
 
     $content = '
@@ -54,18 +91,132 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         
                 <!-- START PAGE CONTENT -->
                 <div class="content ">
-                    <div class=" container    container-fixed-lg">
+                    <div class=" container container-fixed-lg">
+                    
+                        <div class="col-md-12">
+                            <div class="card card-default">
+                                <div class="card-header ">
+                                    <div class="card-title">
+                                        <h4><b>Transaction</b> ' . $row_transaction['kode_transaction'] . '</h4>
+                                    </div>
+                                    <a href="list_transaction.php' . (isset($_GET['page']) ? '?page=' . $_GET['page'] : '') . '" class="btn btn-default pull-right" name="">Back to Transaction</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        
+                            <div class="col-md-6">
+                                <div class="container">
+                                    <div class="card card-default filter-item">
+                                        <div class="card-header ">
+                                            <div class="card-title">Detail Transaction *</div>
+                                        </div>
+                                        <div class="card-block">
+                                            <div class="col-md-12 show-details">
+                                                <label>Transaction Number</label>
+                                                <h5><b>' . $row_transaction['kode_transaction'] . '</b></h5>
+                        
+                                                <label>Status</label>
+                                                <h5><b>' . $row_transaction['status'] . '</b></h5>
+                        
+                                                <label>Status Confirm</label>
+                                                <h5><b>' . (($row_transaction['konfirm'] == 'not confirmated') ? "Not yet confirmed" : "Confirmed") . '</b></h5>
+                        
+                                                <label>Payment Method</label>
+                                                <h5><b>' . $row_transaction['payment_method'] . '</b></h5>';
+
+    if ($row_transaction['payment_method'] == 'Bank Transfer') {
+
+        $content .= '
+                                                <label>From Bank</label>
+                                                <h5><b>' . $row_bank_transfer['from_bank'] . '</b></h5>
+                                                
+                                                <label>To Bank</label>
+                                                <h5><b>' . $row_bank['name'] . ' (' . $row_bank['account_number'] . ')' . '</b></h5>
+                                                
+                                                <label>Confirmed At</label>
+                                                <h5><b>' . ($row_transaction["confirmed_at"] ? $row_transaction["confirmed_at"] : "-") . '</b></h5>
+                        
+                                                <label>Confirmed By</label>
+                                                <h5><b>' . ($row_transaction["confirmed_by"] ? $row_transaction["confirmed_by"] : "-") . '</b></h5>
+                        
+                                                <label>Proof Transfer</label>
+                                                <img style="width: 400px" src="../web/images/evidenceTransfer/' . $row_bank_transfer["photo"] . '">';
+
+    }
+
+    $content .= '
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="col-md-6">
+                                <div class=" container">
+                                    <div class="card card-default filter-item">
+                                        <div class="card-header ">
+                                            <div class="card-title">Detail Buyer *</div>
+                                        </div>
+                                        <div class="card-block">
+                                            <div class="col-md-12 show-details">
+                                                <label>First Name</label>
+                                                <h5><b>' . ($row_transaction['is_guest'] ? $row_guest["first_name"] : $row_member["firstname"]) . '</b></h5>
+                        
+                                                <label>Last Name</label>
+                                                <h5><b>' . ($row_transaction['is_guest'] ? $row_guest["last_name"] : $row_member["lastname"]) . '</b></h5>
+                        
+                                                <label>Email</label>
+                                                <h5><b>' . ($row_transaction['is_guest'] ? $row_guest["email"] : $row_member["email"]) . '</b></h5>
+                        
+                                                <label>Phone Number</label>
+                                                <h5><b>' . ($row_transaction['is_guest'] ? $row_guest["phone_no"] : $row_member["notelp"]) . '</b></h5>';
+
+    // Set Province ID
+    $id_province = ($row_transaction['is_guest'] ? $row_guest["id_province"] : $row_member["idpropinsi"]);
+
+    $province_query = mysql_query("SELECT * FROM `provinsi` WHERE `idProvinsi` = '$id_province' LIMIT 0,1;");
+    $row_province = mysql_fetch_array($province_query);
+
+    // Set City ID
+    $id_city = ($row_transaction['is_guest'] ? $row_guest["id_city"] : $row_member["idkota"]);
+
+    // Set City ID
+    $city_query = mysql_query("SELECT * FROM `kota` WHERE `idKota` = '$id_city' LIMIT 0,1;");
+    $row_city = mysql_fetch_array($city_query);
+
+    $content .= '
+                                                <label>Province</label>
+                                                <h5><b>' . ($row_province["namaProvinsi"] ? $row_province["namaProvinsi"] : "-") . '</b></h5>
+                                                
+                                                <label>City</label>
+                                                <h5><b>' . ($row_city["namaKota"] ? $row_city["namaKota"] : "-") . '</b></h5>
+                                                
+                                                <label>Address</label>
+                                                <h5><b>' . ($row_transaction['is_guest'] ? $row_guest["address"] : $row_member["alamat"]) . '</b></h5>
+                                                
+                                                <label>Address 2</label>
+                                                <h5><b>' . ($row_transaction['is_guest'] ? "-" : $row_member["alamat2"]) . '</b></h5>
+                        
+                                                <label>Zip Code</label>
+                                                <h5><b>' . ($row_transaction['is_guest'] ? $row_guest["zip_code"] : $row_member["kode_pos"]) . '</b></h5>
+                                                
+                                                <label>Account Number</label>
+                                                <h5><b>' . ($row_transaction['is_guest'] ? $row_guest["zip_code"] : $row_member["kode_pos"]) . '</b></h5>
+                                                
+                                                <label>Account Number</label>
+                                                <h5><b>' . (($row_transaction['payment_method'] == 'Bank Transfer') ? $row_bank_transfer["account_number"] : ($row_transaction['is_guest'] ? $row_guest["account_number"] : $row_member["account_number"])) . '</b></h5>
+                                                   
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
             
                         <!-- START card -->
                         <div class="card card-transparent">
-                            <div class="card-header ">
-                                <div class="card-title">Transaction Details
-                                    <br><br>Buyer  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <strong>' . $row_member['firstname'] . ' ' . $row_member['lastname'] . ' </strong><br>Invoice Number &nbsp;&nbsp;&nbsp;<strong>' . $row_transaction['kode_transaction'] . '</strong>
-                                </div>
-                                <div class="pull-right"><a href="list_transaction.php'. (isset($_GET['page']) ? '?page=' . $_GET['page'] : '') .'" class="btn btn-outline-info">Back to List</a></div>
-                                <div class="clearfix"></div>
-                            </div>
                             <div class="card-block">
                                 <form action="">
                                     <table class="table table-hover demo-table-dynamic table-responsive-block" >
@@ -84,9 +235,8 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
     if (isset($_GET["id_transaction"])) {
 
         $sql_cart = mysql_query("SELECT * FROM `cart` 
-                        WHERE `id_member`='" . $row_transaction["id_member"] . "'
-                        AND `id_transaction` = '" . $_GET["id_transaction"] . "'
-                        AND `level` = '0' ORDER BY `date_add`");
+                        WHERE `id_transaction` = '" . $_GET["id_transaction"] . "'
+                        AND `level` = '0' ORDER BY `date_add` ASC");
 
         while ($row_cart = mysql_fetch_array($sql_cart)) {
 
@@ -119,16 +269,44 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                         <p>' . $row_cart['qty'] . '</p>
                     </td>
                     <td class="v-align-middle">
-                        <p>$ ' . round($price, 2) . '</p>
+                        <p>$ ' . number_format(round($price, 2), 2, '.', ',') . '</p>
                     </td>
                     <td class="v-align-middle">
-                        <p>$ ' . round(($row_cart['qty'] * $price), 2) . '</p>
+                        <p>$ ' . number_format(round(($row_cart['qty'] * $price), 2), 2, '.', ',') . '</p>
                     </td>
                     <td class="v-align-middle">
                         <a href="detail_transaction_item.php?id_transaction=' . $row_transaction['id_transaction'] . '&id_cart=' . $row_cart['id_cart'] . '" class="btn btn-xs btn-success pull-right" name="">Detail Item</a>
                     </td>
 			    </tr>';
         }
+
+        // Set shipping
+        $shipping_query = mysql_query("SELECT * FROM `transaction_shipping` WHERE `id_transaction` = '" . $_GET["id_transaction"] . "' LIMIT 0,1;");
+        if (mysql_num_rows($shipping_query) > 0) {
+
+            // Row shipping
+            $row_shipping = mysql_fetch_array($shipping_query);
+
+            $content .= '  
+                <tr>
+                    <td class="v-align-middle">
+                        <p>Shipping</p>
+                    </td>
+                    <td class="v-align-middle">
+                        <p>' . $row_shipping['weight'] . ' (Kg)</p>
+                    </td>
+                    <td class="v-align-middle">
+                        <p>$ ' . $row_shipping["price"] . '</p>
+                    </td>
+                    <td class="v-align-middle">
+                        <p>$ ' . $row_shipping["amount"] . '</p>
+                    </td>
+                    <td class="v-align-middle">
+                    </td>
+			    </tr>';
+
+        }
+
     }
 
     $totalTransaction = 0;
@@ -148,7 +326,7 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
 
     $content .= '
                                             <tr> 
-                                                <td colspan="5" >Total : <b style="font-size: 20px;">$ ' . $totalTransaction . '</b></td> 
+                                                <td colspan="5" >Total : <b style="font-size: 20px;">$ ' . number_format($totalTransaction, 2, '.', ',') . '</b></td> 
                                             </tr>
                                         </tbody>
                                     </table>

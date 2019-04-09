@@ -114,20 +114,21 @@ if (isset($_SESSION['cart_item']) && !empty($_SESSION['cart_item'])) {
     }
 
     // Set weight
-    $weight = ((round($weight) < 1) ? 1 : round($weight));
+    $weight_round = ((round($weight) < 1) ? 1 : round($weight));
 
     // Set shipping
     $shipping = (isset($row_city['ongkos_kirim']) ? (($currency_code == CURRENCY_USD_CODE) ? round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) : $row_city['ongkos_kirim']) : 0);
-    $total_shipping = ($weight * (float)$shipping);
+    $total_shipping = ($weight_round * (float)$shipping);
 
     // Total amount shipping usd
-    $total_amount_shipping_usd = ($total_amount + (round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) * $weight));
+    $total_amount_shipping_usd = ($total_amount + (round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) * $weight_round));
 
     // Set default city
     $row_cart['total_qty'] = $total_quantity;
     $row_cart['subtotal'] = $total_amount;
     $row_cart['weight'] = $weight;
-    $row_cart['shipping'] = ($weight * round(($row_city['ongkos_kirim'] / $USDtoIDR), 2));
+    $row_cart['price_shipping'] = round(($row_city['ongkos_kirim'] / $USDtoIDR), 2);
+    $row_cart['shipping'] = ($weight_round * round(($row_city['ongkos_kirim'] / $USDtoIDR), 2));
     $row_cart['total'] = $total_amount_shipping_usd;
 
     // Set total amount with currency
@@ -226,25 +227,6 @@ if (isset($_POST['checkout'])) {
             exit();
         }
 
-        // Insert to transaction
-        $insert_transaction_query = "INSERT INTO `transaction` (`kode_transaction`, `is_guest`, `status`, `konfirm`, `payment_method`, `total`, `date_add`, `date_upd`)
-            VALUES('$transaction_number', '1', 'process', 'not confirmated', 'Bank Transfer', '$total_amount_shipping_usd', NOW(), NOW())";
-
-        // Error
-        if (!mysql_query($insert_transaction_query)) {
-            roll_back();
-            echo "<script>
-                alert('Unable to save transaction.');
-                window.history.back(-1);
-            </script>";
-            exit();
-        }
-
-        // Select transaction
-        $transaction_query = mysql_query("SELECT * FROM `transaction` WHERE `kode_transaction` = '$transaction_number' AND ISNULL(id_member)
-            AND `status` = 'process' AND `konfirm` = 'not confirmated' AND `payment_method` = 'Bank Transfer' ORDER BY `id_transaction` DESC LIMIT 0,1;");
-        $row_transaction = mysql_fetch_array($transaction_query);
-
         // Insert guest
         $insert_guest_query = "INSERT INTO `guest` (`first_name`, `last_name`, `account_number`, `address`, `id_country`, `id_province`, `id_city`, `zip_code`, `email`, `phone_no`, `date_add`, `date_upd`, `level`)
             VALUES('$first_name', '$last_name', '$account_number', '$address', 'ID', '$province', '$city', '$zip_code', '$email', '$phone_no', NOW(), NOW(), '0');";
@@ -262,6 +244,25 @@ if (isset($_POST['checkout'])) {
         // Get guest
         $guest_query = mysql_query("SELECT * FROM `guest` WHERE `email` = '$email' AND `phone_no` = '$phone_no' AND `account_number` = '$account_number' ORDER BY `id` DESC LIMIT 0,1;");
         $row_guest = mysql_fetch_array($guest_query);
+
+        // Insert to transaction
+        $insert_transaction_query = "INSERT INTO `transaction` (`kode_transaction`, `is_guest`,`id_guest`, `status`, `konfirm`, `payment_method`, `total`, `date_add`, `date_upd`)
+            VALUES('$transaction_number', '1', '" . $row_guest["id"] . "', 'process', 'not confirmated', 'Bank Transfer', '$total_amount_shipping_usd', NOW(), NOW())";
+
+        // Error
+        if (!mysql_query($insert_transaction_query)) {
+            roll_back();
+            echo "<script>
+                alert('Unable to save transaction.');
+                window.history.back(-1);
+            </script>";
+            exit();
+        }
+
+        // Select transaction
+        $transaction_query = mysql_query("SELECT * FROM `transaction` WHERE `kode_transaction` = '$transaction_number' AND ISNULL(id_member)
+            AND `status` = 'process' AND `konfirm` = 'not confirmated' AND `payment_method` = 'Bank Transfer' ORDER BY `id_transaction` DESC LIMIT 0,1;");
+        $row_transaction = mysql_fetch_array($transaction_query);
 
         // Insert bank transfer
         $insert_bank_transfer_query = "INSERT INTO `bank_transfer` (`id_transaction`, `id_bank`, `is_guest`, `id_guest`, `from_bank`, `account_number`, `amount`, `photo`, `date_add`, `date_upd`)
@@ -287,8 +288,8 @@ if (isset($_POST['checkout'])) {
                 $cart_collection = $cart_item['collection'];
 
                 // Insert collection
-                $insert_collection_query = "INSERT INTO `custom_collection` (`code`, `is_guest`, `gender`, `wet_suit_type`, `arm_zipper`, `ankle_zipper`, `image`, `price`, `status`, `date_add`, `date_upd`, `level`)
-                    VALUES('" . $cart_collection["code"] . "', '1', '" . $cart_collection["gender"] . "', '" . $cart_collection["wet_suit_type"] . "', '" . $cart_collection["arm_zipper"] . "', '" . $cart_collection["ankle_zipper"] . "', '" . $cart_collection["image"] . "', '" . $cart_collection["price"] . "', '" . $cart_collection["status"] . "', NOW(), NOW(), '0');";
+                $insert_collection_query = "INSERT INTO `custom_collection` (`code`, `is_guest`, `id_guest`, `gender`, `wet_suit_type`, `arm_zipper`, `ankle_zipper`, `image`, `price`, `status`, `date_add`, `date_upd`, `level`)
+                    VALUES('" . $cart_collection["code"] . "', '1', '" . $row_guest["id"] . "', '" . $cart_collection["gender"] . "', '" . $cart_collection["wet_suit_type"] . "', '" . $cart_collection["arm_zipper"] . "', '" . $cart_collection["ankle_zipper"] . "', '" . $cart_collection["image"] . "', '" . $cart_collection["price"] . "', '" . $cart_collection["status"] . "', NOW(), NOW(), '0');";
 
                 // Error
                 if (!mysql_query($insert_collection_query)) {
@@ -326,8 +327,8 @@ if (isset($_POST['checkout'])) {
                 }
 
                 // Insert cart
-                $insert_cart_query = "INSERT INTO `cart` (`id_transaction`, `id_item`, `is_custom_cart`, `qty`, `amount`, `date_add`, `date_upd`, `level`)
-                    VALUES('" . $row_transaction["id_transaction"] . "', '" . $row_custom_collection["id_custom_collection"] . "', '1', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', NOW(), NOW(), '0');";
+                $insert_cart_query = "INSERT INTO `cart` (`id_transaction`, `is_guest`, `id_guest`, `id_item`, `is_custom_cart`, `qty`, `amount`, `date_add`, `date_upd`, `level`)
+                    VALUES('" . $row_transaction["id_transaction"] . "', '1', '" . $row_guest["id"] . "', '" . $row_custom_collection["id_custom_collection"] . "', '1', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', NOW(), NOW(), '0');";
 
                 // Error
                 if (!mysql_query($insert_cart_query)) {
@@ -339,14 +340,11 @@ if (isset($_POST['checkout'])) {
                     exit();
                 }
 
-                // Remove session
-                unset($_SESSION['cart_item'][$key]);
-
             } else {
 
                 // Add cart
-                $insert_cart_query = "INSERT INTO `cart` (`id_transaction`, `id_item`, `qty`, `amount`, `date_add`, `date_upd`, `level`)
-                    VALUES('" . $row_transaction["id_transaction"] . "', '" . $cart_item["id_item"] . "', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', NOW(), NOW(), '0');";
+                $insert_cart_query = "INSERT INTO `cart` (`id_transaction`, `is_guest`, `id_guest`, `id_item`, `qty`, `amount`, `date_add`, `date_upd`, `level`)
+                    VALUES('" . $row_transaction["id_transaction"] . "', '1', '" . $row_guest["id"] . "', '" . $cart_item["id_item"] . "', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', NOW(), NOW(), '0');";
 
                 // Error
                 if (!mysql_query($insert_cart_query)) {
@@ -358,15 +356,27 @@ if (isset($_POST['checkout'])) {
                     exit();
                 }
 
-                // Remove session
-                unset($_SESSION['cart_item'][$key]);
-
             }
 
         }
 
+        // Insert shipping
+        $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
+                VALUES('" . $row_transaction["id_transaction"] . "', '" . $row_cart['weight'] . "', '" . $row_cart['price_shipping'] . "', '" . $row_cart['shipping'] . "', NOW(), NOW());";
+        if (!mysql_query($insert_shipping_query)) {
+            roll_back();
+            echo "<script>
+                alert('Unable to save shipping');
+                window.history.back(-1);
+            </script>";
+            exit();
+        }
+
         // Commit
         commit();
+
+        // Remove session
+        unset($_SESSION['cart_item']);
 
         // Success
         echo "<script>
@@ -493,13 +503,13 @@ $content .= '
                                                             <label class="fs-13 fw-500 text-black">E-mail Address <span class="text-red">*</span></label>
                                                             <input type="email" class="full-width m-b-0" placeholder="ex: jhonDoe@seagods.com" name="email" id="email" value="' . (isset($guest['email']) ? $guest['email'] : '') . '" required>
                                                         </div>
-                                                        <div class="wrap mcb-wrap width-50 pull-left" '.(($currency_code == CURRENCY_USD_CODE) ? 'hidden' : '').'>
+                                                        <div class="wrap mcb-wrap width-50 pull-left" ' . (($currency_code == CURRENCY_USD_CODE) ? 'hidden' : '') . '>
                                                             <label class="fs-13 fw-500 text-black">Account Number <span class="text-red">*</span></label>
                                                             <input type="number" class="full-width m-b-0" placeholder="ex: 90895589483598395" name="account_number" id="account_number" value="' . (isset($guest['account_number']) ? $guest['account_number'] : '') . '" required>
                                                         </div>
                                                     </div>
                                                     
-                                                    <div class="wrap mcb-wrap full-width m-b-10" '.(($currency_code == CURRENCY_USD_CODE) ? 'hidden' : '').'>
+                                                    <div class="wrap mcb-wrap full-width m-b-10" ' . (($currency_code == CURRENCY_USD_CODE) ? 'hidden' : '') . '>
                                                         <div class="wrap mcb-wrap width-50 pull-left p-r-10">
                                                             <label class="fs-13 fw-500 text-black">From Bank <span class="text-red">*</span></label>
                                                             <input type="text" class="full-width m-b-0" placeholder="ex: BRI or BCA or BNI" name="from_bank" id="from_bank" value="' . (isset($guest['from_bank']) ? $guest['from_bank'] : '') . '" required>
@@ -518,7 +528,7 @@ $content .= '
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="wrap mcb-wrap full-width m-b-10" '.(($currency_code == CURRENCY_USD_CODE) ? 'hidden' : '').'>
+                                                    <div class="wrap mcb-wrap full-width m-b-10" ' . (($currency_code == CURRENCY_USD_CODE) ? 'hidden' : '') . '>
                                                         <div class="wrap mcb-wrap width-50 pull-left p-r-10">
                                                             <label class="fs-13 fw-500 text-black">Upload Proof of Transfer <span class="text-red">*</span></label>
                                                             <input type="file" class="full-width m-b-0" name="photo" required>
@@ -579,6 +589,7 @@ $content .= '
                                                             <p class="fs-14 text-black fw-600 pull-right m-b-0">
                                                                 <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . (($currency_code == CURRENCY_USD_CODE) ? $row_cart['shipping'] : number_format(($row_cart['shipping'] * $USDtoIDR), 0, '.', ',')) . '</span>
                                                             </p>
+                                                            <input type="hidden" id="price_shipping" value="' . $row_cart['price_shipping'] . '">
                                                             <input type="hidden" id="shipping" value="' . $row_cart['shipping'] . '">
                                                         </div>
                                                         
@@ -837,6 +848,8 @@ $plugin = '
                                     var city= jQuery("#city").val();
                                     var address= jQuery("#address").val();
                                     var email= jQuery("#email").val();
+                                    var weight= jQuery("#weight").val();
+                                    var price_shipping= jQuery("#price_shipping").val();
                                     
                                     $.ajax({
                                         type: "POST",
@@ -852,6 +865,8 @@ $plugin = '
                                             city: city,
                                             address: address,
                                             email: email,
+                                            weight: weight,
+                                            price_shipping: price_shipping,
                                             state: payment.transactions[0].related_resources[0].sale.state,
                                             total_paypal: amount.total,
                                             shipping: amount.details.shipping,

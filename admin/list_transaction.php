@@ -27,8 +27,6 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         $start = 0;
     }
 
-
-//$loggedin = logged_inadmin();
     $titlebar = "List Transaction";
     $titlepage = "List Transaction";
     $menu = "";
@@ -36,6 +34,38 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
 
     $sql_transaction = mysql_query("SELECT * FROM `transaction`  ORDER BY `date_add` DESC LIMIT $start,$perhalaman");
     $sql_total_data = mysql_num_rows(mysql_query("SELECT * FROM `transaction`  ORDER BY `date_add`"));
+
+
+    // Action confirm transaction
+    if (isset($_POST['confirm'])) {
+
+        // Set value request
+        $id_transaction = isset($_POST['id_transaction']) ? mysql_real_escape_string(trim($_POST['id_transaction'])) : '';
+
+        // Now Date
+        $nowDate = get_date();
+        $confirmed_at = $nowDate->format("d/m/Y H:i");
+
+        // Update confirmation status
+        $update_transaction_query = "UPDATE `transaction` SET `status` = 'completed', `konfirm` = 'Confirmated', `confirmed_at` = '$confirmed_at',
+            `confirmed_by` = '" . $loggedin["username"] . "' WHERE `id_transaction` = '$id_transaction';";
+
+        // Error
+        if (!mysql_query($update_transaction_query)) {
+            echo "<script>
+                alert('Unable to confirm');
+                window.history.back(-1);
+            </script>";
+            exit();
+        }
+
+        // Success
+        echo "<script>
+            alert('Confirm transaction success');
+            window.location.href = 'list_transaction.php" . (isset($_GET['page']) ? '?page=' . $_GET['page'] : '') . "'
+        </script>";
+
+    }
 
     $content = '
         <div class="page-container ">
@@ -71,40 +101,55 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
 
     while ($row_transaction = mysql_fetch_array($sql_transaction)) {
 
-        $sql_member = mysql_query("SELECT * FROM `member` where `id_member` ='" . $row_transaction["id_member"] . "' ");
-        $row_member = mysql_fetch_array($sql_member);
+        if ($row_transaction['is_guest']) {
 
-        // Set first cart
-        $query_cart_first = mysql_query("SELECT * FROM `cart` WHERE `id_transaction` = '" . $row_transaction["id_transaction"] . "'
-                AND `id_member`='" . $row_member["id_member"] . "' AND `level` = '0' LIMIT 0,1;");
-        $row_cart_first = mysql_fetch_array($query_cart_first);
+            // Set guest
+            $guest_query = mysql_query("SELECT * FROM `guest` WHERE `id` = '" . $row_transaction["id_guest"] . "' LIMIT 0,1;");
+            $row_guest = mysql_fetch_array($guest_query);
+
+            // Set holder name
+            $holder_name = $row_guest['first_name'] . ' ' . $row_guest['last_name'];
+
+        } else {
+
+            // Set member
+            $sql_member = mysql_query("SELECT * FROM `member` where `id_member` ='" . $row_transaction["id_member"] . "' ");
+            $row_member = mysql_fetch_array($sql_member);
+
+            // Set holder name
+            $holder_name = $row_member['firstname'] . ' ' . $row_member['lastname'];
+
+        }
 
         $content .= '
-                                        <tr>
-                                            <td class="v-align-middle">
-                                                ' . $row_transaction['kode_transaction'] . '
-                                            </td>
-                                            <td class="v-align-middle">
-                                                <p>' . $row_member['firstname'] . ' ' . $row_member['lastname'] . '</p>
-                                            </td>
-                                            <td class="v-align-middle">
-                                                <p>' . $row_transaction['date_add'] . '</p>
-                                            </td>
-                                            <td class="v-align-middle">
-                                                <p>$ ' . $row_transaction['total'] . '</p>
-                                            </td>
-                                            <td class="v-align-middle">
-                                                <p>' . $row_transaction['status'] . '</p>
-                                            </td>
-                                            <td class="v-align-middle">
-                                                ' . (($row_transaction['konfirm'] == 'not confirmated') ?
-                '<button class="btn btn-danger">Confirmation</button>' :
+                                        <form method="post" action="">
+                                            <tr>
+                                                <input type="hidden" name="id_transaction" value="' . $row_transaction["id_transaction"] . '">
+                                                <td class="v-align-middle">
+                                                    ' . $row_transaction['kode_transaction'] . '
+                                                </td>
+                                                <td class="v-align-middle">
+                                                    <p>' . $holder_name . '</p>
+                                                </td>
+                                                <td class="v-align-middle">
+                                                    <p>' . $row_transaction['date_add'] . '</p>
+                                                </td>
+                                                <td class="v-align-middle">
+                                                    <p>$ ' . $row_transaction['total'] . '</p>
+                                                </td>
+                                                <td class="v-align-middle">
+                                                    <p>' . $row_transaction['status'] . '</p>
+                                                </td>
+                                                <td class="v-align-middle">
+                                                    ' . (($row_transaction['konfirm'] == 'not confirmated') ?
+                '<button type="submit" name="confirm" class="btn btn-danger">Confirmation</button>' :
                 '<a class="label" style="background-color: #69b6f3; color: #ffffff">Confirmated</a>') . '
-                                            </td>
-                                            <td class="v-align-middle">
-                                                <a class="btn btn-success" href="detail_transaction.php?id_transaction=' . $row_transaction['id_transaction'] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '">view</a>
-                                            </td>
-                                        </tr>';
+                                                </td>
+                                                <td class="v-align-middle">
+                                                    <a class="btn btn-success" href="detail_transaction.php?id_transaction=' . $row_transaction['id_transaction'] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '">view</a>
+                                                </td>
+                                            </tr>
+                                        </form>';
     }
 
     $content .= '

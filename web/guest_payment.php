@@ -28,6 +28,8 @@ if (isset($_POST['payment_paypal']) && $payment_paypal) {
     $city = isset($_POST['city']) ? mysql_real_escape_string(trim($_POST['city'])) : '';
     $address = isset($_POST['address']) ? mysql_real_escape_string(trim($_POST['address'])) : '';
     $email = isset($_POST['email']) ? mysql_real_escape_string(trim($_POST['email'])) : '';
+    $weight = isset($_POST['weight']) ? mysql_real_escape_string(trim($_POST['weight'])) : '';
+    $price_shipping = isset($_POST['price_shipping']) ? mysql_real_escape_string(trim($_POST['price_shipping'])) : '';
     $state = isset($_POST['state']) ? mysql_real_escape_string(trim($_POST['state'])) : '';
     $total_paypal = isset($_POST['total_paypal']) ? mysql_real_escape_string(trim($_POST['total_paypal'])) : '';
     $shipping = isset($_POST['shipping']) ? mysql_real_escape_string(trim($_POST['shipping'])) : '';
@@ -48,23 +50,6 @@ if (isset($_POST['payment_paypal']) && $payment_paypal) {
         $_SESSION['guest']['email'] = $email;
         $_SESSION['guest']['phone_no'] = $phone_no;
 
-        // Insert to transaction
-        $insert_transaction_query = "INSERT INTO `transaction` (`kode_transaction`, `is_guest`, `status`, `konfirm`, `payment_method`, `total`, `date_add`, `date_upd`)
-            VALUES('$transaction_number', '1', '$state', 'Confirmated', 'Paypal', '$total_paypal', NOW(), NOW())";
-
-        // Error
-        if (!mysql_query($insert_transaction_query)) {
-            roll_back();
-            $msg = 'Unable to save transaction';
-            echo json_encode(error_response($msg));
-            exit();
-        }
-
-        // Select transaction
-        $transaction_query = mysql_query("SELECT * FROM `transaction` WHERE `kode_transaction` = '$transaction_number' AND ISNULL(id_member)
-            AND `status` = 'process' AND `konfirm` = 'not confirmated' AND `payment_method` = 'Bank Transfer' ORDER BY `id_transaction` DESC LIMIT 0,1;");
-        $row_transaction = mysql_fetch_array($transaction_query);
-
         // Insert guest
         $insert_guest_query = "INSERT INTO `guest` (`first_name`, `last_name`, `address`, `id_country`, `id_province`, `id_city`, `zip_code`, `email`, `phone_no`, `date_add`, `date_upd`, `level`)
             VALUES('$first_name', '$last_name', '$address', 'ID', '$province', '$city', '$zip_code', '$email', '$phone_no', NOW(), NOW(), '0');";
@@ -80,6 +65,23 @@ if (isset($_POST['payment_paypal']) && $payment_paypal) {
         // Get guest
         $guest_query = mysql_query("SELECT * FROM `guest` WHERE `email` = '$email' AND `phone_no` = '$phone_no' ORDER BY `id` DESC LIMIT 0,1;");
         $row_guest = mysql_fetch_array($guest_query);
+
+        // Insert to transaction
+        $insert_transaction_query = "INSERT INTO `transaction` (`kode_transaction`, `is_guest`, `id_guest`, `status`, `konfirm`, `payment_method`, `total`, `date_add`, `date_upd`)
+            VALUES('$transaction_number', '1', '" . $row_guest["id"] . "', '$state', 'Confirmated', 'Paypal', '$total_paypal', NOW(), NOW())";
+
+        // Error
+        if (!mysql_query($insert_transaction_query)) {
+            roll_back();
+            $msg = 'Unable to save transaction';
+            echo json_encode(error_response($msg));
+            exit();
+        }
+
+        // Select transaction
+        $transaction_query = mysql_query("SELECT * FROM `transaction` WHERE `kode_transaction` = '$transaction_number' AND ISNULL(id_member)
+            AND `status` = '$state' AND `konfirm` = 'Confirmated' AND `payment_method` = 'Paypal' ORDER BY `id_transaction` DESC LIMIT 0,1;");
+        $row_transaction = mysql_fetch_array($transaction_query);
 
         // Insert paypals
         $insert_paypal_query = "INSERT INTO `paypals` (`paymentId`, `id_transaction`, `is_guest`, `id_guest`, `status`, `amount`, `description`, `date_add`, `date_upd`, `level`)
@@ -108,8 +110,8 @@ if (isset($_POST['payment_paypal']) && $payment_paypal) {
                 $cart_collection = $cart_item['collection'];
 
                 // Insert collection
-                $insert_collection_query = "INSERT INTO `custom_collection` (`code`, `is_guest`, `gender`, `wet_suit_type`, `arm_zipper`, `ankle_zipper`, `image`, `price`, `status`, `date_add`, `date_upd`, `level`)
-                    VALUES('" . $cart_collection["code"] . "', '1', '" . $cart_collection["gender"] . "', '" . $cart_collection["wet_suit_type"] . "', '" . $cart_collection["arm_zipper"] . "', '" . $cart_collection["ankle_zipper"] . "', '" . $cart_collection["image"] . "', '" . $cart_collection["price"] . "', '" . $cart_collection["status"] . "', NOW(), NOW(), '0');";
+                $insert_collection_query = "INSERT INTO `custom_collection` (`code`, `is_guest`, `id_guest`, `gender`, `wet_suit_type`, `arm_zipper`, `ankle_zipper`, `image`, `price`, `status`, `date_add`, `date_upd`, `level`)
+                    VALUES('" . $cart_collection["code"] . "', '1', '" . $row_guest["id"] . "', '" . $cart_collection["gender"] . "', '" . $cart_collection["wet_suit_type"] . "', '" . $cart_collection["arm_zipper"] . "', '" . $cart_collection["ankle_zipper"] . "', '" . $cart_collection["image"] . "', '" . $cart_collection["price"] . "', '" . $cart_collection["status"] . "', NOW(), NOW(), '0');";
 
                 // Error
                 if (!mysql_query($insert_collection_query)) {
@@ -143,8 +145,8 @@ if (isset($_POST['payment_paypal']) && $payment_paypal) {
                 }
 
                 // Insert cart
-                $insert_cart_query = "INSERT INTO `cart` (`id_transaction`, `id_item`, `is_custom_cart`, `qty`, `amount`, `date_add`, `date_upd`, `level`)
-                    VALUES('" . $row_transaction["id_transaction"] . "', '" . $row_custom_collection["id_custom_collection"] . "', '1', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', NOW(), NOW(), '0');";
+                $insert_cart_query = "INSERT INTO `cart` (`id_transaction`, `is_guest`, `id_guest`, `id_item`, `is_custom_cart`, `qty`, `amount`, `date_add`, `date_upd`, `level`)
+                    VALUES('" . $row_transaction["id_transaction"] . "', '1', '" . $row_guest["id"] . "', '" . $row_custom_collection["id_custom_collection"] . "', '1', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', NOW(), NOW(), '0');";
 
                 // Error
                 if (!mysql_query($insert_cart_query)) {
@@ -161,8 +163,8 @@ if (isset($_POST['payment_paypal']) && $payment_paypal) {
                 $row_item = mysql_fetch_array($item_query);
 
                 // Add cart
-                $insert_cart_query = "INSERT INTO `cart` (`id_transaction`, `id_item`, `qty`, `amount`, `date_add`, `date_upd`, `level`)
-                    VALUES('" . $row_transaction["id_transaction"] . "', '" . $cart_item["id_item"] . "', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', NOW(), NOW(), '0');";
+                $insert_cart_query = "INSERT INTO `cart` (`id_transaction`, `is_guest`, `id_guest`, `id_item`, `qty`, `amount`, `date_add`, `date_upd`, `level`)
+                    VALUES('" . $row_transaction["id_transaction"] . "', '1', '" . $row_guest["id"] . "', '" . $cart_item["id_item"] . "', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', NOW(), NOW(), '0');";
 
                 // Error
                 if (!mysql_query($insert_cart_query)) {
@@ -190,13 +192,20 @@ if (isset($_POST['payment_paypal']) && $payment_paypal) {
                 exit();
             }
 
-            // Remove session
-            unset($_SESSION['cart_item'][$key]);
-
         }
 
         // Save shipping
         if ($shipping != '') {
+
+            // Insert shipping
+            $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
+                VALUES('" . $row_transaction["id_transaction"] . "', '$weight', '$price_shipping', '$shipping', NOW(), NOW());";
+            if (!mysql_query($insert_shipping_query)) {
+                roll_back();
+                $msg = 'Unable to save shipping';
+                echo json_encode(error_response($msg));
+                exit();
+            }
 
             // Insert paypal item shipping
             $insert_paypal_item_shipping_query = "INSERT INTO `paypal_items` (`id_paypal`, `id_item`, `price`, `quantity`, `date_add`, `date_upd`, `level`)
@@ -208,6 +217,9 @@ if (isset($_POST['payment_paypal']) && $payment_paypal) {
                 exit();
             }
         }
+
+        // Remove session
+        unset($_SESSION['cart_item']);
 
         // Commit
         commit();

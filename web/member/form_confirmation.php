@@ -200,6 +200,21 @@ if ($loggedin = logged_in()) {//  Check if they are logged in
                 exit();
             }
 
+            // Set total shipping
+            $total_shipping = (round(($shipping / $USDtoIDR), 2) * round($weight));
+
+            // Insert shipping
+            $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
+                VALUES('" . $row_transaction["id_transaction"] . "', '$weight', '$shipping', '$total_shipping', NOW(), NOW());";
+            if (!mysql_query($insert_shipping_query)) {
+                roll_back();
+                echo "<script>
+                alert('Unable to save shipping');
+                window.history.back(-1);
+            </script>";
+                exit();
+            }
+
             // Commit
             commit();
 

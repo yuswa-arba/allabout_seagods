@@ -84,6 +84,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'save_payment') {
     $amount = isset($_POST['amount']['total']) ? $_POST['amount']['total'] : '';
     $shipping = isset($_POST['amount']['details']['shipping']) ? $_POST['amount']['details']['shipping'] : '';
     $description = isset($_POST['description']) ? $_POST['description'] : '';
+    $weight = isset($_POST['weight']) ? mysql_real_escape_string(trim($_POST['weight'])) : '';
+    $price_shipping = isset($_POST['price_shipping']) ? mysql_real_escape_string(trim($_POST['price_shipping'])) : '';
 
     $return_update_payment['failed'] = false;
 
@@ -198,6 +200,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'save_payment') {
 
         // Save shipping
         if ($shipping != '') {
+
+            // Insert shipping
+            $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
+                VALUES('" . $row_transaction["id_transaction"] . "', '$weight', '$price_shipping', '$shipping', NOW(), NOW());";
+            if (!mysql_query($insert_shipping_query)) {
+                roll_back();
+                $msg = 'Unable to save shipping';
+                echo json_encode(error_response($msg));
+                exit();
+            }
 
             // Insert paypal item shipping
             $insert_paypal_item_shipping_query = "INSERT INTO `paypal_items` (`id_paypal`, `id_item`, `price`, `quantity`, `date_add`, `date_upd`, `level`)

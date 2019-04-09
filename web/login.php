@@ -12,7 +12,7 @@ ob_start();
 include_once("config/configuration.php");
 
 if ($loggedin = logged_in()) { // Check if they are logged in
-    header('Location: home.php');
+    header('Location: member/index.php');
 } else { // If not logged in 
 
     //was there a reCAPTCHA response?
