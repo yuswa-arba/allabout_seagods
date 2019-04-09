@@ -120,12 +120,12 @@ return $namaFile;
 
 function namaFileTujuanProduk($fileFotoName,$folderTujuan){
 $fileTujuan = $folderTujuan.$fileFotoName;
-$namaFile = $fileFotoName;
+$namaFile = date('ymdHis') . str_replace(' ', '_', $fileFotoName);
   if(file_exists($fileTujuan)) { //jika nama file sudah ada, rename sesuai dengan urutan
     $i=0;
       while (file_exists($fileTujuan)) {
-         $fileTujuan = $folderTujuan.$i.'_'.$fileFotoName;
-         $namaFile = $i.'_'.$fileFotoName;
+         $fileTujuan = $folderTujuan . $i . '_' . $fileFotoName;
+         $namaFile = $i . '_' .  date('ymdHis') . str_replace(' ', '_', $fileFotoName);
          $i++;
       }
   }

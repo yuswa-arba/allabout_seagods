@@ -252,10 +252,10 @@ if ($loggedin) {
         $guest = isset($_SESSION['guest']) ? $_SESSION['guest'] : [];
 
         // Set shipping
-        if (isset($guest['idkota'])) {
+        if (isset($guest['id_city'])) {
 
             // Set Kota
-            $city_query = mysql_query("SELECT * FROM `kota` WHERE `idKota` = '" . $guest["idkota"] . "' AND `level` = '0' LIMIT 0,1;");
+            $city_query = mysql_query("SELECT * FROM `kota` WHERE `idKota` = '" . $guest["id_city"] . "' AND `level` = '0' LIMIT 0,1;");
             $row_city = mysql_fetch_array($city_query);
         }
 
@@ -334,7 +334,7 @@ if ($loggedin) {
         }
 
         // Shipping
-        $shipping = (isset($guest['idkota'])) ? (($currency_code == CURRENCY_USD_CODE) ? round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) : $row_city['ongkos_kirim']) : 0;
+        $shipping = (isset($guest['id_city'])) ? (($currency_code == CURRENCY_USD_CODE) ? round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) : $row_city['ongkos_kirim']) : 0;
 
         // Set total
         $total_shipping = (((round($total_weight) < 1) ? 1 : round($total_weight)) * (float)$shipping);
@@ -428,6 +428,16 @@ if ($total_amount != 0) {
                                     </p>
                                 </div>
                             </div>';
+
+} else {
+
+    $content .= '<div class="column three-fourth wrap mcb-wrap one width-90 p-l-10">
+                    <div class="wrap mcb-wrap one valign-top clearfix bg-white m-b-10 border-grey padding-30">
+                        <p class="fs-20 fw-600 text-black m-b-0">Your cart is empty!</p>
+                        <p class="fs-4">Please Go to Page Collection and add new items</p>
+                        <a href="list_product.php?id_cats=9" class="btn-blue-light bg-black bg-black-hover">Go to Collection</a>
+                    </div>
+                </div>';
 
 }
 

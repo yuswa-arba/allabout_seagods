@@ -66,7 +66,7 @@ if ($loggedin) {
         $unencodedData = base64_decode($filteredData);
 
         $random_digit = md5(uniqid(mt_rand(), true));
-        $img = "Custom" . $random_digit . ".png";
+        $img = "Custom" . date('ymdHis') . $random_digit . ".png";
         $directory = 'public/images/custom_cart/';
 
         // Save file. This example uses a hard coded filename for testing

@@ -21,17 +21,14 @@ ob_start();
 //    $_SESSION['cart_item'][] = $item_array;
 //}
 //
-//unset($_SESSION['test']);
-//$_SESSION['guest'] = ['idkota' => 1];
+//unset($_SESSION['cart_item']);
+//$_SESSION['guest']['idprovince'] = 1;
 //echo "<pre>";
 //print_r($_SESSION['cart_item']);
 //echo "</pre>";
 
 //echo  generate_custom_item_number();
-$_SESSION['test'][] = 'yuswa third';
-
-$test = ['test1', 'test3', 'test2'];
-arsort($_SESSION['cart_item']);
+//arsort($_SESSION['cart_item']);
 echo "<pre>";
 print_r($_SESSION['cart_item']);
 echo "</pre>";

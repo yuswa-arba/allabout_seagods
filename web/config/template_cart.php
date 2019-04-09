@@ -98,7 +98,7 @@ function admin_template($content = "", $titlebar = "", $titlepage = "", $user = 
                 </div>
             </header>
         </div>
-    <div id="Content">
+    <div id="Content" class="page-container">
         <div class="content_wrapper clearfix">
     ' . $content . '
      		</div>

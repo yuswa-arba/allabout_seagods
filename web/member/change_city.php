@@ -58,9 +58,7 @@ if (isset($_POST['action'])) {
         } else {
 
             // Set province in session
-            $_SESSION['guest'] = [
-                'idpropinsi' => $id_province
-            ];
+            $_SESSION['guest']['id_province'] = $id_province;
 
         }
 
@@ -119,9 +117,7 @@ if (isset($_POST['action'])) {
         } else {
 
             // Set province in session
-            $_SESSION['guest'] = [
-                'idkota' => $id_city
-            ];
+            $_SESSION['guest']['id_city'] = $id_city;
 
         }
 

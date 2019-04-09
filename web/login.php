@@ -101,7 +101,7 @@ if ($loggedin = logged_in()) { // Check if they are logged in
 
                                         // Insert cart
                                         mysql_query("INSERT INTO `cart` (`id_item`, `id_member`, `is_custom_cart`, `qty`, `amount`, `date_add`, `date_upd`, `level`)
-                                            VALUES('" . $row_custom_collection["id_custom_collection"] . "', '$id_member', '1', '1', '" . $cart_collection["price"] . "', NOW(), NOW(), '0')");
+                                            VALUES('" . $row_custom_collection["id_custom_collection"] . "', '$id_member', '1', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', NOW(), NOW(), '0')");
 
                                         // Remove session
                                         unset($_SESSION['cart_item'][$key]);
