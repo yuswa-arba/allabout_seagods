@@ -88,7 +88,7 @@ if($loggedin = logged_in()){ // Check if they are logged in
                 <div class="col-lg-12 m-b-12">
                     <div class="card card-default filter-item">
                         <div class="card-header ">
-                            <div class="card-title">Employee Information</div>
+                            <div class="card-title">Member Information</div>
         
                         </div>
                         <div class="card-block">

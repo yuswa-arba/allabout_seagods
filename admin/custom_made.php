@@ -70,13 +70,14 @@ if ($loggedin = logged_inadmin()) {
 
     $content = '
         <div class="page-container ">
+           
             <!-- START PAGE CONTENT WRAPPER -->
             <div class="page-content-wrapper ">
-        
+                
                 <!-- START PAGE CONTENT -->
                 <div class="content ">
-                
-                    <div class="container container-fixed-lg">
+                    <div class=" container container-fixed-lg">
+                       
                         <!-- START card -->
                         <div class="card card-transparent">
                             <div class="card-header ">
@@ -94,17 +95,13 @@ if ($loggedin = logged_inadmin()) {
                                             <th style="width:18%">Wet Suit Type</th>
                                             <th style="width:15%">Current Price</th>
                                             <th style="width:5%">View</th>
-                                            <th style="width:7%"></th>
-                                            <th style="width:5%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>';
 
-    $query_custom_collection = mysql_query("SELECT `member`.*, `custom_collection`.* FROM `custom_collection`, `member` 
-        WHERE `custom_collection`.`id_member` = `member`.`id_member` AND `custom_collection`.`level` = '0' 
+    $query_custom_collection = mysql_query("SELECT * FROM `custom_collection` WHERE `level` = '0'
         ORDER BY `id_custom_collection` DESC LIMIT $start,$perhalaman;");
-    $sql_total_data = mysql_num_rows(mysql_query("SELECT `member`.*, `custom_collection`.* FROM `custom_collection`, `member` 
-        WHERE `custom_collection`.`id_member` = `member`.`id_member` AND `custom_collection`.`level` = '0' 
+    $sql_total_data = mysql_num_rows(mysql_query("SELECT * FROM `custom_collection` WHERE `level` = '0'
         ORDER BY `id_custom_collection` DESC;"));
 
     // Select currency value USD
@@ -115,6 +112,28 @@ if ($loggedin = logged_inadmin()) {
     $price = get_price('price-custom-item');
 
     while ($row_collection = mysql_fetch_array($query_custom_collection)) {
+
+        // Check buyer
+        if ($row_collection['is_guest'] || $row_collection['is_guest'] == true) {
+
+            // Set guest
+            $guest_query = mysql_query("SELECT * FROM `guest` WHERE `id` = '" . $row_collection["id_guest"] . "';");
+            $row_guest = mysql_fetch_array($guest_query);
+
+            // Set holder name
+            $holder_name = $row_guest['first_name'] . ' ' . $row_guest['last_name'];
+
+        } else {
+
+            // Set member
+            $member_query = mysql_query("SELECT * FROM `member` WHERE `id_member` = '" . $row_collection["id_member"] . "';");
+            $row_member = mysql_fetch_array($member_query);
+
+            // Set holder name
+            $holder_name = $row_member['firstname'] . ' ' . $row_member['lastname'];
+
+        }
+
         $content .= '
             <form method="post" action="">
                 <input type="hidden" name="quantity" value="1">
@@ -124,7 +143,7 @@ if ($loggedin = logged_inadmin()) {
                         <img style="width: 100%" src="../web/custom/public/images/custom_cart/' . $row_collection["image"] . '">
                     </td>
                     <td class="v-align-middle">
-                        <p>' . $row_collection["firstname"] . ' ' . $row_collection["lastname"] . '</p>
+                        <p>' . $holder_name . '</p>
                     </td>
                     <td class="v-align-middle">
                         <p>' . ucfirst($row_collection["gender"]) . '</p>
@@ -137,7 +156,7 @@ if ($loggedin = logged_inadmin()) {
                     </td>
                     <td class="v-align-middle">
 					    <div class="btn-group">
-                            <a href="detail_custom_made.php?id=' . $row_collection["id_custom_collection"] . '" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> View</a>
+                            <a href="detail_custom_made.php?id=' . $row_collection["id_custom_collection"] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> View</a>
                         </div>
                     </td>
                 </tr>        

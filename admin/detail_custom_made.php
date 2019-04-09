@@ -37,23 +37,43 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         // Set price
         $price = get_price('price-custom-item');
 
-        $sql_measure = mysql_query("SELECT * FROM `custom_measure` WHERE `id_custom_collection` = '".$row_collection["id_custom_collection"]."';");
+        $sql_measure = mysql_query("SELECT * FROM `custom_measure` WHERE `id_custom_collection` = '" . $row_collection["id_custom_collection"] . "';");
         $row_measure = mysql_fetch_array($sql_measure);
 
-        $sql_member = mysql_query("SELECT `member`.*, `users`.`email` FROM `member`, `users` 
-            WHERE `member`.`id_member` = `users`.`id_member` 
-            AND `member`.`id_member` = '$row_collection[id_member]'");
-        $row_member = mysql_fetch_array($sql_member);
+        // Check is guest
+        if ($row_collection['is_guest'] || $row_collection['is_guest'] == true) {
+
+            // Set guest
+            $guest_query = mysql_query("SELECT * FROM `guest` WHERE `id` = '" . $row_collection["id_guest"] . "';");
+            $row_guest = mysql_fetch_array($guest_query);
+
+        } else {
+
+            // Set member
+            $sql_member = mysql_query("SELECT `member`.*, `users`.`email` FROM `member`, `users` 
+                WHERE `member`.`id_member` = `users`.`id_member` 
+                AND `member`.`id_member` = '" . $row_collection["id_member"] . "';");
+            $row_member = mysql_fetch_array($sql_member);
+
+        }
 
     }
 
     $content = '
         <div class="container container-fixed-lg">
             <div class="row">
-                <div class="col-lg-10 m-b-10">
+                <div class="col-lg-12 m-b-10">
+                    <div class="card card-default">
+                        <div class="card-header ">
+                            <div class="card-title">
+                                <h4><b>Wetsuit </b>' . $row_collection["code"] . '</h4>
+                            </div>
+                            <a href="custom_made.php' . (isset($_GET['page']) ? '?page=' . $_GET['page'] : '') . '" class="btn btn-default pull-right" name="">Back to List</a>
+                        </div>
+                    </div>
                     <div class="card card-default filter-item">
                         <div class="card-header ">
-                            <div class="card-title">Employee Information</div>
+                            <div class="card-title">Buyer Information</div>
         
                         </div>
                         <div class="card-block">
@@ -61,8 +81,12 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                 <div class="col-md-4">
                                     <div style="" class="cursor">';
 
-    if ($row_member["foto"] != '' && file_exists('images/members/' . $row_member["foto"])) {
-        $content .= '<img src="images/members/'.$row_member["foto"].'" alt="No Image" class="img-responsive" style="width:100%; height:auto;" >';
+    if (!$row_collection['is_guest']) {
+        if ($row_member["foto"] != '' && file_exists('images/members/' . $row_member["foto"])) {
+            $content .= '<img src="images/members/' . $row_member["foto"] . '" alt="No Image" class="img-responsive" style="width:100%; height:auto;" >';
+        } else {
+            $content .= '<img src="../web/member/assets/img/social/person-cropped.jpg" alt = "No Image" class="img-responsive" style = "width:100%; height:auto;" >';
+        }
     } else {
         $content .= '<img src="../web/member/assets/img/social/person-cropped.jpg" alt = "No Image" class="img-responsive" style = "width:100%; height:auto;" >';
     }
@@ -74,20 +98,20 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                 <div class="col-md-4 show-details">
         
                                     <label>First Name</label>
-                                    <h5>' . $row_member["firstname"] . '</h5>
+                                    <h5>' . ($row_collection['is_guest'] ? $row_guest["first_name"] : $row_member["firstname"]) . '</h5>
         
                                     <label>Email</label>
-                                    <h5>' . $row_member["email"] . '</h5>
+                                    <h5>' . ($row_collection['is_guest'] ? $row_guest["email"] : $row_member["email"]) . '</h5>
         
                                     <label>Address</label>
-                                    <h5>' . $row_member["alamat"] . '</h5>
+                                    <h5>' . ($row_collection['is_guest'] ? $row_guest["address"] : $row_member["alamat"]) . '</h5>
                                 </div>
                                 <div class="col-md-4 show-details">
                                     <label>Last Name</label>
-                                    <h5>' . $row_member["lastname"] . '</h5>
+                                    <h5>' . ($row_collection['is_guest'] ? $row_guest["last_name"] : $row_member["lastname"]) . '</h5>
         
                                     <label>Phone Number</label>
-                                    <h5>' . $row_member["notelp"] . '</h5>
+                                    <h5>' . ($row_collection['is_guest'] ? $row_guest["phone_no"] : $row_member["notelp"]) . '</h5>
                                 </div>
                             </div>
                         </div>
