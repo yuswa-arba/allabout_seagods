@@ -128,7 +128,7 @@ function logged_inadmin()
     // If there is no session in the table where they are not logged in, show them as not logged in
     if (mysql_num_rows($sess_check)) { // Check if there is a row in the table.
         $s = mysql_fetch_array($sess_check); // Retrieve the data from the tables.
-        $uinfo = mysql_query("SELECT `users`.*,`member`.`firstname`,`member`.`lastname` FROM `users` , `member` WHERE `users`.`id_member`=`member`.`id_member` AND  `group` = 'admin' AND `id_user` = '" . $s['uid'] . "'"); // Retrieve the users table where the uid matches the uid in the sessions table
+        $uinfo = mysql_query("SELECT `users`.*, `member`.`firstname`, `member`.`lastname` FROM `users`, `member` WHERE `users`.`id_member`=`member`.`id_member` AND  `group` = 'admin' AND `id_user` = '" . $s['uid'] . "'"); // Retrieve the users table where the uid matches the uid in the sessions table
         
         $u = mysql_fetch_array($uinfo); // Retrieve the data from the tables.
         // Put the data into an array to be returned.

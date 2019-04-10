@@ -194,7 +194,7 @@ if (isset($_POST['checkout'])) {
             // Loop to get individual element from the array
             $validextensions = array("jpeg", "jpg", "png", "PNG"); // Extensions which are allowed.
             $RandomNumber = date('ymdhis') . rand(0, 9999999999); // for create name file upload
-            $imageName = $RandomNumber . "-" . ($_FILES['photo']['name']);
+            $imageName = $RandomNumber . "-" . (str_replace(' ', '_', $_FILES['photo']['name']));
 
             $ext = explode('.', $_FILES['photo']['name']); // Explode file name from dot(.)
             $file_extension = end($ext); // Store extensions in the variable.
@@ -836,6 +836,7 @@ $plugin = '
                                     "Authorization": "Bearer " + token.access_token
                                 },
                                 success: function (payment) {
+                                    console.log(payment);
                                     
                                     var amount = payment.transactions[0].related_resources[0].sale.amount;
                                     
@@ -876,14 +877,6 @@ $plugin = '
                                         dataType: "json",
                                         success: function (data) {
                                             console.log(data.results);
-                                            if (data.status == "success") {
-                                                alert(data.msg);
-                                                window.location.href = "home.php";
-                                            } else {
-                                                alert(data.msg);
-                                                hideLoading();
-                                                window.location.reload();
-                                            }
                                         }
                                     });
                                    

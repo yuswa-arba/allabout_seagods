@@ -1626,7 +1626,7 @@
     </column>
     <column id="367" parent="38" name="confirmed_at">
       <Position>12</Position>
-      <DataType>char(20)|0</DataType>
+      <DataType>datetime|0</DataType>
     </column>
     <column id="368" parent="38" name="confirmed_by">
       <Position>13</Position>

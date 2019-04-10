@@ -417,15 +417,42 @@ if ($total_amount != 0) {
                                     </p>
                                 </div>
                                         
-                                <div class="full-width">
+                                <div class="full-width m-b-15">
                                     <a href="' . ($loggedin ? 'checkout.php' : 'login_checkout.php?action=checkout') . '" class="btn btn-blue-light full-width wrap mcb-wrap">Check Out</a>
+                                </div>
+                                                                    
+                                <div class="full-width wrap mcb-wrap  clearfix border-grey padding-15 m-b-10">
+                                    <p class="fs-15 text-black text-center m-b-10 fw-600">You can transfer to us via</p>
+                                    
+                                    <p class="m-b-0">
+                                        <img src="images/mandiri.jpg" width="40%">
+                                    </p>
+                                    <p class="fs-18 fw-500 text-black b-b-grey p-b-10">
+                                        145-0010-897-318
+                                    </p>
+                                    
+                                    <p class="m-b-0">
+                                        <img src="images/bca.jpg" width="32%">
+                                    </p>
+                                    <p class="fs-18 fw-500 text-black">
+                                        146-668-4848
+                                    </p>
+                                    
                                 </div>
                                                                     
                                 <div class="full-width">
                                     <p class="fs-12 text-red fw-700 m-b-0">Noted *</p>
-                                    <p class="fs-14">
-                                        The shipping fee will be determined according to the shipping address and the weight of the item you choose
+                                    <p class="fs-14 text-black">
+                                        It is expected to save proof of transfer, to be uploaded as proof of payment
                                     </p>
+                                    
+                                    <p class="fs-13 text-black m-b-0">
+                                        Contact us for more info
+                                    </p>
+                                    <p class="fs-16 text-black fw-600 m-b-40">
+                                        +62 361 27 11 99
+                                    </p>
+                                    
                                 </div>
                             </div>';
 

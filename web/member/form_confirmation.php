@@ -121,7 +121,7 @@ if ($loggedin = logged_in()) {//  Check if they are logged in
                 // Loop to get individual element from the array
                 $validextensions = array("jpeg", "jpg", "png", "PNG"); // Extensions which are allowed.
                 $RandomNumber = date('ymdhis') . rand(0, 9999999999); // for create name file upload
-                $imageName = $RandomNumber . "-" . ($_FILES['photo']['name']);
+                $imageName = $RandomNumber . "-" . (str_replace(' ', '_', $_FILES['photo']['name']));
 
                 $ext = explode('.', $_FILES['photo']['name']); // Explode file name from dot(.)
                 $file_extension = end($ext); // Store extensions in the variable.

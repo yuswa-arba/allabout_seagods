@@ -139,6 +139,42 @@
     margin-right: 50px !important;
 }
 
+
+.margin-0 {
+    margin: 0px !important;
+}
+.margin-5 {
+    margin: 5px !important;
+}
+.margin-10 {
+    margin: 10px !important;
+}
+.margin-15 {
+    margin: 15px !important;
+}
+.margin-20 {
+    margin: 20px !important;
+}
+.margin-25 {
+    margin: 25px !important;
+}
+.margin-30 {
+    margin: 30px !important;
+}
+.margin-35 {
+    margin: 35px !important;
+}
+.margin-40 {
+    margin: 40px !important;
+}
+.margin-45 {
+    margin: 45px !important;
+}
+.margin-50 {
+    margin: 50px !important;
+}
+
+
 /*==================  PADDING  ==================*/
 /*Setting Padding Bottom*/
 .p-b-0 {
@@ -325,6 +361,10 @@
 }
 .bg-black-hover:hover {
     background-color: #383737 !important;
+}
+
+.bg-base {
+    background-color: #fafafa !important;
 }
 
 .bg-blue {

@@ -47,8 +47,8 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         $confirmed_at = $nowDate->format("d/m/Y H:i");
 
         // Update confirmation status
-        $update_transaction_query = "UPDATE `transaction` SET `status` = 'completed', `konfirm` = 'Confirmated', `confirmed_at` = '$confirmed_at',
-            `confirmed_by` = '" . $loggedin["username"] . "' WHERE `id_transaction` = '$id_transaction';";
+        $update_transaction_query = "UPDATE `transaction` SET `status` = 'completed', `konfirm` = 'Confirmated', `confirmed_at` = NOW(),
+            `confirmed_by` = '" . $user . "' WHERE `id_transaction` = '$id_transaction';";
 
         // Error
         if (!mysql_query($update_transaction_query)) {

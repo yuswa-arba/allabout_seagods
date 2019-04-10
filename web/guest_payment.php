@@ -67,8 +67,8 @@ if (isset($_POST['payment_paypal']) && $payment_paypal) {
         $row_guest = mysql_fetch_array($guest_query);
 
         // Insert to transaction
-        $insert_transaction_query = "INSERT INTO `transaction` (`kode_transaction`, `is_guest`, `id_guest`, `status`, `konfirm`, `payment_method`, `total`, `date_add`, `date_upd`)
-            VALUES('$transaction_number', '1', '" . $row_guest["id"] . "', '$state', 'Confirmated', 'Paypal', '$total_paypal', NOW(), NOW())";
+        $insert_transaction_query = "INSERT INTO `transaction` (`kode_transaction`, `is_guest`, `id_guest`, `status`, `konfirm`, `payment_method`, `total`, `confirmed_at`, `confirmed_by`, `date_add`, `date_upd`)
+            VALUES('$transaction_number', '1', '" . $row_guest["id"] . "', '$state', 'Confirmated', 'Paypal', '$total_paypal', NOW(), 'When payment with paypal', NOW(), NOW())";
 
         // Error
         if (!mysql_query($insert_transaction_query)) {
