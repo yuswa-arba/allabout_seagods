@@ -46,7 +46,6 @@ $row_cart = [];
 $total_amount = 0;
 $total_shipping = 0;
 $total_amount_shipping = 0;
-$total_amount_shipping_usd = 0;
 $weight = 0;
 $total_quantity = 0;
 
@@ -117,25 +116,22 @@ if (isset($_SESSION['cart_item']) && !empty($_SESSION['cart_item'])) {
     $weight_round = ((round($weight) < 1) ? 1 : round($weight));
 
     // Set shipping
-    $shipping = (isset($row_city['ongkos_kirim']) ? (($currency_code == CURRENCY_USD_CODE) ? round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) : $row_city['ongkos_kirim']) : 0);
+    $shipping = (isset($row_city['ongkos_kirim']) ? (($currency_code == CURRENCY_USD_CODE) ? $row_city['ongkos_kirim'] : ($row_city['ongkos_kirim'] * $USDtoIDR)) : 0);
     $total_shipping = ($weight_round * (float)$shipping);
-
-    // Total amount shipping usd
-    $total_amount_shipping_usd = ($total_amount + (round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) * $weight_round));
-
-    // Set default city
-    $row_cart['total_qty'] = $total_quantity;
-    $row_cart['subtotal'] = $total_amount;
-    $row_cart['weight'] = $weight;
-    $row_cart['price_shipping'] = round(($row_city['ongkos_kirim'] / $USDtoIDR), 2);
-    $row_cart['shipping'] = ($weight_round * round(($row_city['ongkos_kirim'] / $USDtoIDR), 2));
-    $row_cart['total'] = $total_amount_shipping_usd;
 
     // Set total amount with currency
     $total_amount = (($currency_code == CURRENCY_USD_CODE) ? $total_amount : ($total_amount * $USDtoIDR));
 
     // Set total amount shipping
     $total_amount_shipping = ($total_amount + $total_shipping);
+
+    // Set default city
+    $row_cart['total_qty'] = $total_quantity;
+    $row_cart['subtotal'] = $total_amount;
+    $row_cart['weight'] = $weight;
+    $row_cart['price_shipping'] = $row_city['ongkos_kirim'];
+    $row_cart['shipping'] = ($weight_round * $row_city['ongkos_kirim']);
+    $row_cart['total'] = $total_amount_shipping;
 
 } else {
     echo "<script>
@@ -247,7 +243,7 @@ if (isset($_POST['checkout'])) {
 
         // Insert to transaction
         $insert_transaction_query = "INSERT INTO `transaction` (`kode_transaction`, `is_guest`,`id_guest`, `status`, `konfirm`, `payment_method`, `total`, `date_add`, `date_upd`)
-            VALUES('$transaction_number', '1', '" . $row_guest["id"] . "', 'process', 'not confirmated', 'Bank Transfer', '$total_amount_shipping_usd', NOW(), NOW())";
+            VALUES('$transaction_number', '1', '" . $row_guest["id"] . "', 'process', 'not confirmated', 'Bank Transfer', '$total_amount_shipping', NOW(), NOW())";
 
         // Error
         if (!mysql_query($insert_transaction_query)) {
@@ -266,7 +262,7 @@ if (isset($_POST['checkout'])) {
 
         // Insert bank transfer
         $insert_bank_transfer_query = "INSERT INTO `bank_transfer` (`id_transaction`, `id_bank`, `is_guest`, `id_guest`, `from_bank`, `account_number`, `amount`, `photo`, `date_add`, `date_upd`)
-            VALUES('" . $row_transaction["id_transaction"] . "', '$id_bank', '1', '" . $row_guest["id"] . "', '$from_bank', '$account_number', '$total_amount_shipping_usd', '$photoNameUpload', NOW(), NOW());";
+            VALUES('" . $row_transaction["id_transaction"] . "', '$id_bank', '1', '" . $row_guest["id"] . "', '$from_bank', '$account_number', '$total_amount_shipping', '$photoNameUpload', NOW(), NOW());";
 
         // Error
         if (!mysql_query($insert_bank_transfer_query)) {

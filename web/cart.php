@@ -238,7 +238,7 @@ if ($loggedin) {
     }
 
     // Shipping
-    $shipping = ($row_member['idkota']) ? (($currency_code == CURRENCY_USD_CODE) ? round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) : $row_city['ongkos_kirim']) : 0;
+    $shipping = ($row_member['idkota']) ? (($currency_code == CURRENCY_USD_CODE) ? $row_city['ongkos_kirim'] : ($row_city['ongkos_kirim'] * $USDtoIDR)) : 0;
 
     // Set total
     $total_shipping = (((round($total_weight) < 1) ? 1 : round($total_weight)) * (float)$shipping);
@@ -334,7 +334,7 @@ if ($loggedin) {
         }
 
         // Shipping
-        $shipping = (isset($guest['id_city'])) ? (($currency_code == CURRENCY_USD_CODE) ? round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) : $row_city['ongkos_kirim']) : 0;
+        $shipping = (isset($guest['id_city'])) ? (($currency_code == CURRENCY_USD_CODE) ? $row_city['ongkos_kirim'] : ($row_city['ongkos_kirim'] * $USDtoIDR)) : 0;
 
         // Set total
         $total_shipping = (((round($total_weight) < 1) ? 1 : round($total_weight)) * (float)$shipping);

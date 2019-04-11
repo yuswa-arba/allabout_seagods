@@ -93,7 +93,7 @@ if ($loggedin = logged_in()) {
         $query_kota = mysql_query("SELECT * FROM `kota`
             WHERE `idKota` = '" . $row_member["idkota"] . "' LIMIT 0,1;");
         $row_kota = mysql_fetch_array($query_kota);
-        $kurs = (($currency_code == CURRENCY_USD_CODE) ? round(($row_kota["ongkos_kirim"] / $USDtoIDR), 2) : $row_kota['ongkos_kirim']);
+        $kurs = (($currency_code == CURRENCY_USD_CODE) ? $row_kota["ongkos_kirim"] : ($row_kota['ongkos_kirim'] * $USDtoIDR));
 
         if ($row_member['firstname'] && $row_member['lastname'] && $row_member['alamat'] && $row_member['kode_pos'] &&
             $row_member['idCountry'] && $row_member['idpropinsi'] && $row_member['idkota']

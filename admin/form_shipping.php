@@ -165,12 +165,12 @@ if ($loggedin = logged_inadmin()) { //  Check if they are logged in
                                 </select>
                             </div>
                             <div class="form-group form-group-default required">
-                                <label class="">Shiping Cost IDR</label>
-                                <input class="form-control" id="shipping_cost_idr" name="shipping_cost_idr" placeholder="Ex: 50000" value="' . (isset($_GET['id']) ? $row_city['ongkos_kirim'] : '') . '">
+                                <label class="">Shipping Cost USD</label>
+                                <input class="form-control" id="shipping_cost_usd" name="shipping_cost_usd" placeholder="Ex: 4.12" value="' . (isset($_GET['id']) ? $row_city['ongkos_kirim'] : '') . '" disabled>
                             </div>
                             <div class="form-group form-group-default required">
-                                <label class="">Shipping Cost USD</label>
-                                <input class="form-control" id="shipping_cost_usd" name="shipping_cost_usd" placeholder="Ex: 4.12" value="' . (isset($_GET['id']) ? round(($row_city['ongkos_kirim'] / $USDtoIDR), 2) : '') . '" disabled>
+                                <label class="">Shiping Cost IDR</label>
+                                <input class="form-control" id="shipping_cost_idr" name="shipping_cost_idr" placeholder="Ex: 50000" value="' . (isset($_GET['id']) ? ($row_city['ongkos_kirim'] * $USDtoIDR) : '') . '">
                             </div>
                             <div class="form-group">
                                 <a class="btn btn-default" href="list_shipping.php' . (isset($_GET['page']) ? '?page=' . $_GET['page'] : '') . '">Cancel</a>
@@ -204,12 +204,12 @@ if ($loggedin = logged_inadmin()) { //  Check if they are logged in
     <script>
         $("#shipping_cost_idr").keyup(function() {
             
-            var shipping_cost_idr = $("#shipping_cost_idr").val();
+            var shipping_cost_usd = $("#shipping_cost_usd").val();
             var usd_to_idr = $("#usd_to_idr").val();
             
-            var shipping_cost_usd = (shipping_cost_idr / usd_to_idr);
+            var shipping_cost_idr = (shipping_cost_usd * usd_to_idr);
             
-            $("#shipping_cost_usd").val(shipping_cost_usd.toFixed(2));
+            $("#shipping_cost_idr").val(shipping_cost_idr.toFixed(0));
         });
     </script>';
 

@@ -69,7 +69,7 @@ if ($loggedin = logged_in()) {//  Check if they are logged in
         if ($row_cart['is_custom_cart']) {
 
             // From custom collection
-            $weight += get_price('default-weight-custom-item');
+            $weight += (get_price('default-weight-custom-item') * $row_cart['qty']);
 
         } else {
 
@@ -77,14 +77,14 @@ if ($loggedin = logged_in()) {//  Check if they are logged in
             $item_query = mysql_query("SELECT * FROM `item` WHERE `id_item` = '" . $row_cart["id_item"] . "' LIMIT 0,1;");
             $row_item = mysql_fetch_array($item_query);
 
-            $weight += $row_item['weight'];
+            $weight += ($row_item['weight'] * $row_cart['qty']);
         }
 
     }
 
     // Set amount USD
-    $amount_IDR = ($shipping * round($weight)) + ($amount_USD * $USDtoIDR);
-    $amount_USD = (round(($shipping / $USDtoIDR), 2) * round($weight)) + $amount_USD;
+    $amount_IDR = (($shipping * $USDtoIDR) * round($weight)) + ($amount_USD * $USDtoIDR);
+    $amount_USD = ($shipping * round($weight)) + $amount_USD;
 
     // Transaction number
     $transaction_number = generate_transaction_number();
@@ -201,7 +201,7 @@ if ($loggedin = logged_in()) {//  Check if they are logged in
             }
 
             // Set total shipping
-            $total_shipping = (round(($shipping / $USDtoIDR), 2) * round($weight));
+            $total_shipping = ($shipping * round($weight));
 
             // Insert shipping
             $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `weight`, `price`, `amount`, `date_add`, `date_upd`)

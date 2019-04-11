@@ -975,8 +975,7 @@
     </column>
     <column id="234" parent="26" name="ongkos_kirim">
       <Position>4</Position>
-      <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
+      <DataType>char(30)|0</DataType>
     </column>
     <column id="235" parent="26" name="date_add">
       <Position>5</Position>

@@ -141,7 +141,7 @@ function purchase_order_template($transaction, $carts, $shipping, $buyer, $provi
                                 Total Item <span style="float: right;">:</span>
                             </td>
                             <td style="padding-left: 10px;padding-bottom: 5px;font-size: 14px;color: #000;">
-                                ' . array_sum(array_column($carts, 'qty')) . '
+                                ' . array_sum(array_column(array_column($carts, 'cart'), 'qty')) . '
                             </td>
                         </tr>
                         <tr>

@@ -114,18 +114,19 @@ while ($row_transaction = mysql_fetch_array($transaction_query)) {
 
     if ($row_buyer['email']) {
 
-        $mail = new PHPMailer(); // defaults to using php "mail()"
-        $mail->IsSMTP();
-        $mail->SMTPDebug = 0; // set mailer to use SMTP
-        $mail->Timeout = 120;     // set longer timeout for latency or servers that take a while to respond
 
-        //smtp.dps.globalxtreme.net
-        $mail->Host = "202.58.203.26";        // specify main and backup server
-        $mail->Port = 2505;
-        $mail->SMTPAuth = false;    // turn on or off SMTP authentication
-
-        try {
-
+//        $mail = new PHPMailer(); // defaults to using php "mail()"
+//        $mail->IsSMTP();
+//        $mail->SMTPDebug = 0; // set mailer to use SMTP
+//        $mail->Timeout = 120;     // set longer timeout for latency or servers that take a while to respond
+//
+//        //smtp.dps.globalxtreme.net
+//        $mail->Host = "202.58.203.26";        // specify main and backup server
+//        $mail->Port = 2505;
+//        $mail->SMTPAuth = false;    // turn on or off SMTP authentication
+//
+//        try {
+//
             $message_template = purchase_order_template(
                 $row_transaction,
                 $result_carts,
@@ -136,26 +137,27 @@ while ($row_transaction = mysql_fetch_array($transaction_query)) {
                 $currency_properties,
                 $row_bank_transfer
             );
-
-            // Set Holder name
-            $holder_name = ($row_transaction['is_guest'] ? ($row_buyer['first_name'] . ' ' . $row_buyer['last_name']) : ($row_buyer['firstname'] . ' ' . $row_buyer['lastname']));
-
-            $mail->AddAddress($row_buyer['email'], $holder_name);
-            $mail->SetFrom('info@seagodswetsuit.com', 'Seagods Wetsuit');
-
-            $mail->Subject = 'Purchase Order - Seagods Wetsuit';
-            $mail->MsgHTML($message_template);
-
-            if ($mail->Send()) {
-
-                // Set Update transaction
-                mysql_query("UPDATE `transaction` SET `send_order_email` = '1' WHERE `id_transaction` = '" . $row_transaction["id_transaction"] . "';");
-
-            }
-
-        } catch (phpmailerException $e) {
-            // Error
-        }
+            echo $message_template;
+//
+//            // Set Holder name
+//            $holder_name = ($row_transaction['is_guest'] ? ($row_buyer['first_name'] . ' ' . $row_buyer['last_name']) : ($row_buyer['firstname'] . ' ' . $row_buyer['lastname']));
+//
+//            $mail->AddAddress($row_buyer['email'], $holder_name);
+//            $mail->SetFrom('info@seagodswetsuit.com', 'Seagods Wetsuit');
+//
+//            $mail->Subject = 'Purchase Order - Seagods Wetsuit';
+//            $mail->MsgHTML($message_template);
+//
+//            if ($mail->Send()) {
+//
+//                // Set Update transaction
+//                mysql_query("UPDATE `transaction` SET `send_order_email` = '1' WHERE `id_transaction` = '" . $row_transaction["id_transaction"] . "';");
+//
+//            }
+//
+//        } catch (phpmailerException $e) {
+//            // Error
+//        }
 
     }
 }
