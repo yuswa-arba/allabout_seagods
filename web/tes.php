@@ -29,6 +29,11 @@ ob_start();
 
 //echo  generate_custom_item_number();
 //arsort($_SESSION['cart_item']);
-echo "<pre>";
-print_r($_SESSION['cart_item']);
-echo "</pre>";
+//echo "<pre>";
+//print_r($_SESSION['cart_item']);
+//echo "</pre>";
+include('plugins/mpdf/mpdf.php');
+
+$mpdf = new mPDF();
+$mpdf->WriteHTML('<h1>Hello world!</h1>');
+$mpdf->Output();

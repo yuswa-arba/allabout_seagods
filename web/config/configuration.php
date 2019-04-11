@@ -5,8 +5,8 @@
 	// The information below is here to provide for the database connection at the bottom of this configuration file.
 	// We are using defines. I will be covering a tutorial on at www.pk-tuts.co.uk soon.
 define("DATABASE_LOCATION", "localhost");
-define("DATABASE_USERNAME", "u9814486_seagx2018");
-define("DATABASE_PASSWORD", "backupweb123");
+define("DATABASE_USERNAME", "root"); // u9814486_seagx2018
+define("DATABASE_PASSWORD", ""); // backupweb123
 define("DATABASE_NAME", "u9814486_seagx2018");
 define("URLADMIN", "");
 define("URL", "");

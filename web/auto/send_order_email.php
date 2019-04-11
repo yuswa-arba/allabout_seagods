@@ -52,9 +52,9 @@ while ($row_transaction = mysql_fetch_array($transaction_query)) {
         }
 
         $result_carts[] = [
-            'cart' => $row_cart,
-            'item' => $row_item,
-        ] + $row_photo;
+                'cart' => $row_cart,
+                'item' => $row_item,
+            ] + $row_photo;
     }
 
     // Set buyer
@@ -112,46 +112,50 @@ while ($row_transaction = mysql_fetch_array($transaction_query)) {
     $currency_properties['currency'] = (($row_transaction['payment_method'] == 'Paypal') ? CURRENCY_USD : CURRENCY_IDR);
     $currency_properties['USDtoIDR'] = get_price('currency-value-usd-to-idr');
 
-    $mail = new PHPMailer(); // defaults to using php "mail()"
-    $mail->IsSMTP();
-    $mail->SMTPDebug = 0; // set mailer to use SMTP
-    $mail->Timeout = 120;     // set longer timeout for latency or servers that take a while to respond
+    if ($row_buyer['email']) {
 
-    //smtp.dps.globalxtreme.net
-    $mail->Host = "202.58.203.26";        // specify main and backup server
-    $mail->Port = 2505;
-    $mail->SMTPAuth = false;    // turn on or off SMTP authentication
+        $mail = new PHPMailer(); // defaults to using php "mail()"
+        $mail->IsSMTP();
+        $mail->SMTPDebug = 0; // set mailer to use SMTP
+        $mail->Timeout = 120;     // set longer timeout for latency or servers that take a while to respond
 
-    try {
+        //smtp.dps.globalxtreme.net
+        $mail->Host = "202.58.203.26";        // specify main and backup server
+        $mail->Port = 2505;
+        $mail->SMTPAuth = false;    // turn on or off SMTP authentication
 
-        $message_template = purchase_order_template(
-            $row_transaction,
-            $result_carts,
-            $row_shipping,
-            $row_buyer,
-            $province,
-            $city,
-            $currency_properties,
-            $row_bank_transfer
-        );
+        try {
 
-        // Set Holder name
-        $holder_name = ($row_transaction['is_guest'] ? ($row_buyer['first_name'] . ' ' . $row_buyer['last_name']) : ($row_buyer['firstname'] . ' ' . $row_buyer['lastname']));
+            $message_template = purchase_order_template(
+                $row_transaction,
+                $result_carts,
+                $row_shipping,
+                $row_buyer,
+                $province,
+                $city,
+                $currency_properties,
+                $row_bank_transfer
+            );
 
-        $mail->AddAddress($row_buyer['email'], $holder_name);
-        $mail->SetFrom('info@seagodswetsuit.com', 'Seagods Wetsuit');
+            // Set Holder name
+            $holder_name = ($row_transaction['is_guest'] ? ($row_buyer['first_name'] . ' ' . $row_buyer['last_name']) : ($row_buyer['firstname'] . ' ' . $row_buyer['lastname']));
 
-        $mail->Subject = 'Purchase Order - Seagods Wetsuit';
-        $mail->MsgHTML($message_template);
+            $mail->AddAddress($row_buyer['email'], $holder_name);
+            $mail->SetFrom('info@seagodswetsuit.com', 'Seagods Wetsuit');
 
-        if ($mail->Send()) {
+            $mail->Subject = 'Purchase Order - Seagods Wetsuit';
+            $mail->MsgHTML($message_template);
 
-            // Set Update transaction
-            mysql_query("UPDATE `transaction` SET `send_order_email` = '1' WHERE `id_transaction` = '" . $row_transaction["id_transaction"] . "';");
+            if ($mail->Send()) {
 
+                // Set Update transaction
+                mysql_query("UPDATE `transaction` SET `send_order_email` = '1' WHERE `id_transaction` = '" . $row_transaction["id_transaction"] . "';");
+
+            }
+
+        } catch (phpmailerException $e) {
+            // Error
         }
 
-    } catch (phpmailerException $e) {
-        // Error
     }
 }

@@ -83,7 +83,7 @@ if ($loggedin) {
 
         // Insert to custom collection
         $query_custom_collection = mysql_query("INSERT INTO `custom_collection`
-                    (`code`, `id_member`, `gender`, `wet_suit_type`, `arm_zipper`, `ankle_zipper`, `image`, `status`, `price`, `date_add`, `date_upd`, `level`)
+                    (`code`, `id_member`, `gender`, `wet_suit_type`, `arm_zipper`, `ankle_zipper`, `image`, `price`, `status`,  `date_add`, `date_upd`, `level`)
                     VALUES ('$custom_item_number', '" . $loggedin["id_member"] . "', '$gender', '$wetsuit', '$armZipper', '$ankleZipper', '$img', '" . $row_price["value"] . "', 'saved', NOW(), NOW(), '0');");
         if (!$query_custom_collection) {
             $msg = 'Unable to save collection.!';
