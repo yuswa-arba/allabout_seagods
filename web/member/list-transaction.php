@@ -129,7 +129,10 @@ if ($loggedin = logged_in()) {
                                                 
                                             </td>
                                             <td class="v-align-middle">
-                                                <a class="btn btn-success" href="detail-transaction.php?id_transaction=' . $row_transaction['id_transaction'] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '">view</a>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-success" href="detail-transaction.php?id_transaction=' . $row_transaction['id_transaction'] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '">view</a>
+                                                    <a class="btn btn-success" target="_blank" href="../order_pdf.php?id_transaction=' . $row_transaction['id_transaction'] . '"><i class="fa fa-file-pdf-o"></i></a>
+                                                </div>
                                             </td>
                                         </tr>';
     }
