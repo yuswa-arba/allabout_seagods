@@ -7,6 +7,8 @@
  * Email: adit@globalxtreme.net
  */
 include("config/configuration.php");
+include("../web/config/shipping/action_raja_ongkir.php");
+include("../web/config/shipping/province_city.php");
 
 session_start();
 ob_start();
@@ -120,37 +122,57 @@ if ($loggedin = logged_inadmin()) { //  Check if they are logged in
 
     }
 
+    // Get province
+    $get_province = get_province();
+
     $no = 1;
     while ($row_member = mysql_fetch_array($query_member)) {
 
-        // Check province
-        $total_province = 0;
-        $row_province = [];
-        if ($row_member['idpropinsi'] != '' || $row_member['idpropinsi'] != null) {
+        // Set default province null
+        $province_name = null;
 
-            // Set province
-            $query_province = mysql_query("SELECT `namaProvinsi` FROM `provinsi` WHERE `idProvinsi` = '" . $row_member["idpropinsi"] . "' LIMIT 0,1;");
-            $total_province = mysql_num_rows($query_province);
+        // Set province ID
+        $id_province = $row_member['idpropinsi'];
 
-            // Set variable province
-            if ($total_province > 0) {
-                $row_province = mysql_fetch_array($query_province);
+        if ($id_province) {
+
+            foreach ($get_province->rajaongkir->results as $province) {
+
+                if ($province->province_id == $id_province) {
+
+                    // Set province name
+                    $province_name = $province->province;
+
+                }
+
             }
 
         }
 
-        // Check City
-        $total_city = 0;
-        $row_city = [];
-        if ($row_member['idkota'] != '' || $row_member['idkota'] != null) {
+        // Set default city null
+        $city_name = null;
 
-            // Set city
-            $query_city = mysql_query("SELECT `namaKota` FROM `kota` WHERE `idKota` = '" . $row_member["idkota"] . "' AND `level` = '0' LIMIT 0,1;");
-            $total_city = mysql_num_rows($query_city);
+        // Set city ID
+        $id_city = $row_member['idkota'];
 
-            // Set variable province
-            if ($total_city > 0) {
-                $row_city = mysql_fetch_array($query_city);
+        // Set parameters
+        $city_parameters = [
+            'id' => $id_city,
+            'province' => $id_province
+        ];
+
+        if ($id_city){
+
+            // Get city
+            $get_city = get_city($city_parameters);
+
+            // SEt result city
+            $city = $get_city->rajaongkir->results;
+            if ($city) {
+
+                // Set city name
+                $city_name = $city->city_name;
+
             }
 
         }
@@ -167,10 +189,10 @@ if ($loggedin = logged_inadmin()) { //  Check if they are logged in
                                      </div>
                                 </div>
                                 <div class="col-3">
-                                     <label class="bold fs-16 text-black" ' . (($total_city == 0) ? 'style="color: #9fb0b6 !important; font-style: italic;"' : '') . '>' . (($total_city > 0) ? $row_city['namaKota'] : "Tidak ada Kota") . '</label>
+                                     <label class="bold fs-16 text-black" ' . ($city_name ? '' : 'style="color: #9fb0b6 !important; font-style: italic;"') . '>' . ($city_name ? $city_name : "Tidak ada Kota") . '</label>
                                 </div>
                                 <div class="col-3">
-                                     <label class="bold fs-16 text-black" ' . (($total_province == 0) ? 'style="color: #9fb0b6 !important; font-style: italic;"' : '') . '>' . (($total_province > 0) ? $row_province['namaProvinsi'] : "Tidak ada Provinsi") . '</label>
+                                     <label class="bold fs-16 text-black" ' . ($province_name ? '' : 'style="color: #9fb0b6 !important; font-style: italic;"') . '>' . ($province_name ? $province_name : "Tidak ada Provinsi") . '</label>
                                 </div>
                                 <div class="col-3">
                                      <label class="bold fs-16 text-black" ' . (($row_member["email"] == '' || $row_member["email"] == null) ? 'style="color: #9fb0b6 !important; font-style: italic;"' : '') . '>' . (($row_member["email"] != '' || $row_member["email"] != null) ? $row_member["email"] : "Member ini tidak memiliki email") . '</label>
@@ -184,7 +206,7 @@ if ($loggedin = logged_inadmin()) { //  Check if they are logged in
         $content .= '
                             <div class="row">
                                 <div class="col-12 text-center">
-                                    <label class="bold fs-16 text-black">'.(isset($_POST["search"]) ? "Member in search for subscribe not found" : "Member for subscribe does not available").'</label>
+                                    <label class="bold fs-16 text-black">' . (isset($_POST["search"]) ? "Member in search for subscribe not found" : "Member for subscribe does not available") . '</label>
                                 </div>
                             </div>
                             <hr>';

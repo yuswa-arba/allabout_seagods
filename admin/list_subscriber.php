@@ -105,13 +105,13 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                     <tbody>';
 
     // Get member
-    $query_member = mysql_query("SELECT `member`.* FROM `member`, `users` 
+    $query_member = mysql_query("SELECT `member`.*, `users`.`group` FROM `member`, `users` 
         WHERE `member`.`id_member` = `users`.`id_member` AND `member`.`subscribe` = '1' 
         AND `member`.`level` = '0' AND `users`.`group` != 'admin'
         ORDER BY `member`.`id_member` DESC LIMIT $start,$perhalaman;");
 
     // Set total member
-    $sql_total_data = mysql_num_rows(mysql_query("SELECT `member`.* FROM `member`, `users` 
+    $sql_total_data = mysql_num_rows(mysql_query("SELECT `member`.*, `users`.`group` FROM `member`, `users` 
         WHERE `member`.`id_member` = `users`.`id_member` AND `member`.`subscribe` = '1' 
         AND `member`.`level` = '0' AND `users`.`group` != 'admin'
         ORDER BY `member`.`id_member` DESC"));

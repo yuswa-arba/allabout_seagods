@@ -144,6 +144,11 @@ if ($loggedin = logged_in()) { // Check if they are logged in
 
                             }
 
+                            // Unset guest
+                            if (isset($_SESSION['guest'])) {
+                                unset($_SESSION['guest']);
+                            }
+
                             if (isset($_GET['action'])) {
                                 if ($_GET['action'] == 'checkout') {
                                     header("Location: checkout.php");

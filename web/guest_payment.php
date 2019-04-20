@@ -29,10 +29,13 @@ if (isset($_POST['payment_paypal']) && $payment_paypal) {
     $address = isset($_POST['address']) ? mysql_real_escape_string(trim($_POST['address'])) : '';
     $email = isset($_POST['email']) ? mysql_real_escape_string(trim($_POST['email'])) : '';
     $weight = isset($_POST['weight']) ? mysql_real_escape_string(trim($_POST['weight'])) : '';
+    $courier = isset($_POST['courier']) ? mysql_real_escape_string(trim($_POST['courier'])) : '';
+    $service = isset($_POST['service']) ? mysql_real_escape_string(trim($_POST['service'])) : '';
     $price_shipping = isset($_POST['price_shipping']) ? mysql_real_escape_string(trim($_POST['price_shipping'])) : '';
     $state = isset($_POST['state']) ? mysql_real_escape_string(trim($_POST['state'])) : '';
     $total_paypal = isset($_POST['total_paypal']) ? mysql_real_escape_string(trim($_POST['total_paypal'])) : '';
     $shipping = isset($_POST['shipping']) ? mysql_real_escape_string(trim($_POST['shipping'])) : '';
+    $shipping_USD = isset($_POST['shipping_USD']) ? mysql_real_escape_string(trim($_POST['shipping_USD'])) : '';
     $description = isset($_POST['description']) ? mysql_real_escape_string(trim($_POST['description'])) : '';
     $paymentId = isset($_POST['paymentId']) ? mysql_real_escape_string(trim($_POST['paymentId'])) : '';
 
@@ -198,8 +201,8 @@ if (isset($_POST['payment_paypal']) && $payment_paypal) {
         if ($shipping != '') {
 
             // Insert shipping
-            $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
-                VALUES('" . $row_transaction["id_transaction"] . "', '$weight', '$price_shipping', '$shipping', NOW(), NOW());";
+            $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `courier`, `service`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
+                VALUES('" . $row_transaction["id_transaction"] . "', '$courier', '$service', '$weight', '$price_shipping', '$shipping', NOW(), NOW());";
             if (!mysql_query($insert_shipping_query)) {
                 roll_back();
                 $msg = 'Unable to save shipping';
@@ -209,7 +212,7 @@ if (isset($_POST['payment_paypal']) && $payment_paypal) {
 
             // Insert paypal item shipping
             $insert_paypal_item_shipping_query = "INSERT INTO `paypal_items` (`id_paypal`, `id_item`, `price`, `quantity`, `date_add`, `date_upd`, `level`)
-                    VALUES ('" . $row_paypal["id_paypal"] . "', '', '" . $shipping . "', '', NOW(), NOW(), '0');";
+                    VALUES ('" . $row_paypal["id_paypal"] . "', '', '$shipping_USD', '', NOW(), NOW(), '0');";
             if (!mysql_query($insert_paypal_item_shipping_query)) {
                 roll_back();
                 $msg = 'Unable to save shipping in paypal item';

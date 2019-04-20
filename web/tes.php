@@ -2,7 +2,9 @@
 include("config/configuration.php");
 include("config/template_cart.php");
 include("config/shipping/action_raja_ongkir.php");
-include("config/shipping/city.php");
+include("config/shipping/province_city.php");
+session_start();
+ob_start();
 
 $titlebar = "Register Guest";
 $menu = "";
@@ -24,14 +26,22 @@ curl_setopt_array($curl, array(
 
 // Set parameters
 $parameters = [
-    'id' => 39,
-    'province' => 5
+//    'id' => 39,
+    'province' => 4
 ];
 
-$response = get_city($parameters);
+// Get city
+$get_city = get_city($parameters);
+
+//foreach ($get_province->rajaongkir->results as $province) {
+//    if ($province->province_id == 2) {
+//        echo $province->province_id . ' ';
+//    }
+//}
+//unset($_SESSION['guest']);
 
 echo "<pre>";
-print_r($response);
+print_r($_SESSION['guest']);
 echo "</pre>";
 
 $content = '

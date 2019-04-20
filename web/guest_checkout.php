@@ -2,6 +2,8 @@
 include("config/configuration.php");
 include("config/template_cart.php");
 include("config/currency_types.php");
+include("config/shipping/action_raja_ongkir.php");
+include("config/shipping/province_city.php");
 session_start();
 ob_start();
 
@@ -11,6 +13,32 @@ function get_price($name)
     $query_setting_price = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = '$name' LIMIT 0,1");
     $row_setting_price = mysql_fetch_array($query_setting_price);
     return $row_setting_price['value'];
+}
+
+function get_cost($parameters)
+{
+    // Set parameter request or data request
+    $parameters = set_parameter_or_data_request($parameters);
+
+    // Set where id_province
+    $action_parameter = '';
+    foreach ($parameters as $key => $parameter) {
+
+        // Set result parameter
+        if ($key == 0) {
+            $action_code = '';
+        } else {
+            $action_code = '&';
+        }
+
+        // Set key name
+        $name_key = key($parameter);
+
+        $action_parameter .= $action_code . $name_key . '=' . $parameter[$name_key];
+    }
+
+    // Get cost
+    return action_post('cost', $action_parameter);
 }
 
 // Default currency
@@ -44,6 +72,7 @@ $row_cart = [];
 
 // Set value nominal default
 $total_amount = 0;
+$subtotal = 0;
 $total_shipping = 0;
 $total_amount_shipping = 0;
 $weight = 0;
@@ -51,6 +80,10 @@ $total_quantity = 0;
 
 // Set nominal transaction
 if (isset($_SESSION['cart_item']) && !empty($_SESSION['cart_item'])) {
+
+    // Set city id company
+    $get_city_company_query = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = 'hometown' LIMIT 0,1;");
+    $row_city_company = mysql_fetch_assoc($get_city_company_query);
 
     // Set cart item
     foreach ($_SESSION['cart_item'] as $key => $cart_item) {
@@ -115,23 +148,13 @@ if (isset($_SESSION['cart_item']) && !empty($_SESSION['cart_item'])) {
     // Set weight
     $weight_round = ((round($weight) < 1) ? 1 : round($weight));
 
-    // Set shipping
-    $shipping = (isset($row_city['ongkos_kirim']) ? (($currency_code == CURRENCY_USD_CODE) ? $row_city['ongkos_kirim'] : ($row_city['ongkos_kirim'] * $USDtoIDR)) : 0);
-    $total_shipping = ($weight_round * (float)$shipping);
-
     // Set total amount with currency
-    $total_amount = (($currency_code == CURRENCY_USD_CODE) ? $total_amount : ($total_amount * $USDtoIDR));
-
-    // Set total amount shipping
-    $total_amount_shipping = ($total_amount + $total_shipping);
+    $subtotal = (($currency_code == CURRENCY_USD_CODE) ? $total_amount : ($total_amount * $USDtoIDR));
 
     // Set default city
     $row_cart['total_qty'] = $total_quantity;
-    $row_cart['subtotal'] = $total_amount;
+    $row_cart['subtotal'] = $subtotal;
     $row_cart['weight'] = $weight;
-    $row_cart['price_shipping'] = $row_city['ongkos_kirim'];
-    $row_cart['shipping'] = ($weight_round * $row_city['ongkos_kirim']);
-    $row_cart['total'] = $total_amount_shipping;
 
 } else {
     echo "<script>
@@ -156,8 +179,14 @@ if (isset($_POST['checkout'])) {
     $account_number = isset($_POST['account_number']) ? mysql_real_escape_string(trim($_POST['account_number'])) : '';
     $from_bank = isset($_POST['from_bank']) ? mysql_real_escape_string(trim($_POST['from_bank'])) : '';
     $id_bank = isset($_POST['id_bank']) ? mysql_real_escape_string(trim($_POST['id_bank'])) : '';
+    $weight = isset($_POST['weight']) ? mysql_real_escape_string(trim($_POST['weight'])) : '';
+    $courier = isset($_POST['courier']) ? mysql_real_escape_string(trim($_POST['courier'])) : '';
+    $service_courier = isset($_POST['service_courier']) ? mysql_real_escape_string(trim($_POST['service_courier'])) : '';
+    $price_shipping = isset($_POST['price_shipping']) ? mysql_real_escape_string(trim($_POST['price_shipping'])) : '';
+    $shipping = isset($_POST['shipping']) ? mysql_real_escape_string(trim($_POST['shipping'])) : '';
+    $shipping_IDR = isset($_POST['shipping_IDR']) ? mysql_real_escape_string(trim($_POST['shipping_IDR'])) : '';
+    $shipping_USD = isset($_POST['shipping_USD']) ? mysql_real_escape_string(trim($_POST['shipping_USD'])) : 0;
     $photoNameUpload = '';
-
 
     if (!empty($transaction_number) && !empty($first_name) && !empty($last_name) && !empty($phone_no) && !empty($zip_code) && !empty($province)
         && !empty($city) && !empty($address) && !empty($email) && !empty($account_number) && !empty($from_bank) && !empty($id_bank)
@@ -173,6 +202,9 @@ if (isset($_POST['checkout'])) {
         $_SESSION['guest']['address'] = $address;
         $_SESSION['guest']['id_province'] = $province;
         $_SESSION['guest']['id_city'] = $city;
+        $_SESSION['guest']['courier'] = $courier;
+        $_SESSION['guest']['service'] = $service_courier;
+        $_SESSION['guest']['courier_cost'] = $price_shipping;
         $_SESSION['guest']['zip_code'] = $zip_code;
         $_SESSION['guest']['email'] = $email;
         $_SESSION['guest']['phone_no'] = $phone_no;
@@ -223,6 +255,9 @@ if (isset($_POST['checkout'])) {
             exit();
         }
 
+        // Set total transaction
+        $total_transaction = ($total_amount + $shipping_USD);
+
         // Insert guest
         $insert_guest_query = "INSERT INTO `guest` (`first_name`, `last_name`, `account_number`, `address`, `id_country`, `id_province`, `id_city`, `zip_code`, `email`, `phone_no`, `date_add`, `date_upd`, `level`)
             VALUES('$first_name', '$last_name', '$account_number', '$address', 'ID', '$province', '$city', '$zip_code', '$email', '$phone_no', NOW(), NOW(), '0');";
@@ -243,7 +278,7 @@ if (isset($_POST['checkout'])) {
 
         // Insert to transaction
         $insert_transaction_query = "INSERT INTO `transaction` (`kode_transaction`, `is_guest`,`id_guest`, `status`, `konfirm`, `payment_method`, `total`, `date_add`, `date_upd`)
-            VALUES('$transaction_number', '1', '" . $row_guest["id"] . "', 'process', 'not confirmated', 'Bank Transfer', '$total_amount_shipping', NOW(), NOW())";
+            VALUES('$transaction_number', '1', '" . $row_guest["id"] . "', 'process', 'not confirmated', 'Bank Transfer', '$total_transaction', NOW(), NOW())";
 
         // Error
         if (!mysql_query($insert_transaction_query)) {
@@ -262,7 +297,7 @@ if (isset($_POST['checkout'])) {
 
         // Insert bank transfer
         $insert_bank_transfer_query = "INSERT INTO `bank_transfer` (`id_transaction`, `id_bank`, `is_guest`, `id_guest`, `from_bank`, `account_number`, `amount`, `photo`, `date_add`, `date_upd`)
-            VALUES('" . $row_transaction["id_transaction"] . "', '$id_bank', '1', '" . $row_guest["id"] . "', '$from_bank', '$account_number', '$total_amount_shipping', '$photoNameUpload', NOW(), NOW());";
+            VALUES('" . $row_transaction["id_transaction"] . "', '$id_bank', '1', '" . $row_guest["id"] . "', '$from_bank', '$account_number', '$total_transaction', '$photoNameUpload', NOW(), NOW());";
 
         // Error
         if (!mysql_query($insert_bank_transfer_query)) {
@@ -357,8 +392,8 @@ if (isset($_POST['checkout'])) {
         }
 
         // Insert shipping
-        $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
-                VALUES('" . $row_transaction["id_transaction"] . "', '" . $row_cart['weight'] . "', '" . $row_cart['price_shipping'] . "', '" . $row_cart['shipping'] . "', NOW(), NOW());";
+        $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `courier`, `service`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
+                VALUES('" . $row_transaction["id_transaction"] . "', '$courier', '$service_courier', '" . $row_cart['weight'] . "', '$price_shipping', '$shipping_IDR', NOW(), NOW());";
         if (!mysql_query($insert_shipping_query)) {
             roll_back();
             echo "<script>
@@ -408,7 +443,15 @@ $content .= '
                                     
                                     <div class="full-width padding-30 wrap mcb-wrap">
                                         <p class="fs-20 fw-600 text-blue-light">Checkout as Guest</p>
-                                        <div class="width-90 m-b-25">
+                                        <div class="width-90 m-b-25">';
+
+if ($currency_code == CURRENCY_USD_CODE) {
+    $content .= '
+                                            <p class="fs-12 text-black m-b-0 fw-500">
+                                                - Fill in all form for checkout with paypal
+                                            </p>';
+} else {
+    $content .= '
                                             <p class="fs-12 text-black m-b-0 fw-500">
                                                 - It is expected to fill out this form correctly and accordingly, to facilitate the admin in processing the items you ordered
                                             </p>
@@ -423,7 +466,10 @@ $content .= '
                                             </p>
                                             <p class="fs-12 text-black m-b-0 fw-500">
                                                 - Terms and Conditions apply
-                                            </p>
+                                            </p>';
+}
+
+$content .= '
                                         </div>
                                         
                                         <form action="" method="post" role="form" enctype="multipart/form-data">
@@ -431,6 +477,7 @@ $content .= '
                                                 
                                                 <div class="width-60 wrap mcb-wrap p-r-25">
                                                 
+                                                    <input type="hidden" name="id_city_company" id="id_city_company" value="' . $row_city_company['value'] . '">
                                                     <div class="wrap mcb-wrap full-width m-b-10">
                                                         <div class="full-width pull-left m-r-10">
                                                             <label class="fs-13 fw-500 text-black">Transaction Number <span class="text-red">*</span></label>
@@ -463,9 +510,20 @@ $content .= '
                                                             <select name="province" class="m-b-0 full-width" id="province" onchange="changeProvince();" required>
                                                                 <option hidden>Province</option>';
 
-$all_province_query = mysql_query("SELECT * FROM `provinsi`;");
-while ($row_all_province = mysql_fetch_array($all_province_query)) {
-    $content .= '<option value="' . $row_all_province['idProvinsi'] . '" ' . (isset($guest['id_province']) ? (($guest['id_province'] == $row_all_province['idProvinsi']) ? 'selected' : '') : '') . '>' . $row_all_province['namaProvinsi'] . '</option>';
+// Get city
+$get_province = get_province();
+
+// Set results
+$result_provinces = $get_province->rajaongkir->results;
+
+foreach ($result_provinces as $result_province) {
+
+    // Set selected province
+    $selected_province = (isset($guest['id_province']) ? (($result_province->province_id == $guest['id_province']) ? 'selected' : '') : '');
+
+    // Set option
+    $content .= '<option value="' . $result_province->province_id . '" ' . $selected_province . '>' . $result_province->province . '</option>';
+
 }
 
 $content .= '
@@ -476,12 +534,106 @@ $content .= '
                                                             <select name="city" class="m-b-0 full-width" id="city" onchange="changeCity();" required>
                                                                 <option hidden>City</option>';
 
-// Set where province
-$where_province = (isset($guest['id_province']) ? "AND `idProvinsi` = '" . $guest['id_province'] . "'" : '');
+// Set parameter
+$parameter_city = isset($guest['id_province']) ? [
+    'province' => $guest['id_province']
+] : [];
 
-$all_city_query = mysql_query("SELECT * FROM `kota` WHERE `level` = '0' $where_province;");
-while ($row_all_city = mysql_fetch_array($all_city_query)) {
-    $content .= '<option value="' . $row_all_city['idKota'] . '" ' . (isset($guest['id_city']) ? (($guest['id_city'] == $row_all_city['idKota']) ? 'selected' : '') : '') . '>' . $row_all_city['namaKota'] . '</option>';
+// Get city
+$get_city = get_city($parameter_city);
+
+// Set results
+$result_cities = $get_city->rajaongkir->results;
+
+foreach ($result_cities as $result_city) {
+
+    // Set selected province
+    $selected_city = (isset($guest['id_city']) ? (($result_city->city_id == $guest['id_city']) ? 'selected' : '') : '');
+
+    // Set option
+    $content .= '<option value="' . $result_city->city_id . '" ' . $selected_city . '>' . $result_city->city_name . '</option>';
+
+}
+
+$content .= '
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="wrap mcb-wrap full-width m-b-10">
+                                                        <div class="wrap mcb-wrap width-50 pull-left p-r-10">
+                                                            <label class="fs-13 fw-500 text-black">Courier <span class="text-red">*</span></label>
+                                                            <select name="courier" class="m-b-0 full-width" id="courier" onchange="changeCourier();" required ' . (isset($guest['id_city']) ? '' : 'disabled') . '>
+                                                                <option hidden>Courier</option>';
+
+if (isset($guest['id_city'])) {
+
+    // Set Couriers
+    $couriers = get_couriers();
+
+    foreach ($couriers as $courier) {
+
+        // Set selected courier
+        $selected_courier = (isset($guest['courier']) ? (($guest['courier'] == $courier['code']) ? 'selected' : '') : '');
+
+        // Set option
+        $content .= '<option value="' . $courier['code'] . '" ' . $selected_courier . '>' . $courier['name'] . '</option>';
+    }
+
+}
+
+$content .= '
+                                                            </select>
+                                                        </div>
+                                                        <div class="wrap mcb-wrap width-50 pull-left">
+                                                            <label class="fs-13 fw-500 text-black">Service Courier <span class="text-red">*</span></label>
+                                                            <select name="service_courier" class="m-b-0 full-width" id="service_courier"  onchange="changeService()" required ' . (isset($guest['courier']) ? '' : 'disabled') . '>
+                                                                <option hidden>Service Courier</option>';
+
+if (isset($guest['courier'])) {
+
+    // Set parameter request
+    $parameter_cost = [
+        'origin' => $row_city_company['value'],
+        'destination' => $guest['id_city'],
+        'weight' => (($row_cart['weight'] < 1) ? 1 : $row_cart['weight']),
+        'courier' => $guest['courier']
+    ];
+
+    // Get courier
+    $get_cost = get_cost($parameter_cost);
+
+    if ($get_cost->rajaongkir->status->code == 200) {
+
+        foreach ($get_cost->rajaongkir->results[0]->costs as $cost) {
+
+            // Set selected courier
+            $selected_service = (isset($guest['service']) ? (($guest['service'] == $cost->service) ? 'selected' : '') : '');
+
+            // Set option
+            $content .= '<option value="' . $cost->service . '" ' . $selected_service . '>' . $cost->service . '</option>';
+
+            if ($guest['service'] == $cost->service) {
+
+                // SEt service cost
+                $courier_cost = (($currency_code == CURRENCY_USD_CODE) ? round(($cost->cost[0]->value / $USDtoIDR), 2) : $cost->cost[0]->value);
+
+                // Set total shipping
+                $total_shipping = ($weight_round * $courier_cost);
+
+                // Set total amount shipping
+                $total_amount_shipping = ($subtotal + $total_shipping);
+
+                $row_cart['price_shipping_IDR'] = $cost->cost[0]->value;
+                $row_cart['shipping_IDR'] = ($weight_round * $cost->cost[0]->value);
+                $row_cart['shipping_USD'] = ($weight_round * round(($cost->cost[0]->value / $USDtoIDR), 2));
+                $row_cart['price_shipping'] = $courier_cost;
+                $row_cart['shipping'] = $total_shipping;
+                $row_cart['total'] = $total_amount_shipping;
+            }
+        }
+
+    }
+
 }
 
 $content .= '
@@ -570,39 +722,41 @@ $content .= '
                                                         <div class="full-width clearfix b-b-grey p-b-10 m-b-10">
                                                             <label class="fs-11 fw-500 m-b-0 pull-left">Total Item</label>
                                                             <p class="fs-14 text-black fw-600 pull-right m-b-0">' . $row_cart['total_qty'] . '</p>
-                                                            <input type="hidden" id="total_qty" value="' . $row_cart['total_qty'] . '">
+                                                            <input type="hidden" id="total_qty" name="total_qty" value="' . $row_cart['total_qty'] . '">
                                                         </div>
                                                         <div class="full-width clearfix b-b-grey p-b-10 m-b-10">
                                                             <label class="fs-11 fw-500 m-b-0 pull-left">Total Weight <span class="text-black">(Kg)</span></label>
                                                             <p class="fs-14 text-black fw-600 pull-right m-b-0">
                                                                 <span class="woocommerce-Price-amount">' . $row_cart['weight'] . '</span>
                                                             </p>
-                                                            <input type="hidden" id="weight" value="' . $row_cart['weight'] . '">
+                                                            <input type="hidden" id="weight" name="weight" value="' . $row_cart['weight'] . '">
                                                         </div>
                                                         
                                                         <div class="full-width clearfix b-b-grey p-b-10 m-b-10">
                                                             <label class="fs-11 fw-500 m-b-0 pull-left">Shipping Costs</label>
                                                             <p class="fs-14 text-black fw-600 pull-right m-b-0">
-                                                                <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . (($currency_code == CURRENCY_USD_CODE) ? $row_cart['shipping'] : number_format(($row_cart['shipping'] * $USDtoIDR), 0, '.', ',')) . '</span>
+                                                                <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . (number_format($row_cart['shipping'], (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',')) . '</span>
                                                             </p>
-                                                            <input type="hidden" id="price_shipping" value="' . $row_cart['price_shipping'] . '">
-                                                            <input type="hidden" id="shipping" value="' . $row_cart['shipping'] . '">
+                                                            <input type="hidden" id="price_shipping" name="price_shipping" value="' . $row_cart['price_shipping_IDR'] . '">
+                                                            <input type="hidden" id="shipping" name="shipping" value="' . $row_cart['shipping'] . '">
+                                                            <input type="hidden" id="shipping_IDR" name="shipping_IDR" value="' . $row_cart['shipping_IDR'] . '">
+                                                            <input type="hidden" id="shipping_USD" name="shipping_USD" value="' . $row_cart['shipping_USD'] . '">
                                                         </div>
                                                         
                                                         <div class="full-width clearfix b-b-grey p-b-10 m-b-10">
                                                             <label class="fs-11 fw-500 m-b-0 pull-left">Subtotal</label>
                                                             <p class="fs-14 text-black fw-600 pull-right m-b-0">
-                                                                <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . (($currency_code == CURRENCY_USD_CODE) ? $row_cart['subtotal'] : number_format(($row_cart['subtotal'] * $USDtoIDR), 0, '.', ',')) . '</span>
+                                                                <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . (number_format($row_cart['subtotal'], (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',')) . '</span>
                                                             </p>
-                                                            <input type="hidden" id="subtotal" value="' . $row_cart['subtotal'] . '">
+                                                            <input type="hidden" id="subtotal" name="subtotal" value="' . $row_cart['subtotal'] . '">
                                                         </div>
                                                                 
                                                         <div class="full-width clearfix p-b-5 m-b-30">
                                                             <label class="fs-14 fw-500 m-b-0 pull-left">Total</label>
                                                             <p class="fs-16 text-black fw-600 pull-right m-b-0">
-                                                                <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . (($currency_code == CURRENCY_USD_CODE) ? $row_cart['total'] : number_format(($row_cart['total'] * $USDtoIDR), 0, '.', ',')) . '</span>
+                                                                <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . (number_format($row_cart['total'], (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',')) . '</span>
                                                             </p>
-                                                            <input type="hidden" id="total" value="' . $row_cart['total'] . '">
+                                                            <input type="hidden" id="total" name="total" value="' . $row_cart['total'] . '">
                                                         </div>
                                                         
                                                         
@@ -673,9 +827,9 @@ $plugin = '
     <script src="plugins/loading/js/jquery-1.11.0.min.js"></script>
     <script src="plugins/loading/loading.js"></script>
     <script>
+        
         function changeProvince() {
             var id_province = jQuery("#province").val();
-            console.log(id_province);
             
             jQuery.ajax({
                 type: "POST",
@@ -689,12 +843,22 @@ $plugin = '
                     if (data.status == "error") {
                         alert(data.msg);
                     } else {
+                        
+                        var courier = jQuery("#courier");
+                        courier.html("").attr("disabled", true);
+                        courier.append("<option hidden>Courier</option>");
+                        
+                        var service_courier = jQuery("#service_courier");
+                        service_courier.html("").attr("disabled", true);
+                        service_courier.append("<option hidden>Service Courier</option>");
+                        
                         var city = jQuery("#city");
                         city.html("");
-                        city.append("<option>city</option>");
+                        city.append("<option hidden>city</option>");
+                        
                         for (var i = 0; i < data.results.length; i++) {
                             city.append(
-                                \'<option value="\' + data.results[i].idKota + \'">\' + data.results[i].namaKota + \'</option>\'
+                                \'<option value="\' + data.results[i].city_id + \'">\' + data.results[i].city_name + \'</option>\'
                             );
                         }
                     }
@@ -714,10 +878,93 @@ $plugin = '
                 },
                 dataType: "json",
                 success: function(data) {
-                    window.location.reload();
+                    if (data.status == "error") {
+                        alert(data.msg);
+                    } else {
+                        
+                        var service_courier = jQuery("#service_courier");
+                        service_courier.html("").attr("disabled", true);
+                        service_courier.append("<option hidden>Service Courier</option>");
+                        
+                        var courier = jQuery("#courier");
+                        courier.html("").attr("disabled", false);
+                        courier.append("<option hidden>Courier</option>");
+                        
+                        for (var i = 0; i < data.results.length; i++) {
+                            courier.append(
+                                \'<option value="\' + data.results[i].code + \'">\' + data.results[i].name + \'</option>\'
+                            );
+                        }
+                    }
                 }
             });
-        } 
+        }   
+        
+        function changeCourier() {
+            var id_city_company = jQuery("#id_city_company").val();
+            var id_city = jQuery("#city").val();
+            var weight = jQuery("#weight").val();
+            var courier = jQuery("#courier").val();
+            
+            jQuery.ajax({
+                type: "POST",
+                url: "member/change_courier.php",
+                data: {
+                    action: "change_courier",
+                    id_city_company: id_city_company,
+                    id_city: id_city,
+                    weight: weight,
+                    courier: courier
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.status == "error") {
+                        alert(data.msg);
+                    } else {
+                        
+                        var service_courier = jQuery("#service_courier");
+                        service_courier.html("").attr("disabled", false);
+                        service_courier.append("<option hidden>Service Courier</option>");
+                        
+                        var costs = data.results.rajaongkir.results[0].costs;
+                        for (var i = 0; i < costs.length; i++) {
+                            service_courier.append(
+                                \'<option value="\' + costs[i].service + \'">\' + costs[i].service + \'</option>\'
+                            );
+                        }
+                    }
+                }
+            });
+        }
+        
+        function changeService() {
+            var service_courier = jQuery("#service_courier").val();
+            var id_city_company = jQuery("#id_city_company").val();
+            var id_city = jQuery("#city").val();
+            var weight = jQuery("#weight").val();
+            var courier = jQuery("#courier").val();
+            
+            jQuery.ajax({
+                type: "POST",
+                url: "member/change_courier.php",
+                data: {
+                    action: "change_service_courier",
+                    service_courier: service_courier,
+                    id_city_company: id_city_company,
+                    id_city: id_city,
+                    weight: weight,
+                    courier: courier
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.status == "error") {
+                        alert(data.msg);
+                    } else {
+                        window.location.reload();
+                    }
+                }
+            });
+        }
         
         function checkValidation() {
             
@@ -832,7 +1079,6 @@ $plugin = '
                                     "Authorization": "Bearer " + token.access_token
                                 },
                                 success: function (payment) {
-                                    console.log(payment);
                                     
                                     var amount = payment.transactions[0].related_resources[0].sale.amount;
                                     
@@ -846,7 +1092,11 @@ $plugin = '
                                     var address= jQuery("#address").val();
                                     var email= jQuery("#email").val();
                                     var weight= jQuery("#weight").val();
+                                    var courier= jQuery("#courier").val();
+                                    var service= jQuery("#service_courier").val();
                                     var price_shipping= jQuery("#price_shipping").val();
+                                    var shipping= jQuery("#shipping_IDR").val();
+                                    var shipping_USD= jQuery("#shipping_USD").val();
                                     
                                     $.ajax({
                                         type: "POST",
@@ -863,16 +1113,24 @@ $plugin = '
                                             address: address,
                                             email: email,
                                             weight: weight,
+                                            courier: courier,
+                                            service: service,
                                             price_shipping: price_shipping,
                                             state: payment.transactions[0].related_resources[0].sale.state,
                                             total_paypal: amount.total,
-                                            shipping: amount.details.shipping,
+                                            shipping: shipping,
+                                            shipping_USD: shipping_USD,
                                             description: payment.transactions[0].description,
                                             paymentId: payment.id,
                                         },
                                         dataType: "json",
                                         success: function (data) {
-                                            console.log(data.results);
+                                            if (data.status == "error") {
+                                                alert(data.msg);
+                                            } else {
+                                                alert(data.msg);
+                                                window.location.href = "home.php";
+                                            }
                                         }
                                     });
                                    

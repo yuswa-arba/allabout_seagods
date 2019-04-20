@@ -39,19 +39,19 @@ if ($loggedin = logged_in()) {//  Check if they are logged in
         $row_bank_member = mysql_fetch_array($bank_member_query);
     }
 
-    // Set shipping default
-    $shipping = 0;
+    // Set default guest
+    $guest = [];
 
-    // Set city
-    if ($row_member['idkota']) {
+    // Set shipping from session
+    if (isset($_SESSION['guest'])) {
 
-        // Set city
-        $city_query = mysql_query("SELECT * FROM `kota` WHERE `idKota` = '" . $row_member["idkota"] . "' LIMIT 0,1;");
-        $row_city = mysql_fetch_array($city_query);
+        // Check session guest
+        $guest = isset($_SESSION['guest']) ? $_SESSION['guest'] : [];
 
-        // Set shipping
-        $shipping = $row_city['ongkos_kirim'];
     }
+
+    // Set shipping
+    $shipping = (isset($guest['courier_cost']) ? $guest['courier_cost'] : 0);
 
     // Set default value
     $amount_USD = 0;
@@ -82,9 +82,12 @@ if ($loggedin = logged_in()) {//  Check if they are logged in
 
     }
 
+    // Set weight
+    $weight_round = (($weight < 1) ? 1 : round($weight));
+
     // Set amount USD
-    $amount_IDR = (($shipping * $USDtoIDR) * round($weight)) + ($amount_USD * $USDtoIDR);
-    $amount_USD = ($shipping * round($weight)) + $amount_USD;
+    $amount_IDR = ($shipping * round($weight_round)) + ($amount_USD * $USDtoIDR);
+    $amount_USD = (round(($shipping / $USDtoIDR), 2) * round($weight_round)) + $amount_USD;
 
     // Transaction number
     $transaction_number = generate_transaction_number();
@@ -201,11 +204,11 @@ if ($loggedin = logged_in()) {//  Check if they are logged in
             }
 
             // Set total shipping
-            $total_shipping = ($shipping * round($weight));
+            $total_shipping = ($shipping * round($weight_round));
 
             // Insert shipping
-            $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
-                VALUES('" . $row_transaction["id_transaction"] . "', '$weight', '$shipping', '$total_shipping', NOW(), NOW());";
+            $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `courier`, `service`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
+                VALUES('" . $row_transaction["id_transaction"] . "', '" . $guest["courier"] . "', '" . $guest["service"] . "', '$weight', '$shipping', '$total_shipping', NOW(), NOW());";
             if (!mysql_query($insert_shipping_query)) {
                 roll_back();
                 echo "<script>

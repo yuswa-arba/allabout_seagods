@@ -488,4 +488,13 @@ function generate_transaction_number()
     return $transaction_number;
 }
 
+function get_couriers()
+{
+    return [
+        ['code' => 'jne', 'name' => 'JNE'],
+        ['code' => 'pos', 'name' => 'POS Indonesia'],
+        ['code' => 'tiki', 'name' => 'TIKI']
+    ];
+}
+
 ?>

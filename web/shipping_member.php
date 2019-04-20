@@ -4,6 +4,17 @@ require "config/configuration.php";
 session_start();
 ob_start();
 
+// Set price custom item
+function get_price($name)
+{
+    $query_setting_price = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = '$name' LIMIT 0,1");
+    $row_setting_price = mysql_fetch_array($query_setting_price);
+    return $row_setting_price['value'];
+}
+
+// Set nominal curs from USD to IDR
+$USDtoIDR = get_price('currency-value-usd-to-idr');
+
 $loggedin = logged_in();
 
 if (isset($_GET["select_country"]) && $_GET["select_country"] == "select_country") {
@@ -82,9 +93,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'save_payment') {
 //    $transactionId = isset($_POST['id_transaction']) ? strip_tags(trim($_POST['id_transaction'])) : '';
     $state = isset($_POST['state']) ? strip_tags(trim($_POST['state'])) : '';
     $amount = isset($_POST['amount']['total']) ? $_POST['amount']['total'] : '';
-    $shipping = isset($_POST['amount']['details']['shipping']) ? $_POST['amount']['details']['shipping'] : '';
+    $shipping = isset($_POST['shipping']) ? mysql_real_escape_string(trim($_POST['shipping'])) : '';
     $description = isset($_POST['description']) ? $_POST['description'] : '';
     $weight = isset($_POST['weight']) ? mysql_real_escape_string(trim($_POST['weight'])) : '';
+    $courier = isset($_POST['courier']) ? mysql_real_escape_string(trim($_POST['courier'])) : '';
+    $service = isset($_POST['service']) ? mysql_real_escape_string(trim($_POST['service'])) : '';
     $price_shipping = isset($_POST['price_shipping']) ? mysql_real_escape_string(trim($_POST['price_shipping'])) : '';
 
     $return_update_payment['failed'] = false;
@@ -202,8 +215,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'save_payment') {
         if ($shipping != '') {
 
             // Insert shipping
-            $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
-                VALUES('" . $row_transaction["id_transaction"] . "', '$weight', '$price_shipping', '$shipping', NOW(), NOW());";
+            $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `courier`, `service`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
+                VALUES('" . $row_transaction["id_transaction"] . "', '$courier', '$service', '$weight', '$price_shipping', '$shipping', NOW(), NOW());";
             if (!mysql_query($insert_shipping_query)) {
                 roll_back();
                 $msg = 'Unable to save shipping';
@@ -211,9 +224,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'save_payment') {
                 exit();
             }
 
+            // SEt shipping usd
+            $shipping_USD = round(($shipping / $USDtoIDR), 2);
+
             // Insert paypal item shipping
             $insert_paypal_item_shipping_query = "INSERT INTO `paypal_items` (`id_paypal`, `id_item`, `price`, `quantity`, `date_add`, `date_upd`, `level`)
-                    VALUES ('" . $row_paypal["id_paypal"] . "', '', '" . $shipping . "', '', NOW(), NOW(), '0');";
+                    VALUES ('" . $row_paypal["id_paypal"] . "', '', '$shipping_USD', '', NOW(), NOW(), '0');";
             if (!mysql_query($insert_paypal_item_shipping_query)) {
                 roll_back();
                 $msg = 'Unable to save shipping in paypal item';

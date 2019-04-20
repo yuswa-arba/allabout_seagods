@@ -89,7 +89,8 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         $dateTimestamp = $nowDate->getTimestamp();
 
         // query send news
-        $query_send_news = "UPDATE `news_subscriber` SET `dateTimestamp` = '$dateTimestamp', `sent` = TRUE, `date_upd` = NOW() WHERE `id` = '$news_id';";
+        $query_send_news = "UPDATE `news_subscriber` SET `dateTimestamp` = '$dateTimestamp', `sent` = TRUE,
+            `delivery_process` = TRUE, `date_upd` = NOW() WHERE `id` = '$news_id';";
 
         // If error
         if (!mysql_query($query_send_news)) {

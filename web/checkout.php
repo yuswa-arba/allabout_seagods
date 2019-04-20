@@ -62,10 +62,15 @@ if ($loggedin = logged_in()) {
         }
     }
 
+
+    // Set guest from session
+    $guest = [];
+
     $row_member = array();
     $row_provinsi = array();
     $row_kota = array();
     $update_member = true;
+    $kurs_IDR = 0;
     $kurs = 0;
 
     // Get cart
@@ -74,6 +79,10 @@ if ($loggedin = logged_in()) {
     $count_cart = mysql_num_rows($query_cart) > 0;
 
     if ($count_cart) {
+
+        // Check session guest
+        $guest = isset($_SESSION['guest']) ? $_SESSION['guest'] : [];
+
         $query_member = mysql_query("SELECT `member`.*, `users`.`email` FROM `member`, `users`
             WHERE `member`.`id_member` = `users`.`id_member` 
             AND `member`.`id_member` = '" . $loggedin["id_member"] . "' LIMIT 0,1;");
@@ -93,7 +102,8 @@ if ($loggedin = logged_in()) {
         $query_kota = mysql_query("SELECT * FROM `kota`
             WHERE `idKota` = '" . $row_member["idkota"] . "' LIMIT 0,1;");
         $row_kota = mysql_fetch_array($query_kota);
-        $kurs = (($currency_code == CURRENCY_USD_CODE) ? $row_kota["ongkos_kirim"] : ($row_kota['ongkos_kirim'] * $USDtoIDR));
+        $kurs_IDR = (isset($guest['courier_cost']) ? $guest['courier_cost'] : 0);
+        $kurs = (isset($guest['courier_cost']) ? (($currency_code == CURRENCY_USD_CODE) ? round(($guest['courier_cost'] / $USDtoIDR), 2) : $guest['courier_cost']) : 0);
 
         if ($row_member['firstname'] && $row_member['lastname'] && $row_member['alamat'] && $row_member['kode_pos'] &&
             $row_member['idCountry'] && $row_member['idpropinsi'] && $row_member['idkota']
@@ -328,7 +338,7 @@ if ($loggedin = logged_in()) {
                                                 }
 
                                                 // round out total weight
-                                                $total_weight_round = round($total_weight);
+                                                $total_weight_round = (($total_weight < 1) ? 1 : round($total_weight));
                                                 ?>
                                                 <input type="hidden" name="subtotal" id="subtotal"
                                                        value="<?php echo $item_total; ?>">
@@ -355,10 +365,16 @@ if ($loggedin = logged_in()) {
                                                         <h5 class="font-montserrat all-caps small no-margin hint-text bold">
                                                             Shipping Cost</h5>
                                                         <p class="no-margin"><?php echo $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? ($total_weight_round * $kurs) : number_format(($total_weight_round * $kurs), 0, '.', ',')); ?></p>
-                                                        <input type="hidden" name="shipping" id="price_shipping"
-                                                               value="<?php echo$kurs; ?>">
+                                                        <input type="hidden" name="courier" id="courier"
+                                                               value="<?php echo (isset($guest['courier']) ? $guest['courier'] : ''); ?>">
+                                                        <input type="hidden" name="service" id="service"
+                                                               value="<?php echo (isset($guest['service']) ? $guest['service'] : ''); ?>">
+                                                        <input type="hidden" name="price_shipping" id="price_shipping"
+                                                               value="<?php echo $kurs_IDR; ?>">
                                                         <input type="hidden" name="shipping" id="shipping"
                                                                value="<?php echo($total_weight_round * $kurs); ?>">
+                                                        <input type="hidden" name="shipping_IDR" id="shipping_IDR"
+                                                               value="<?php echo($total_weight_round * $kurs_IDR); ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 text-right bg-primary padding-10">
@@ -940,6 +956,9 @@ if ($loggedin = logged_in()) {
                                             description: payment.transactions[0].description,
                                             paymentId: payment.id,
                                             weight: $('#weight').val(),
+                                            courier: $('#courier').val(),
+                                            service: $('#service').val(),
+                                            shipping: $('#shipping_IDR').val(),
                                             price_shipping: $('#price_shipping').val()
                                         },
                                         dataType: 'json',

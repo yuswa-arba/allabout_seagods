@@ -8,6 +8,8 @@
  */
 include("config/configuration.php");
 include("config/currency_types.php");
+include("../config/shipping/action_raja_ongkir.php");
+include("../config/shipping/province_city.php");
 session_start();
 ob_start();
 
@@ -24,23 +26,6 @@ if (isset($_POST['action'])) {
 
         // Set value request
         $id_province = isset($_POST['id_province']) ? mysql_real_escape_string(trim($_POST['id_province'])) : '';
-
-        // if empty
-        if (empty($id_province)) {
-            $msg = 'Province ID parameter required';
-            echo json_encode(error_response($msg));
-            exit();
-        }
-
-        // Set province
-        $province_query = mysql_query("SELECT * FROM `provinsi` WHERE `idProvinsi` = '$id_province' LIMIT 0,1;");
-
-        // Error
-        if (mysql_num_rows($province_query) == 0) {
-            $msg = 'Province not found';
-            echo json_encode(error_response($msg));
-            exit();
-        }
 
         // if is logged in
         if ($loggedin) {
@@ -62,18 +47,37 @@ if (isset($_POST['action'])) {
 
         }
 
-        // Set city
-        $city_province_query = mysql_query("SELECT * FROM `kota` WHERE `idProvinsi` = '$id_province' AND `level` = '0';");
-
-        // set data city
-        $data_cities = [];
-        while ($row_city_province = mysql_fetch_assoc($city_province_query)) {
-            $data_cities[] = $row_city_province;
+        // Unset City
+        if (isset($_SESSION['guest']['id_city'])) {
+            unset($_SESSION['guest']['id_city']);
         }
+
+        // Unset Courier
+        if (isset($_SESSION['guest']['courier'])) {
+            unset($_SESSION['guest']['courier']);
+        }
+
+        // Unset service
+        if (isset($_SESSION['guest']['service'])) {
+            unset($_SESSION['guest']['service']);
+        }
+
+        // Unset cost
+        if (isset($_SESSION['guest']['courier_cost'])) {
+            unset($_SESSION['guest']['courier_cost']);
+        }
+
+        // Set parameter city
+        $parameter_city = [
+            'province' => $id_province
+        ];
+
+        // Get city
+        $get_city = get_city($parameter_city);
 
         // Success
         $msg = 'Set province successfully';
-        echo json_encode(success_response($msg, $data_cities));
+        echo json_encode(success_response($msg, $get_city->rajaongkir->results));
         exit();
 
     }
@@ -87,16 +91,6 @@ if (isset($_POST['action'])) {
         // if empty
         if (empty($id_city)) {
             $msg = 'City ID parameter required';
-            echo json_encode(error_response($msg));
-            exit();
-        }
-
-        // Set city
-        $city_query = mysql_query("SELECT * FROM `kota` WHERE `idKota` = '$id_city' LIMIT 0,1;");
-
-        // Error
-        if (mysql_num_rows($city_query) == 0) {
-            $msg = 'City not found';
             echo json_encode(error_response($msg));
             exit();
         }
@@ -121,9 +115,27 @@ if (isset($_POST['action'])) {
 
         }
 
+        // Unset Courier
+        if (isset($_SESSION['guest']['courier'])) {
+            unset($_SESSION['guest']['courier']);
+        }
+
+        // Unset service
+        if (isset($_SESSION['guest']['service'])) {
+            unset($_SESSION['guest']['service']);
+        }
+
+        // Unset cost
+        if (isset($_SESSION['guest']['courier_cost'])) {
+            unset($_SESSION['guest']['courier_cost']);
+        }
+
+        // Get couriers
+        $couriers = get_couriers();
+
         // Success
         $msg = 'Set city successfully';
-        echo json_encode(success_response($msg));
+        echo json_encode(success_response($msg, $couriers));
         exit();
 
     }

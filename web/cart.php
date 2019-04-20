@@ -9,6 +9,8 @@
 include("config/configuration.php");
 include("config/template_cart.php");
 include("config/currency_types.php");
+include("config/shipping/action_raja_ongkir.php");
+include("config/shipping/province_city.php");
 session_start();
 ob_start();
 
@@ -124,6 +126,32 @@ if (isset($_POST['remove'])) {
 
 }
 
+function get_cost($parameters)
+{
+    // Set parameter request or data request
+    $parameters = set_parameter_or_data_request($parameters);
+
+    // Set where id_province
+    $action_parameter = '';
+    foreach ($parameters as $key => $parameter) {
+
+        // Set result parameter
+        if ($key == 0) {
+            $action_code = '';
+        } else {
+            $action_code = '&';
+        }
+
+        // Set key name
+        $name_key = key($parameter);
+
+        $action_parameter .= $action_code . $name_key . '=' . $parameter[$name_key];
+    }
+
+    // Get cost
+    return action_post('cost', $action_parameter);
+}
+
 $content = '
     <div id="Content" class="p-t-0">
         <div class="content_wrapper clearfix">
@@ -142,11 +170,19 @@ $total_shipping = 0;
 $total_weight = 0;
 $total_quantity = 0;
 $total_amount = 0;
+
+// Set city id company
+$get_city_company_query = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = 'hometown' LIMIT 0,1;");
+$row_city_company = mysql_fetch_assoc($get_city_company_query);
+
 if ($loggedin) {
 
     // Set member
     $member_query = mysql_query("SELECT * FROM `member` WHERE `id_member` = '" . $loggedin["id_member"] . "' LIMIT 0,1;");
     $row_member = mysql_fetch_array($member_query);
+
+    // Check session guest
+    $guest = isset($_SESSION['guest']) ? $_SESSION['guest'] : [];
 
     // Set shipping
     if ($row_member['idkota']) {
@@ -237,12 +273,157 @@ if ($loggedin) {
         $key++;
     }
 
-    // Shipping
-    $shipping = ($row_member['idkota']) ? (($currency_code == CURRENCY_USD_CODE) ? $row_city['ongkos_kirim'] : ($row_city['ongkos_kirim'] * $USDtoIDR)) : 0;
+    if ($total_amount != 0) {
 
-    // Set total
-    $total_shipping = (((round($total_weight) < 1) ? 1 : round($total_weight)) * (float)$shipping);
-    $total_amount_shipping = $total_amount + (!empty($total_shipping) ? $total_shipping : 0);
+        // content for shipping
+        $content .= '
+                                <div class="wrap mcb-wrap one valign-top clearfix bg-white m-l-0 m-r-0 m-b-10 p-l-15 p-t-35 p-r-0 border-grey box-shadow-hover">
+                                    <div class="column one-second the_content_wrapper m-t-5 p-l-0 b-r-grey m-b-20 p-r-5" style="width: 45%">
+                                        <p class="fs-14 fw-600 text-black m-b-0">Shipping Address</p>
+                                        <label class="fs-11 fw-500 m-b-0">Province <span class="text-black fw-600">*</span></label>
+                                        <p class="fs-13 text-black fw-600 m-b-0">
+                                            <select name="selectItem" class="m-b-0 full-width" id="province" onchange="changeProvince()">
+                                                <option hidden>province</option>';
+
+        // Get city
+        $get_province = get_province();
+
+        // Set results
+        $result_provinces = $get_province->rajaongkir->results;
+
+        foreach ($result_provinces as $result_province) {
+
+            // Set selected province
+            $selected_province = (isset($row_member['idpropinsi']) ? (($result_province->province_id == $row_member['idpropinsi']) ? 'selected' : '') : '');
+
+            // Set option
+            $content .= '<option value="' . $result_province->province_id . '" ' . $selected_province . '>' . $result_province->province . '</option>';
+
+        }
+
+        $content .= '
+                                            </select>
+                                        </p>
+                                        
+                                        <label class="fs-11 fw-500 m-b-0">City <span class="text-black fw-600">*</span></label>
+                                        <p class="fs-13 text-black fw-600">
+                                            <select name="selectItem" class="m-b-0 full-width" id="city" onchange="changeCity()">
+                                                <option hidden>city</option>';
+
+        // Set parameter
+        $parameter_city = isset($row_member['idpropinsi']) ? [
+            'province' => $row_member['idpropinsi']
+        ] : [];
+
+        // Get city
+        $get_city = get_city($parameter_city);
+
+        // Set results
+        $result_cities = $get_city->rajaongkir->results;
+
+        foreach ($result_cities as $result_city) {
+
+            // Set selected province
+            $selected_city = (isset($row_member['idkota']) ? (($result_city->city_id == $row_member['idkota']) ? 'selected' : '') : '');
+
+            // Set option
+            $content .= '<option value="' . $result_city->city_id . '" ' . $selected_city . '>' . $result_city->city_name . '</option>';
+
+        }
+
+        $content .= '
+                                            
+                                            </select>
+                                        </p>
+                                    </div>
+                                    <div class="column one-fifth the_content_wrapper m-t-5 p-l-0 p-r-0" style="width: 48%">
+                                        <p class="fs-14 fw-600 text-black m-b-0">Delivery Service</p>
+                                        <label class="fs-11 fw-500 m-b-0">Courier <span class="text-black fw-600">*</span></label>
+                                        <div class="full-width clearfix p-b-10 m-b-10">
+                                            <p class="fs-13 text-black fw-600 p-r-0 pull-left" style="width: 50%">
+                                                <select name="selectItem" class="m-b-0 full-width" id="courier" onchange="changeCourier()" ' . (isset($row_member['idkota']) ? '' : 'disabled') . '>
+                                                    <option hidden>Courier</option>';
+
+        if (isset($row_member['idkota'])) {
+
+            // Set Couriers
+            $couriers = get_couriers();
+
+            foreach ($couriers as $courier) {
+
+                // Set selected courier
+                $selected_courier = (isset($guest['courier']) ? (($guest['courier'] == $courier['code']) ? 'selected' : '') : '');
+
+                // Set option
+                $content .= '<option value="' . $courier['code'] . '" ' . $selected_courier . '>' . $courier['name'] . '</option>';
+            }
+
+        }
+
+        $content .= '
+                                                </select>
+                                            </p>
+                                            <p class="fs-13 text-black fw-600 p-r-0 pull-right" style="width: 48%">
+                                                <select name="selectItem" class="m-b-0 full-width" id="service_courier" onchange="changeService()" ' . (isset($guest['courier']) ? '' : 'disabled') . '>
+                                                    <option hidden>Service Courier</option>';
+
+        if (isset($guest['courier'])) {
+
+            // Set parameter request
+            $parameter_cost = [
+                'origin' => $row_city_company['value'],
+                'destination' => $row_member['idkota'],
+                'weight' => (($total_weight < 1) ? 1 : $total_weight),
+                'courier' => $guest['courier']
+            ];
+
+            // Get courier
+            $get_cost = get_cost($parameter_cost);
+
+            if ($get_cost->rajaongkir->status->code == 200) {
+
+                foreach ($get_cost->rajaongkir->results[0]->costs as $cost) {
+
+                    // Set selected courier
+                    $selected_service = (isset($guest['service']) ? (($guest['service'] == $cost->service) ? 'selected' : '') : '');
+
+                    // Set option
+                    $content .= '<option value="' . $cost->service . '" ' . $selected_service . '>' . $cost->service . '</option>';
+
+                }
+
+            }
+
+        }
+
+        $content .= '
+                                                </select>
+                                            </p>
+                                        </div>
+                                        <p class="fs-14 text-black fw-600 pull-left m-b-0" id="courier_cost">';
+
+        $courier_cost = 0;
+        if (isset($guest['courier_cost'])) {
+
+            // Set courier cost
+            $courier_cost = (($currency_code == CURRENCY_USD_CODE) ? round(($guest['courier_cost'] / $USDtoIDR), 2) : $guest['courier_cost']);
+
+            $content .= '
+                                            <span class="woocommerce-Price-currencySymbol">' . $currency . '</span> 
+                                            <span class="woocommerce-Price-amount"> ' . number_format($courier_cost, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') . '</span>';
+
+        }
+
+        $content .= '
+                                        </p>
+                                    </div>
+                                </div>';
+
+        // Set total
+        $total_shipping = (((round($total_weight) < 1) ? 1 : round($total_weight)) * (float)$courier_cost);
+        $total_amount_shipping = $total_amount + (!empty($total_shipping) ? $total_shipping : 0);
+
+    }
 
 } else {
 
@@ -333,11 +514,152 @@ if ($loggedin) {
 
         }
 
-        // Shipping
-        $shipping = (isset($guest['id_city'])) ? (($currency_code == CURRENCY_USD_CODE) ? $row_city['ongkos_kirim'] : ($row_city['ongkos_kirim'] * $USDtoIDR)) : 0;
+        // content for shipping
+        $content .= '
+                                <div class="wrap mcb-wrap one valign-top clearfix bg-white m-l-0 m-r-0 m-b-10 p-l-15 p-t-35 p-r-0 border-grey box-shadow-hover">
+                                    <div class="column one-second the_content_wrapper m-t-5 p-l-0 b-r-grey m-b-20 p-r-5" style="width: 45%">
+                                        <p class="fs-14 fw-600 text-black m-b-0">Shipping Address</p>
+                                        <label class="fs-11 fw-500 m-b-0">Province <span class="text-black fw-600">*</span></label>
+                                        <p class="fs-13 text-black fw-600 m-b-0">
+                                            <select name="selectItem" class="m-b-0 full-width" id="province" onchange="changeProvince()">
+                                                <option hidden>province</option>';
+
+        // Get city
+        $get_province = get_province();
+
+        // Set results
+        $result_provinces = $get_province->rajaongkir->results;
+
+        foreach ($result_provinces as $result_province) {
+
+            // Set selected province
+            $selected_province = (isset($guest['id_province']) ? (($result_province->province_id == $guest['id_province']) ? 'selected' : '') : '');
+
+            // Set option
+            $content .= '<option value="' . $result_province->province_id . '" ' . $selected_province . '>' . $result_province->province . '</option>';
+
+        }
+
+        $content .= '
+                                            </select>
+                                        </p>
+                                        
+                                        <label class="fs-11 fw-500 m-b-0">City <span class="text-black fw-600">*</span></label>
+                                        <p class="fs-13 text-black fw-600">
+                                            <select name="selectItem" class="m-b-0 full-width" id="city" onchange="changeCity()">
+                                                <option hidden>city</option>';
+
+        // Set parameter
+        $parameter_city = isset($guest['id_province']) ? [
+            'province' => $guest['id_province']
+        ] : [];
+
+        // Get city
+        $get_city = get_city($parameter_city);
+
+        // Set results
+        $result_cities = $get_city->rajaongkir->results;
+
+        foreach ($result_cities as $result_city) {
+
+            // Set selected province
+            $selected_city = (isset($guest['id_city']) ? (($result_city->city_id == $guest['id_city']) ? 'selected' : '') : '');
+
+            // Set option
+            $content .= '<option value="' . $result_city->city_id . '" ' . $selected_city . '>' . $result_city->city_name . '</option>';
+
+        }
+
+        $content .= '
+                                            
+                                            </select>
+                                        </p>
+                                    </div>
+                                    <div class="column one-fifth the_content_wrapper m-t-5 p-l-0 p-r-0" style="width: 48%">
+                                        <p class="fs-14 fw-600 text-black m-b-0">Delivery Service</p>
+                                        <label class="fs-11 fw-500 m-b-0">Courier <span class="text-black fw-600">*</span></label>
+                                        <div class="full-width clearfix p-b-10 m-b-10">
+                                            <p class="fs-13 text-black fw-600 p-r-0 pull-left" style="width: 50%">
+                                                <select name="selectItem" class="m-b-0 full-width" id="courier" onchange="changeCourier()" ' . (isset($guest['id_city']) ? '' : 'disabled') . '>
+                                                    <option hidden>Courier</option>';
+
+        if (isset($guest['id_city'])) {
+
+            // Set Couriers
+            $couriers = get_couriers();
+
+            foreach ($couriers as $courier) {
+
+                // Set selected courier
+                $selected_courier = (isset($guest['courier']) ? (($guest['courier'] == $courier['code']) ? 'selected' : '') : '');
+
+                // Set option
+                $content .= '<option value="' . $courier['code'] . '" ' . $selected_courier . '>' . $courier['name'] . '</option>';
+            }
+
+        }
+
+        $content .= '
+                                                </select>
+                                            </p>
+                                            <p class="fs-13 text-black fw-600 p-r-0 pull-right" style="width: 48%">
+                                                <select name="selectItem" class="m-b-0 full-width" id="service_courier" onchange="changeService()" ' . (isset($guest['courier']) ? '' : 'disabled') . '>
+                                                    <option hidden>Service Courier</option>';
+
+        if (isset($guest['courier'])) {
+
+            // Set parameter request
+            $parameter_cost = [
+                'origin' => $row_city_company['value'],
+                'destination' => $guest['id_city'],
+                'weight' => (($total_weight < 1) ? 1 : $total_weight),
+                'courier' => $guest['courier']
+            ];
+
+            // Get courier
+            $get_cost = get_cost($parameter_cost);
+
+            if ($get_cost->rajaongkir->status->code == 200) {
+
+                foreach ($get_cost->rajaongkir->results[0]->costs as $cost) {
+
+                    // Set selected courier
+                    $selected_service = (isset($guest['service']) ? (($guest['service'] == $cost->service) ? 'selected' : '') : '');
+
+                    // Set option
+                    $content .= '<option value="' . $cost->service . '" ' . $selected_service . '>' . $cost->service . '</option>';
+
+                }
+
+            }
+
+        }
+
+        $content .= '
+                                                </select>
+                                            </p>
+                                        </div>
+                                        <p class="fs-14 text-black fw-600 pull-left m-b-0" id="courier_cost">';
+
+        $courier_cost = 0;
+        if (isset($guest['courier_cost'])) {
+
+            // Set courier cost
+            $courier_cost = (($currency_code == CURRENCY_USD_CODE) ? round(($guest['courier_cost'] / $USDtoIDR), 2) : $guest['courier_cost']);
+
+            $content .= '
+                                            <span class="woocommerce-Price-currencySymbol">' . $currency . '</span> 
+                                            <span class="woocommerce-Price-amount"> ' . number_format($courier_cost, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') . '</span>';
+
+        }
+
+        $content .= '
+                                        </p>
+                                    </div>
+                                </div>';
 
         // Set total
-        $total_shipping = (((round($total_weight) < 1) ? 1 : round($total_weight)) * (float)$shipping);
+        $total_shipping = (((round($total_weight) < 1) ? 1 : round($total_weight)) * (float)$courier_cost);
         $total_amount_shipping = $total_amount + (!empty($total_shipping) ? $total_shipping : 0);
 
     }
@@ -349,57 +671,26 @@ $content .= '               </div>';
 if ($total_amount != 0) {
 
     $content .= '
+                            <input type="hidden" value="' . $row_city_company['value'] . '" id="id_city_company">
                             <div class="column one-fourth bg-white m-l-0 m-r-0 p-l-15 p-t-35 p-r-15 border-grey" style="width: 25%">
+                            
                                 <div class="full-width clearfix b-b-grey p-b-10 m-b-10">
                                     <label class="fs-11 fw-500 m-b-0 pull-left">Total Item</label>
                                     <p class="fs-14 text-black fw-600 pull-right m-b-0">' . $total_quantity . '</p>
                                 </div>
+                                
                                 <div class="full-width clearfix b-b-grey p-b-10 m-b-10">
                                     <label class="fs-11 fw-500 m-b-0 pull-left">Total Weight <span class="text-black">(Kg)</span></label>
                                     <p class="fs-14 text-black fw-600 pull-right m-b-0">
                                         <span class="woocommerce-Price-amount">' . $total_weight . '</span>
+                                        <input type="hidden" value="' . $total_weight . '" id="weight">
                                     </p>
                                 </div>
-                                <div class="full-width clearfix b-b-grey p-b-10 m-b-10">';
-
-    if (!isset($row_city['idKota'])) {
-
-        $content .= '
-                                    <p class="fs-14 fw-600 text-black m-b-0">Shipping Address</p>
-                                    <label class="fs-11 fw-500 m-b-0">Province <span class="text-black fw-600">*</span></label>
-                                    <p class="fs-13 text-black fw-600 m-b-0">
-                                        <select name="selectItem" class="m-b-0 full-width" id="province" onchange="changeProvince()">
-                                            <option hidden>province</option>';
-
-        $all_province_query = mysql_query("SELECT * FROM `provinsi`;");
-        while ($row_all_province = mysql_fetch_array($all_province_query)) {
-            $content .= '<option value="' . $row_all_province['idProvinsi'] . '">' . $row_all_province['namaProvinsi'] . '</option>';
-        }
-
-        $content .= '
-                                        </select>
-                                    </p>
-                                    
-                                    <label class="fs-11 fw-500 m-b-0">City <span class="text-black fw-600">*</span></label>
-                                    <p class="fs-13 text-black fw-600">
-                                        <select name="selectItem" class="m-b-0 full-width" id="city" onchange="changeCity()">
-                                            <option hidden>city</option>';
-
-        $all_city_query = mysql_query("SELECT * FROM `kota` WHERE `level` = '0';");
-        while ($row_all_city = mysql_fetch_array($all_city_query)) {
-            $content .= '<option value="' . $row_all_city['idKota'] . '">' . $row_all_city['namaKota'] . '</option>';
-        }
-
-        $content .= '
-                                        </select>
-                                    </p>';
-
-    }
-
-    $content .= '    
+                                
+                                <div class="full-width clearfix b-b-grey p-b-10 m-b-10">
                                     <label class="fs-11 fw-500 m-b-0 pull-left">Shipping Costs</label>
                                     <p class="fs-14 text-black fw-600 pull-right m-b-0">
-                                        <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">' . (isset($row_city['idKota']) ? $currency : '') . '</span> ' . (!empty($total_shipping) ? number_format($total_shipping, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') : 'You have not registered your city') . '</span>
+                                        <span class="woocommerce-Price-amount"><span class="woocommerce-Price-currencySymbol">' . (isset($guest['courier_cost']) ? $currency : '') . '</span> ' . (!empty($total_shipping) ? number_format($total_shipping, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') : 'You have not Courier') . '</span>
                                     </p>
                                 </div>
 
@@ -418,7 +709,11 @@ if ($total_amount != 0) {
                                 </div>
                                         
                                 <div class="full-width m-b-15">
-                                    <a href="' . ($loggedin ? 'checkout.php' : 'login_checkout.php?action=checkout') . '" class="btn btn-blue-light full-width wrap mcb-wrap">Check Out</a>
+                                    <a href="' . ($loggedin ? 'checkout.php' : 'login_checkout.php?action=checkout') . '" class="btn btn-blue-light full-width wrap mcb-wrap" '.(empty($total_shipping) ? 'style="pointer-events: none; cursor: default; background-color: lightskyblue"' : '').'>Check Out</a>
+                                    <p class="fs-14 text-black">
+                                        <span class="fs-12 text-red fw-700 m-b-0">*</span>
+                                        please choose courier and service before checkout
+                                    </p>
                                 </div>
                                                                     
                                 <div class="full-width wrap mcb-wrap  clearfix border-grey padding-15 m-b-10">
@@ -481,7 +776,6 @@ $plugin = '
         
         function changeProvince() {
             var id_province = jQuery("#province").val();
-            console.log(id_province);
             
             jQuery.ajax({
                 type: "POST",
@@ -495,12 +789,24 @@ $plugin = '
                     if (data.status == "error") {
                         alert(data.msg);
                     } else {
+                        
+                        jQuery("#courier_cost").html("");
+                        
+                        var courier = jQuery("#courier");
+                        courier.html("").attr("disabled", true);
+                        courier.append("<option hidden>Courier</option>");
+                        
+                        var service_courier = jQuery("#service_courier");
+                        service_courier.html("").attr("disabled", true);
+                        service_courier.append("<option hidden>Service Courier</option>");
+                        
                         var city = jQuery("#city");
                         city.html("");
-                        city.append("<option>city</option>");
+                        city.append("<option hidden>city</option>");
+                        
                         for (var i = 0; i < data.results.length; i++) {
                             city.append(
-                                \'<option value="\' + data.results[i].idKota + \'">\' + data.results[i].namaKota + \'</option>\'
+                                \'<option value="\' + data.results[i].city_id + \'">\' + data.results[i].city_name + \'</option>\'
                             );
                         }
                     }
@@ -523,12 +829,95 @@ $plugin = '
                     if (data.status == "error") {
                         alert(data.msg);
                     } else {
+                        
+                        jQuery("#courier_cost").html("");
+                        
+                        var service_courier = jQuery("#service_courier");
+                        service_courier.html("").attr("disabled", true);
+                        service_courier.append("<option hidden>Service Courier</option>");
+                        
+                        var courier = jQuery("#courier");
+                        courier.html("").attr("disabled", false);
+                        courier.append("<option hidden>Courier</option>");
+                        
+                        for (var i = 0; i < data.results.length; i++) {
+                            courier.append(
+                                \'<option value="\' + data.results[i].code + \'">\' + data.results[i].name + \'</option>\'
+                            );
+                        }
+                    }
+                }
+            });
+        }   
+        
+        function changeCourier() {
+            var id_city_company = jQuery("#id_city_company").val();
+            var id_city = jQuery("#city").val();
+            var weight = jQuery("#weight").val();
+            var courier = jQuery("#courier").val();
+            
+            jQuery.ajax({
+                type: "POST",
+                url: "member/change_courier.php",
+                data: {
+                    action: "change_courier",
+                    id_city_company: id_city_company,
+                    id_city: id_city,
+                    weight: weight,
+                    courier: courier
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.status == "error") {
                         alert(data.msg);
+                    } else {
+                        
+                        jQuery("#courier_cost").html("");
+                        
+                        var service_courier = jQuery("#service_courier");
+                        service_courier.html("").attr("disabled", false);
+                        service_courier.append("<option hidden>Service Courier</option>");
+                        
+                        var costs = data.results.rajaongkir.results[0].costs;
+                        for (var i = 0; i < costs.length; i++) {
+                            service_courier.append(
+                                \'<option value="\' + costs[i].service + \'">\' + costs[i].service + \'</option>\'
+                            );
+                        }
+                    }
+                }
+            });
+        }
+        
+        function changeService() {
+            var service_courier = jQuery("#service_courier").val();
+            var id_city_company = jQuery("#id_city_company").val();
+            var id_city = jQuery("#city").val();
+            var weight = jQuery("#weight").val();
+            var courier = jQuery("#courier").val();
+            
+            jQuery.ajax({
+                type: "POST",
+                url: "member/change_courier.php",
+                data: {
+                    action: "change_service_courier",
+                    service_courier: service_courier,
+                    id_city_company: id_city_company,
+                    id_city: id_city,
+                    weight: weight,
+                    courier: courier
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.status == "error") {
+                        alert(data.msg);
+                    } else {
+                        console.log(data);
                         window.location.reload();
                     }
                 }
             });
-        }    
+        }
         
     </script>';
 
