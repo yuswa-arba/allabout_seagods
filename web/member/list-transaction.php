@@ -100,6 +100,33 @@ if ($loggedin = logged_in()) {
 
     while ($row_transaction = mysql_fetch_array($sql_transaction)) {
 
+        // Set total transaction
+        $total_transaction = $row_transaction['total'];
+
+        // If currency is IDR
+        if ($currency_code == CURRENCY_IDR_CODE) {
+
+            // Set amount cart
+            $amount_cart_query = mysql_query("SELECT SUM(`amount`) AS `total` FROM `cart` WHERE `id_transaction` = '" . $row_transaction["id_transaction"] . "' AND `level` = '0';");
+            $row_amount_cart = mysql_fetch_assoc($amount_cart_query);
+
+            // Set total transaction cart
+            $total_transaction = ($row_amount_cart['total'] * $USDtoIDR);
+
+            // Set shipping
+            $shipping_query = mysql_query("SELECT * FROM `transaction_shipping` WHERE `id_transaction` = '" . $row_transaction["id_transaction"] . "' LIMIT 0,1;");
+
+            if (mysql_num_rows($shipping_query) > 0) {
+
+                $row_shipping = mysql_fetch_assoc($shipping_query);
+
+                // Set total transaction shipping
+                $total_transaction = ($total_transaction + $row_shipping['amount']);
+
+            }
+
+        }
+
         $content .= '
                                         <tr>
                                             <td class="v-align-middle">
@@ -112,7 +139,7 @@ if ($loggedin = logged_in()) {
                                                 <p>' . $row_transaction['date_add'] . '</p>
                                             </td>
                                             <td class="v-align-middle">
-                                                <p>' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_transaction['total'] : number_format(($row_transaction['total'] * $USDtoIDR), 0, '.', ',')) . '</p>
+                                                <p>' . $currency . ' ' . number_format($total_transaction, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') . '</p>
                                             </td>
                                             <td class="v-align-middle">
                                                 <p>' . $row_transaction['status'] . '</p>

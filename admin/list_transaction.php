@@ -135,7 +135,7 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                                     <p>' . $row_transaction['date_add'] . '</p>
                                                 </td>
                                                 <td class="v-align-middle">
-                                                    <p>$ ' . $row_transaction['total'] . '</p>
+                                                    <p>$ ' . number_format($row_transaction['total'], 2, '.', ',') . '</p>
                                                 </td>
                                                 <td class="v-align-middle">
                                                     <p>' . $row_transaction['status'] . '</p>

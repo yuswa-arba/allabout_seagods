@@ -28,6 +28,9 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         return $row_setting_price['value'];
     }
 
+    // Set USD to IDR
+    $USDtoIDR = get_price('currency-value-usd-to-idr');
+
     //$loggedin = logged_inadmin();
     $titlebar = "Transaction Details";
     $titlepage = "Transaction Details";
@@ -287,6 +290,15 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
             // Row shipping
             $row_shipping = mysql_fetch_array($shipping_query);
 
+            // Shipping round
+            $shipping_round = round($row_shipping['weight']);
+
+            // Price shipping
+            $price_shipping = round(($row_shipping["price"] / $USDtoIDR), 2);
+
+            // Amount shipping
+            $amount_shipping = ($shipping_round * $price_shipping);
+
             $content .= '  
                 <tr>
                     <td class="v-align-middle">
@@ -296,10 +308,10 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                         <p>' . $row_shipping['weight'] . ' (Kg)</p>
                     </td>
                     <td class="v-align-middle">
-                        <p>$ ' . $row_shipping["price"] . '</p>
+                        <p>$ ' . number_format($price_shipping, 2, '.', ',') . '</p>
                     </td>
                     <td class="v-align-middle">
-                        <p>$ ' . $row_shipping["amount"] . '</p>
+                        <p>$ ' . number_format($amount_shipping, 2, '.', ',') . '</p>
                     </td>
                     <td class="v-align-middle">
                     </td>

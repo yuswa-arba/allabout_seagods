@@ -101,13 +101,13 @@ if ($loggedin = logged_in()) {
                                     </thead>
                                     <tbody>';
 
+    $amount_transaction = 0;
     if (isset($_GET["id_transaction"])) {
 
         $sql_cart = mysql_query("SELECT * FROM `cart` 
             WHERE `id_member`='" . $loggedin["id_member"] . "'
             AND `id_transaction` = '" . $_GET["id_transaction"] . "'
             AND `level` = '0' ORDER BY `date_add`");
-
 
         while ($row_cart = mysql_fetch_array($sql_cart)) {
 
@@ -121,6 +121,9 @@ if ($loggedin = logged_in()) {
                 $row_item = mysql_fetch_array($query_item);
             }
 
+            // Set amount
+            $amount_cart = (($currency_code == CURRENCY_USD_CODE) ? $row_cart['amount'] : ($row_cart['amount'] * $USDtoIDR));
+
             $content .= '  
                                         <tr>
                                             <td class="v-align-middle">
@@ -130,16 +133,58 @@ if ($loggedin = logged_in()) {
                                                 <p>' . $row_cart['qty'] . '</p>
                                             </td>
                                             <td class="v-align-middle">
-                                                <p>' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_item['price'] : number_format(($row_item['price'] * $USDtoIDR), 0, '.', ',')) . '</p>
+                                                <p>' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? number_format($row_item['price'], 2, '.', ',') : number_format(($row_item['price'] * $USDtoIDR), 0, '.', ',')) . '</p>
                                             </td>
                                             <td class="v-align-middle">
-                                                <p>' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_cart['amount'] : number_format(($row_cart['amount'] * $USDtoIDR), 0, '.', ',')) . '</p>
+                                                <p>' . $currency . ' ' . number_format($amount_cart, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') . '</p>
                                             </td>
                                             <td class="v-align-middle">
                                                 <a class="btn btn-xs btn-success pull-right" href="detail-transaction-item.php?id_transaction=' . $row_transaction['id_transaction'] . '&id_cart=' . $row_cart['id_cart'] . '">Detail Item</a>
                                             </td>
 					                    </tr>';
+
+            $amount_transaction += $amount_cart;
         }
+
+        // Set shipping
+        $shipping_query = mysql_query("SELECT * FROM `transaction_shipping` WHERE `id_transaction` = '" . $_GET["id_transaction"] . "' LIMIT 0,1;");
+        if (mysql_num_rows($shipping_query) > 0) {
+
+            // Row shipping
+            $row_shipping = mysql_fetch_array($shipping_query);
+
+            // Shipping round
+            $shipping_round = round($row_shipping['weight']);
+
+            // Price shipping
+            $price_shipping = (($currency_code == CURRENCY_USD_CODE) ? round(($row_shipping["price"] / $USDtoIDR), 2) : $row_shipping["price"]);
+
+            // Amount shipping
+            $amount_shipping = ($shipping_round * $price_shipping);
+
+            // Set amount transaction shipping
+            $amount_transaction += $amount_shipping;
+
+            $content .= '  
+                <tr>
+                    <td class="v-align-middle">
+                        <p>Shipping</p>
+                    </td>
+                    <td class="v-align-middle">
+                        <p>' . $row_shipping['weight'] . ' (Kg)</p>
+                    </td>
+                    <td class="v-align-middle">
+                        <p>'.$currency.' ' . number_format($price_shipping, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') . '</p>
+                    </td>
+                    <td class="v-align-middle">
+                        <p>'.$currency.' ' . number_format($amount_shipping, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') . '</p>
+                    </td>
+                    <td class="v-align-middle">
+                    </td>
+			    </tr>';
+
+        }
+
     }
 
     $content .= '
@@ -147,7 +192,7 @@ if ($loggedin = logged_in()) {
                                             <td colspan="5" >
                                                 <h4 class="normal">
                                                     <span class="fs-17">Total : </span>
-                                                    <b class="bold">' . $currency . ' ' . (isset($row_transaction['total']) ? (($currency_code == CURRENCY_USD_CODE) ? $row_transaction['total'] : number_format(($row_transaction['total'] * $USDtoIDR), 0, '.', ',')) : '-') . '</b>
+                                                    <b class="bold">' . $currency . ' ' . (isset($row_transaction['total']) ? number_format($amount_transaction, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') : '-') . '</b>
                                                 </h4>
                                             </td> 
                                         </tr>
