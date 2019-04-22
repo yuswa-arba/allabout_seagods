@@ -7,6 +7,8 @@
  * Email: adit@globalxtreme.net
  */
 include("config/configuration.php");
+include("../web/config/shipping/action_raja_ongkir.php");
+include("../web/config/shipping/province_city.php");
 session_start();
 ob_start();
 
@@ -50,6 +52,69 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
 
     while ($row_setting = mysql_fetch_array($setting_query)) {
 
+        $value = '-';
+
+        // Set hometown
+        if ($row_setting['name'] == 'hometown') {
+
+            if ($row_setting['name']) {
+
+                // Set parameter
+                $parameters = ['id' => $row_setting['value']];
+
+                // Get city
+                $get_city = get_city($parameters);
+
+                // Set value
+                $value = ((count($get_city->rajaongkir->results) == 1) ? $get_city->rajaongkir->results->city_name : '-');
+
+            } else {
+                $value = '-';
+            }
+
+        }
+
+        // Set province
+        if ($row_setting['name'] == 'province-of-origin') {
+
+            if ($row_setting['name']) {
+
+                // Get province
+                $get_province = get_province($row_setting['value']);
+
+                // Set value
+                $value = ((count($get_province->rajaongkir->results) == 1) ? $get_province->rajaongkir->results->province : '-');
+
+            } else {
+                $value = '-';
+            }
+
+        }
+
+        // Set price custom
+        if ($row_setting['name'] == 'price-custom-item') {
+
+            // Set value
+            $value = '$ ' . number_format($row_setting['value'], 2, '.', ',');
+
+        }
+
+        // Set weight
+        if ($row_setting['name'] == 'default-weight-custom-item') {
+
+            // Set value
+            $value = $row_setting['value'] . ' Kg';
+
+        }
+
+        // Set currency USD to IDR
+        if ($row_setting['name'] == 'currency-value-usd-to-idr') {
+
+            // Set value
+            $value = 'Rp ' . number_format($row_setting['value'], 0, '.', ',');
+
+        }
+
         $content .= '
                                     <form action="" method="post">
                                         <tr>
@@ -57,7 +122,7 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                                 <p>' . $row_setting['name'] . '</p>
                                             </td>
                                             <td class="v-align-middle">
-                                                <p>' . $row_setting['value'] . '</p>
+                                                <p><b>' . $value . '</b></p>
                                             </td>
                                             <td class="v-align-middle">
                                                 <p>' . $row_setting['description'] . '</p>

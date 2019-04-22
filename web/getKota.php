@@ -1,40 +1,33 @@
 <?php
 //Include database configuration file
-include('config/dbConfig.php');
+include("config/shipping/action_raja_ongkir.php");
+include("config/shipping/province_city.php");
 
-if(isset($_POST["idProvinsi"]) && !empty($_POST["idProvinsi"])){
-    //Get all state data
-    $query = $db->query("SELECT * FROM kota WHERE idProvinsi = ".$_POST['idProvinsi']."  ORDER BY namaKota ASC");
-    
-    //Count total number of rows
-    $rowCount = $query->num_rows;
-    
+if (isset($_POST["id_province"]) && !empty($_POST["id_province"])) {
+
+    // Set parameters
+    $parameter = [
+        'province' => $_POST['id_province']
+    ];
+
+    // Get province
+    $get_city = get_city($parameter);
+
+    // Set cities
+    $cities = $get_city->rajaongkir->results;
+
     //Display states list
-    if($rowCount > 0){
-        echo '<option value="">--Pilih Kota--</option>';
-        while($row = $query->fetch_assoc()){ 
-            echo '<option value="'.$row['idKota'].'">'.$row['namaKota'].'</option>';
+    if (count($cities) > 0) {
+
+        echo '<option value="">-- Choose City --</option>';
+        foreach ($cities as $city) {
+            echo '<option value="' . $city->city_id . '">' . $city->city_name . '</option>';
         }
-    }else{
-        echo '<option value="">--Pilih Kota--</option>';
+
+    } else {
+        echo '<option value="">-- Choose City --</option>';
     }
+
 }
 
-/*if(isset($_POST["state_id"]) && !empty($_POST["state_id"])){
-    //Get all city data
-    $query = $db->query("SELECT * FROM cities WHERE state_id = ".$_POST['state_id']." AND status = 1 ORDER BY city_name ASC");
-    
-    //Count total number of rows
-    $rowCount = $query->num_rows;
-    
-    //Display cities list
-    if($rowCount > 0){
-        echo '<option value="">Select city</option>';
-        while($row = $query->fetch_assoc()){ 
-            echo '<option value="'.$row['city_id'].'">'.$row['city_name'].'</option>';
-        }
-    }else{
-        echo '<option value="">City not available</option>';
-    }
-}*/
 ?>

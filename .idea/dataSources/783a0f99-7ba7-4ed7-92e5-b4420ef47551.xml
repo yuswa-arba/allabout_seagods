@@ -1157,7 +1157,7 @@
     </column>
     <column id="271" parent="27" name="account_number">
       <Position>10</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>char(35)|0</DataType>
     </column>
     <key id="272" parent="27" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>

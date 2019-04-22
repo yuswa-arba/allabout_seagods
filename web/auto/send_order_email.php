@@ -114,10 +114,9 @@ while ($row_transaction = mysql_fetch_array($transaction_query)) {
 
     if ($row_buyer['email']) {
 
-
         $mail = new PHPMailer(); // defaults to using php "mail()"
         $mail->IsSMTP();
-        $mail->SMTPDebug = 0; // set mailer to use SMTP
+        $mail->SMTPDebug = 1; // set mailer to use SMTP
         $mail->Timeout = 120;     // set longer timeout for latency or servers that take a while to respond
 
         //smtp.dps.globalxtreme.net
@@ -155,7 +154,7 @@ while ($row_transaction = mysql_fetch_array($transaction_query)) {
             }
 
         } catch (phpmailerException $e) {
-            // Error
+            // Error response
         }
 
     }

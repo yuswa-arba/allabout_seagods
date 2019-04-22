@@ -50,7 +50,6 @@ if ($simpan == "Simpan") {
         $query = "INSERT INTO `contactus` (`id`, `name`, `email`, `subject`, `messages`)
 						VALUES (NULL, '$name', '$fromEmail', '$subject', '$message');";
 
-        //echo $query ;
         mysql_query($query) or die("<script language='JavaScript'>
 			alert('Maaf Data tidak bisa diupdate ke dalam Database, Ada kesalahan!');
 			window.history.go(-1);

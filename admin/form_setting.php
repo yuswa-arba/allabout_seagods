@@ -7,6 +7,8 @@
  * Email: adit@globalxtreme.net
  */
 include("config/configuration.php");
+include("../web/config/shipping/action_raja_ongkir.php");
+include("../web/config/shipping/province_city.php");
 session_start();
 ob_start();
 
@@ -101,14 +103,62 @@ if ($loggedin = logged_inadmin()) { //  Check if they are logged in
                         <form method="post" action="" enctype="multipart/form-data" role="form">
                             <input type="hidden" name="id_setting" value="' . (isset($_GET['id']) ? $row_setting['id'] : '') . '">
                             <div class="form-group form-group-default ">
-                                <label>Value</label>
-                                <input class="form-control" name="value" value="' . (isset($_GET['id']) ? $row_setting['value'] : '') . '">
+                                <label>Value</label>';
+
+    // If province
+    if ($row_setting['name'] == 'province-of-origin') {
+
+        $content .= '
+                                <select name="value" id="value" class="form-control">
+                                    <option value="" hidden>-- Choose Province --</option>';
+
+        // Get province
+        $get_province = get_province();
+
+        foreach ($get_province->rajaongkir->results as $province) {
+            $content .= '<option value="' . $province->province_id . '" ' . (($province->province_id == $row_setting['value']) ? 'selected' : '') . '>' . $province->province . '</option>';
+        }
+
+        $content .= '           </select>';
+
+    } elseif ($row_setting['name'] == 'hometown') {
+
+        // Province query
+        $province_query = mysql_query("SELECT * FROM `setting_seagods` WHERE `name` = 'province-of-origin' LIMIT 0,1;");
+        $row_province = mysql_fetch_assoc($province_query);
+
+        $content .= '
+                                <select name="value" id="value" class="form-control">
+                                    <option value="" hidden>-- Choose Province --</option>';
+
+        // Set parameter
+        $parameter = $row_province ? [
+            'province' => $row_province['value']
+        ] : [];
+
+        // Get province
+        $get_city = get_city($parameter);
+
+        foreach ($get_city->rajaongkir->results as $city) {
+            $content .= '<option value="' . $city->city_id . '" ' . (($city->city_id == $row_setting['value']) ? 'selected' : '') . '>' . $city->city_name . '</option>';
+        }
+
+        $content .= '           </select>';
+
+    } else {
+
+        $content .= '           <input class="form-control" name="value" value="' . (isset($_GET['id']) ? $row_setting['value'] : '') . '">';
+
+    }
+
+    $content .= '
                             </div>
                             <div class="form-group form-group-default required ">
                                 <label>Description</label>
                                 <textarea class="form-control" name="description" style="height:200px">' . (isset($_GET['id']) ? $row_setting['description'] : '') . '</textarea>
                             </div>
                             <div class="form-group">
+                                <a class="btn btn-default" href="settings.php">Back to List</a>
                                 <button class="btn btn-primary" type="submit" name="update">Update</button>
                             </div>
                         </form>

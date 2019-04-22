@@ -25,7 +25,16 @@ $menu = '
               <a href="home.php">Dashboard</a>
             </li>
             <li>
-              <a href="list_member.php"><span class="title">Members</span></a>
+              <a href="javascript:;"><span class="title">Users</span>
+            <span class=" arrow"></span></a>
+              <ul class="">
+                <li>
+                  <a href="list_member.php"><span class="title">Members</span></a>
+                </li>
+                <li>
+                  <a href="list_admin.php"><span class="title">Admins</span></a>
+                </li>
+              </ul>
             </li>
             <li>
               <a href="javascript:;"><span class="title">Products</span>
@@ -108,6 +117,7 @@ $menu = '
               <a href="list_news.php"><span class="title">News</span></a>
             </li>
             </ul>
+            </li>
             
 			
             
