@@ -75,9 +75,8 @@ while ($row_transaction = mysql_fetch_assoc($transaction_query)) {
         $mail->SMTPDebug = 0; // set mailer to use SMTP
         $mail->Timeout = 120;     // set longer timeout for latency or servers that take a while to respond
 
-        //smtp.dps.globalxtreme.net
-        $mail->Host = "202.58.203.26";        // specify main and backup server
-        $mail->Port = 2505;
+        $mail->Host = "mail.seagodswetsuit.com";        // specify main and backup server
+        $mail->Port = 587;
         $mail->SMTPAuth = false;    // turn on or off SMTP authentication
 
         try {

@@ -13,6 +13,31 @@ function order_confirmed_template($transaction, $carts, $shipping, $buyer, $curr
     // Set USD to IDR
     $USDtoIDR = $currency_properties['USDtoIDR'];
 
+    // Set subtotal if transaction with transfer bank
+    if ($transaction['payment_method'] == 'Paypal') {
+
+        // SEt subtotal
+        $subtotal = array_sum(array_column($carts, 'amount'));
+
+        // Set total shipping
+        $total_shipping = round(($shipping['amount'] / $USDtoIDR), 2);
+
+        // Set total transaction
+        $total_transaction = ($subtotal + $total_shipping);
+
+    } else {
+
+        // SEt subtotal
+        $subtotal = array_sum(array_column($carts, 'amount')) * $USDtoIDR;
+
+        // Set total shipping
+        $total_shipping = $shipping['amount'];
+
+        // Set total transaction
+        $total_transaction = ($subtotal + $total_shipping);
+
+    }
+
     $template = '
         <!DOCTYPE html>
         <html lang="en">
@@ -80,7 +105,7 @@ function order_confirmed_template($transaction, $carts, $shipping, $buyer, $curr
                                 Subtotal <span style="float: right;">:</span>
                             </td>
                             <td style="padding-left: 10px;padding-bottom: 5px;font-size: 14px;color: #000;">
-                                ' . $currency . ' ' . (($transaction['payment_method'] == 'Paypal') ? number_format_many(array_sum(array_column($carts, 'amount')), 2) : number_format_many(array_sum(array_column($carts, 'amount')) * $USDtoIDR)) . '
+                                ' . $currency . ' ' . (($transaction['payment_method'] == 'Paypal') ? number_format_many($subtotal, 2) : number_format_many($subtotal)) . '
                             </td>
                         </tr>
                         <tr>
@@ -88,7 +113,7 @@ function order_confirmed_template($transaction, $carts, $shipping, $buyer, $curr
                                 Shipping<span style="float: right;">:</span>
                             </td>
                             <td style="padding-left: 10px;padding-bottom: 5px;font-size: 14px;color: #000;">
-                                ' . $currency . ' ' . (($transaction['payment_method'] == 'Paypal') ? number_format_many($shipping['amount'], 2) : number_format_many($shipping['amount'] * $USDtoIDR)) . '
+                                ' . $currency . ' ' . (($transaction['payment_method'] == 'Paypal') ? number_format_many($total_shipping, 2) : number_format_many($total_shipping)) . '
                             </td>
                         </tr>
                         <tr>
@@ -96,7 +121,7 @@ function order_confirmed_template($transaction, $carts, $shipping, $buyer, $curr
                                 Total Payment<span style="float: right;">:</span>
                             </td>
                             <td style="padding-left: 10px;padding-bottom: 5px;font-size: 16px;color: #000;">
-                                <b>' . $currency . ' ' . (($transaction['payment_method'] == 'Paypal') ? number_format_many($transaction['total'], 2) : number_format_many($transaction['total'] * $USDtoIDR)) . '</b>
+                                <b>' . $currency . ' ' . (($transaction['payment_method'] == 'Paypal') ? number_format_many($total_transaction, 2) : number_format_many($total_transaction)) . '</b>
                             </td>
                         </tr>
         

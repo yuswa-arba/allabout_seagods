@@ -291,7 +291,7 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
             $row_shipping = mysql_fetch_array($shipping_query);
 
             // Shipping round
-            $shipping_round = round($row_shipping['weight']);
+            $shipping_round = (($row_shipping['weight'] < 1) ? 1 : round($row_shipping['weight']));
 
             // Price shipping
             $price_shipping = round(($row_shipping["price"] / $USDtoIDR), 2);
