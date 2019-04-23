@@ -37,6 +37,47 @@ if ($loggedin = logged_in()) {
         $bank = isset($_POST['bank']) ? strip_tags(trim($_POST["bank"])) : "";
         $account_number = isset($_POST['account_number']) ? strip_tags(trim($_POST["account_number"])) : "";
         $bio = isset($_POST['bio']) ? strip_tags(trim($_POST["bio"])) : "";
+        $photo_name_upload = isset($_POST['old_photo']) ? strip_tags(trim($_POST["old_photo"])) : "";
+
+        if ($_FILES['photo']['tmp_name'] != "") {
+
+            $target_path = "../../admin/images/members/"; // Declaring Path for uploaded images.
+
+            // Set memory limit in php.ini
+            ini_set('memory_limit', '120M');
+
+            // Get member
+            $member_query = mysql_query("SELECT * FROM `member` WHERE `id_member` = '" . $loggedin["id_member"] . "' LIMIT 0,1;", $conn);
+            $row_member = mysql_fetch_array($member_query);
+
+            // Delete file photo old
+            if ($row_member['foto'] != '' || $row_member['foto'] != NULL) {
+                if (file_exists($target_path . $row_member['foto'])) {
+                    unlink($target_path . $row_member['foto']);
+                }
+            }
+
+            // Loop to get individual element from the array
+            $validate_extension = array("jpeg", "jpg", "png", "PNG"); // Extensions which are allowed.
+            $random_number = rand(0, 9999999999); // for create name file upload
+            $image_name = $random_number . "-" . ($_FILES['photo']['name']);
+
+            $ext = explode('.', $_FILES['photo']['name']); // Explode file name from dot(.)
+            $file_extension = end($ext); // Store extensions in the variable.
+
+            if (($_FILES["photo"]["size"] < 5000000) // Approx. 5Mb files can be uploaded.
+                && in_array($file_extension, $validate_extension)
+            ) {
+                if (move_uploaded_file($_FILES['photo']['tmp_name'], $target_path . $image_name)) {
+                    $photo_name_upload = $image_name;
+                } else { // If File Was Not Moved.
+                    echo "<script language='JavaScript'>
+                            alert('File Was Not Moved.');
+                            window.history.go(-1);
+                        </script>";
+                }
+            }
+        }
 
         // Query update users
         $update_user_query = "UPDATE `users` SET `email` = '$email' WHERE `id_member`='" . $loggedin["id_member"] . "';";
@@ -51,7 +92,7 @@ if ($loggedin = logged_in()) {
         }
 
         // Update member query
-        $update_member_query = "UPDATE `member` SET `firstname` = '$firstname', `lastname` = '$lastname', 
+        $update_member_query = "UPDATE `member` SET `foto` = '$photo_name_upload', `firstname` = '$firstname', `lastname` = '$lastname', 
             `email` = '$email', `notelp` = '$notelp', `id_bank` = '$bank', `account_number` = '$account_number', `bio` = '$bio' 
             WHERE `id_member` = '" . $loggedin["id_member"] . "';";
 
@@ -233,13 +274,16 @@ if ($loggedin = logged_in()) {
                                                     <label>Bio</label>
                                                     <h5><b>' . ($row_member['bio'] ? $row_member['bio'] : "-") . '</b></h5>
                                                     
+                                                    <label>Bio</label>
+                                                    <h5><img width="100%" src="../../admin/images/members/' . $row_member['foto'] . '"></h5>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-7">
                                             <div class="padding-30 sm-padding-5">
                                                 <p>Update Account</p>
-                                                <form role="form" method="post" action="">
+                                                <form method="post" action="" enctype="multipart/form-data" role="form">
                                                     <div class="form-group-attached">
                                                         <div class="form-group form-group-default ">
                                                             <label>Username</label>
@@ -290,6 +334,13 @@ if ($loggedin = logged_in()) {
                                                         <div class="form-group form-group-default ">
                                                             <label>Bio</label>
                                                             <span><textarea class="form-control" name="bio" placeholder="-" style="height: 80px;">' . $row_member['bio'] . '</textarea></span>
+                                                        </div>
+                                                        <div class="form-group form-group-default ">
+                                                            <label>Photo</label>
+                                                            <span>
+                                                                <input type="hidden" name="old_photo" value="' . $row_member['foto'] . '">
+                                                                <input type="file" name="photo">
+                                                            </span>
                                                         </div>
                                                     </div>
                                                     <br>
