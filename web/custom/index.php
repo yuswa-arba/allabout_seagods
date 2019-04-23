@@ -278,7 +278,7 @@ if ($loggedin = logged_in()) {
                                 <li><a href="../about_us.php"><span>About Us</span></a></li>
                                 <li><a href="../buyers_guide.php"><span>Guide</span></a></li>
                                 <li><a href="../list_product.php?id_cats=9"><span>Collection</span></a></li>
-                                <li class="current-menu-item"><a href=""><span>Custom</span></a></li>
+                                <li class="current-menu-item"><a href=""><span>Custom </span></a></li>
                                 <li><a href="../blog.php"><span>Blog</span></a></li>
                                 <li><a href="../member/index.php" target="_blank"><span>Memberpage</span></a></li>
                             </ul>

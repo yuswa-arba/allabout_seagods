@@ -31,7 +31,7 @@ $menu = '
                                             <li><a href="about_us.php"><span>About Us</span></a></li>
                                             <li><a href="buyers_guide.php"><span>Guide</span></a></li>
                                             <li><a href="list_product.php"><span>Collection</span></a></li>
-                                            <li><a href="custom/"><span>Custom </span></a></li>
+                                            <li><a href="custom/"><span>Custom Wetsuit</span></a></li>
                                             <li><a href="contact_us.php"><span>Contact</span></a></li>
                                             <li><a href="member/index.php" target="_blank"><span>Memberpage</span></a></li>
                                             

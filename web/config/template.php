@@ -32,7 +32,7 @@ function admin_template($content = "", $titlebar = "", $titlepage = "", $user = 
                                             <li><a href="about_us.php"><span>About Us</span></a></li>
                                             <li><a href="buyers_guide.php"><span>Guide</span></a></li>
                                             <li><a href="list_product.php?id_cats=9"><span>Collection</span></a></li>
-                                            <li><a href="custom/"><span>Custom </span></a></li>
+                                            <li><a href="custom/"><span>Custom Wetsuit</span></a></li>
                                             <li><a href="blog.php"><span>Blog</span></a></li>
                                             <li><a href="member/index.php" target="_blank"><span>Memberpage</span></a></li>
                                             
