@@ -142,7 +142,10 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                 '<a class="label" style="background-color: #69b6f3; color: #ffffff">Confirmated</a>') . '
                                                 </td>
                                                 <td class="v-align-middle">
-                                                    <a class="btn btn-success" href="detail_transaction.php?id_transaction=' . $row_transaction['id_transaction'] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '">view</a>
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-success" href="detail_transaction.php?id_transaction=' . $row_transaction['id_transaction'] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '">view</a>
+                                                    <a class="btn btn-success" target="_blank" href="../web/order_pdf.php?id_transaction=' . $row_transaction['id_transaction'] . '"><i class="fa fa-file-pdf-o"></i></a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </form>';
