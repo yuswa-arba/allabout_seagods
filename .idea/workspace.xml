@@ -2,10 +2,311 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="79fa2ff5-84ca-4368-8584-e0ada418a540" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/auto/change_name_photo_product.php" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_Blue Pocket.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_Color Options 4 koma 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_Color Options 6 koma 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_Cover Regulator.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_Dome Cover.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_Keychain 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_Mega Mendung.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_Men_s Wetsuit1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_Neoprene Cap.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_Opsi 2mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_Phone Case.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_WhatsApp Image 2018-12-06 at 15.31.10.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_WhatsApp Image 2018-12-06 at 15.31.100.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_WhatsApp Image 2018-12-06 at 15.31.101.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_WhatsApp Image 2018-12-06 at 15.31.1100.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/0_travel bag.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_Blue Pocket.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_Color Options 4 koma 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_Color Options 6 koma 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_Cover Regulator.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_Dome Cover.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_Keychain 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_Mega Mendung.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_Men_s Wetsuit1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_Neoprene Cap.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_Opsi 2mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_Phone Case.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_WhatsApp Image 2018-12-06 at 15.31.10.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_WhatsApp Image 2018-12-06 at 15.31.100.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_WhatsApp Image 2018-12-06 at 15.31.101.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_WhatsApp Image 2018-12-06 at 15.31.1100.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_0_travel bag.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2014-11-07 14.27.59.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2014-11-07 14.28.58.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2014-11-07 14.29.32.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2014-11-07 14.41.17.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2014-11-07 14.42.15.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2014-11-07 14.49.32.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 13.55.26.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 14.04.24.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 15.17.49.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 15.35.41.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 15.35.46.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 15.39.55.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 15.42.39.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 15.42.59.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 15.51.50.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 15.52.14.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 15.52.45.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 15.59.04.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 15.59.45.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.00.05.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.03.39.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.03.56.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.04.08.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.16.21.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.16.34.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.21.21.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.21.44.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.21.53.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.36.25.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.36.31.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.36.41(1).jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_2015-07-09 16.36.41.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Blue Pocket.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Cara Mudah Membuat Logo Android Menggunakan CorelDRAW by teoridesain.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Color Grey.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Color Option 2mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Color Option 3mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Color Option 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Color Options 4 koma 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Color Options 6 koma 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Cover Regulator.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Dome Cover.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Headband with Trim.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Headband without trim.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Headbands without Trim.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Keychain 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Marcel Rashguard 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Marcell Rashguard 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Marcell Rashguard 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Mask Strap Clip 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Mask Strap Clip 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Mask Strap Clip(1).jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Mask Strap Clip.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Mask Strap Cover 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Mask Strap Cover 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Mask Strap Cover.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Mask Strap Velcro 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Mask Strap Velcro.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Mega Mendung.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Men_s Wetsuit2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Men_s Wetsuit3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Nadine Pikachu 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Nadine Pikachu 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Nadine Pikachu 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Nadine Shark 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Nadine Shark 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Nadine Shark 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Neoprene Cap Back View.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Neoprene Cap.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Neoprene Visor.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Opsi 2mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Phone Case.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Rashguard Kid 1 Red.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Rashguard Kid 2 Red.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Rashguard Nadine 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Rashguard Nadine 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Rashguard Nadine 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Rashguard Nadine Grey 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_Rashguard Nadine Grey 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_WhatsApp Image 2018-12-06 at 15.31.10.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_WhatsApp Image 2018-12-06 at 15.31.100.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_WhatsApp Image 2018-12-06 at 15.31.101.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_WhatsApp Image 2018-12-06 at 15.31.1100.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_mask straps clip.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/150/thumb_travel bag.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2014-11-07 14.27.59.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2014-11-07 14.28.58.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2014-11-07 14.29.32.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2014-11-07 14.41.17.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2014-11-07 14.42.15.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2014-11-07 14.49.32.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 13.55.26.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 14.04.24.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 15.17.49.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 15.35.41.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 15.35.46.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 15.39.55.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 15.42.39.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 15.42.59.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 15.51.50.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 15.52.14.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 15.52.45.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 15.59.04.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 15.59.45.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.00.05.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.03.39.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.03.56.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.04.08.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.16.21.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.16.34.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.21.21.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.21.44.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.21.53.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.36.25.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.36.31.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.36.41(1).jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/2015-07-09 16.36.41.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_Blue Pocket.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_Color Options 4 koma 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_Color Options 6 koma 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_Cover Regulator.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_Dome Cover.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_Keychain 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_Mega Mendung.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_Men_s Wetsuit1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_Neoprene Cap.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_Opsi 2mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_Phone Case.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_WhatsApp Image 2018-12-06 at 15.31.10.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_WhatsApp Image 2018-12-06 at 15.31.100.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_WhatsApp Image 2018-12-06 at 15.31.101.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_WhatsApp Image 2018-12-06 at 15.31.1100.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_0_travel bag.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2014-11-07 14.27.59.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2014-11-07 14.28.58.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2014-11-07 14.29.32.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2014-11-07 14.41.17.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2014-11-07 14.42.15.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2014-11-07 14.49.32.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 13.55.26.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 14.04.24.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 15.17.49.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 15.35.41.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 15.35.46.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 15.39.55.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 15.42.39.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 15.42.59.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 15.51.50.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 15.52.14.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 15.52.45.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 15.59.04.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 15.59.45.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.00.05.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.03.39.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.03.56.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.04.08.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.16.21.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.16.34.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.21.21.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.21.44.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.21.53.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.36.25.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.36.31.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.36.41(1).jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_2015-07-09 16.36.41.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Blue Pocket.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Cara Mudah Membuat Logo Android Menggunakan CorelDRAW by teoridesain.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Color Grey.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Color Option 2mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Color Option 3mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Color Option 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Color Options 4 koma 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Color Options 6 koma 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Cover Regulator.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Dome Cover.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Headband with Trim.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Headband without trim.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Headbands without Trim.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Keychain 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Marcel Rashguard 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Marcell Rashguard 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Marcell Rashguard 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Mask Strap Clip 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Mask Strap Clip 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Mask Strap Clip(1).jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Mask Strap Clip.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Mask Strap Cover 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Mask Strap Cover 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Mask Strap Cover.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Mask Strap Velcro 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Mask Strap Velcro.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Mega Mendung.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Men_s Wetsuit2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Men_s Wetsuit3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Nadine Pikachu 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Nadine Pikachu 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Nadine Pikachu 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Nadine Shark 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Nadine Shark 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Nadine Shark 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Neoprene Cap Back View.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Neoprene Cap.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Neoprene Visor.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Opsi 2mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Phone Case.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Rashguard Kid 1 Red.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Rashguard Kid 2 Red.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Rashguard Nadine 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Rashguard Nadine 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Rashguard Nadine 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Rashguard Nadine Grey 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_Rashguard Nadine Grey 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_WhatsApp Image 2018-12-06 at 15.31.10.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_WhatsApp Image 2018-12-06 at 15.31.100.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_WhatsApp Image 2018-12-06 at 15.31.101.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_WhatsApp Image 2018-12-06 at 15.31.1100.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_mask straps clip.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/600/thumb_travel bag.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Blue Pocket.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Cara Mudah Membuat Logo Android Menggunakan CorelDRAW by teoridesain.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Color Grey.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Color Option 2mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Color Option 3mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Color Option 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Color Options 4 koma 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Color Options 6 koma 5mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Cover Regulator.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Dome Cover.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Headband with Trim.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Headband without trim.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Headbands without Trim.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Keychain 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Marcel Rashguard 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Marcell Rashguard 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Marcell Rashguard 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Mask Strap Clip 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Mask Strap Clip 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Mask Strap Clip(1).jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Mask Strap Clip.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Mask Strap Cover 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Mask Strap Cover 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Mask Strap Cover.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Mask Strap Velcro 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Mask Strap Velcro.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Mega Mendung.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Men_s Wetsuit2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Men_s Wetsuit3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Nadine Pikachu 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Nadine Pikachu 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Nadine Pikachu 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Nadine Shark 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Nadine Shark 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Nadine Shark 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Neoprene Cap Back View.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Neoprene Cap.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Neoprene Visor.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Opsi 2mm.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Phone Case.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Rashguard Kid 1 Red.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Rashguard Kid 2 Red.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Rashguard Nadine 1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Rashguard Nadine 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Rashguard Nadine 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Rashguard Nadine Grey 2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/Rashguard Nadine Grey 3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/WhatsApp Image 2018-12-06 at 15.31.10.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/WhatsApp Image 2018-12-06 at 15.31.100.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/WhatsApp Image 2018-12-06 at 15.31.101.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/WhatsApp Image 2018-12-06 at 15.31.1100.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/mask straps clip.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/admin/images/product/travel bag.jpg" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/list_news.php" afterPath="$PROJECT_DIR$/admin/list_news.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/admin/list_transaction.php" afterPath="$PROJECT_DIR$/admin/list_transaction.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/auto/send_news_email.php" afterPath="$PROJECT_DIR$/web/auto/send_news_email.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -46,63 +347,61 @@
         <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
       </PATH_ELEMENT>
     </PATH>
+    <PATH>
+      <PATH_ELEMENT>
+        <option name="myItemId" />
+        <option name="myItemType" value="com.intellij.database.view.DatabaseStructure$Root" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="u9814486_seagx2018@localhost" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="u9814486_seagx2018" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="member" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+    </PATH>
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="list_news.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/admin/list_news.php">
+      <file leaf-file-name="change_name_photo_product.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/auto/change_name_photo_product.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4090">
-              <caret line="5" column="31" lean-forward="false" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
+            <state relative-caret-position="250">
+              <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding>
-                <marker date="1556076084958" expanded="true" signature="1246:1312" ph="UPDATE `news... " />
-                <marker date="1556076084958" expanded="true" signature="1403:1516" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="1591:1703" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="1981:2057" ph="SELECT `id` news_subscriber" />
-                <marker date="1556076084958" expanded="true" signature="2141:2260" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="2350:2475" ph="UPDATE `news... " />
-                <marker date="1556076084958" expanded="true" signature="2571:2687" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="2762:2908" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="2989:4795" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="3098:4795" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="3198:4795" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="3262:4795" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="3379:4795" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="3434:4017" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="3563:3921" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="3623:3882" ph="..." />
-                <marker date="1556076084958" expanded="false" signature="3745:3756" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="3757:3839" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="4099:4795" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="4207:4795" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="4252:4751" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="4297:4706" ph="..." />
-                <marker date="1556076084958" expanded="false" signature="4354:4362" ph="..." />
-                <marker date="1556076084958" expanded="false" signature="4485:4494" ph="..." />
-                <marker date="1556076084958" expanded="false" signature="4561:4570" ph="..." />
-                <marker date="1556076084958" expanded="false" signature="4639:4648" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="4847:4931" ph="SELECT * FRO... news_subscriber" />
-                <marker date="1556076084958" expanded="true" signature="4997:5067" ph="SELECT * FRO... news_subscriber" />
-                <marker date="1556076084958" expanded="true" signature="5259:7361" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="5308:7313" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="5593:5748" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="5824:5991" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="6067:6430" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="6314:6356" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="6483:7263" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="6559:7209" ph="..." />
-                <marker date="1556076084958" expanded="true" signature="6750:7203" ph="..." />
+                <marker date="1556085620688" expanded="true" signature="87:128" ph="SELECT * FRO... photo" />
+                <marker date="1556085620688" expanded="true" signature="1022:1114" ph="UPDATE `phot... " />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="list_transaction.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="u9814486_seagx2018.photo" pinned="false" current-in-tab="false">
+        <entry file="dbDummy://dbtable:/a72f5753/783a0f99-7ba7-4ed7-92e5-b4420ef47551/u9814486_seagx2018.photo">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state>
+              <filtering enabled="true" />
+            </state>
+          </provider>
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="list_transaction.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/admin/list_transaction.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="775">
-              <caret line="52" column="40" lean-forward="true" selection-start-line="52" selection-start-column="40" selection-end-line="52" selection-end-column="40" />
+            <state relative-caret-position="325">
+              <caret line="19" column="27" lean-forward="false" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
               <folding>
                 <marker date="1556076357235" expanded="true" signature="815:882" ph="SELECT * FRO... transaction" />
                 <marker date="1556076357235" expanded="true" signature="947:995" ph="SELECT * FRO... transaction" />
@@ -143,17 +442,254 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="send_news_email.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/auto/send_news_email.php">
+      <file leaf-file-name="functions.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin/config/functions.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="17" column="43" lean-forward="false" selection-start-line="17" selection-start-column="43" selection-end-line="17" selection-end-column="43" />
+            <state relative-caret-position="449">
+              <caret line="117" column="9" lean-forward="false" selection-start-line="117" selection-start-column="9" selection-end-line="117" selection-end-column="9" />
               <folding>
-                <marker date="1556076142361" expanded="true" signature="188:290" ph="SELECT * FRO... news_subscriber" />
-                <marker date="1556076142361" expanded="true" signature="412:494" ph="SELECT * FRO... member" />
-                <marker date="1556076142361" expanded="true" signature="1702:1884" ph="INSERT INTO `news_email`... " />
-                <marker date="1556076142361" expanded="true" signature="1969:2132" ph="UPDATE `news... " />
-                <marker date="1556076142361" expanded="true" signature="2245:2434" ph="INSERT INTO `news_email_failed`... " />
+                <marker date="1554796336784" expanded="true" signature="1447:1525" ph="SELECT * FRO... sessions" />
+                <marker date="1554796336784" expanded="true" signature="1824:1906" ph="SELECT * FRO... users" />
+                <marker date="1554796336784" expanded="true" signature="2877:2955" ph="SELECT * FRO... sessions" />
+                <marker date="1554796336784" expanded="true" signature="3254:3333" ph="SELECT * FRO... users" />
+                <marker date="1554796336784" expanded="true" signature="4287:4496" ph="SELECT * FRO... sessions" />
+                <marker date="1554796336784" expanded="true" signature="4795:4877" ph="SELECT * FRO... users" />
+                <marker date="1554796336784" expanded="true" signature="5962:6170" ph="SELECT * FRO... sessions" />
+                <marker date="1554796336784" expanded="true" signature="6469:6657" ph="SELECT `user... users" />
+                <marker date="1554796336784" expanded="true" signature="8604:8610" ph="..." />
+                <marker date="1554796336784" expanded="true" signature="11803:11809" ph="..." />
+                <marker date="1554796336784" expanded="true" signature="19643:19709" ph="SELECT count... custom_collection" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="form_products.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin/form_products.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="750">
+              <caret line="117" column="46" lean-forward="false" selection-start-line="117" selection-start-column="46" selection-end-line="117" selection-end-column="46" />
+              <folding>
+                <marker date="1554172030588" expanded="true" signature="495:565" ph="SELECT `valu... setting_seagods" />
+                <marker date="1554172030588" expanded="true" signature="2802:3062" ph="INSERT INTO `item`... " />
+                <marker date="1554172030588" expanded="true" signature="3202:3334" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="3543:3597" ph="SELECT * FRO... item" />
+                <marker date="1554172030588" expanded="true" signature="4653:4802" ph="INSERT INTO `photo`... " />
+                <marker date="1554172030588" expanded="true" signature="4967:5130" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="5305:5397" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="6279:6561" ph="UPDATE `item... " />
+                <marker date="1554172030588" expanded="true" signature="6701:6831" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="8024:8169" ph="INSERT INTO `photo`... " />
+                <marker date="1554172030588" expanded="true" signature="8346:8521" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="9035:9105" ph="SELECT `phot... photo" />
+                <marker date="1554172030588" expanded="true" signature="9973:10082" ph="UPDATE `phot... " />
+                <marker date="1554172030588" expanded="true" signature="10259:10434" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="10785:10939" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="11206:11266" ph="SELECT `phot... photo" />
+                <marker date="1554172030588" expanded="true" signature="11366:11429" ph="UPDATE `phot... " />
+                <marker date="1554172030588" expanded="true" signature="11514:11664" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="11943:12021" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="12267:12387" ph="SELECT `item... item" />
+                <marker date="1554172030588" expanded="true" signature="12483:12593" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="12839:13790" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="12869:13790" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="12909:13790" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="12961:13790" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="13012:13450" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="13057:13419" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="13123:13220" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="13293:13385" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="13524:13790" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="13652:13790" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="13702:13790" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="13905:14479" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="14640:14865" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="14903:14992" ph="SELECT * FRO... category" />
+                <marker date="1554172030588" expanded="true" signature="15180:15289" ph="SELECT * FRO... category" />
+                <marker date="1554172030588" expanded="true" signature="15931:16244" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="16379:16704" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="16830:16908" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="16995:17074" ph="SELECT * FRO... photo" />
+                <marker date="1554172030588" expanded="true" signature="17257:17270" ph="..." />
+                <marker date="1554172030588" expanded="false" signature="17429:17442" ph="..." />
+                <marker date="1554172030588" expanded="false" signature="17552:17565" ph="..." />
+                <marker date="1554172030588" expanded="false" signature="17675:17688" ph="..." />
+                <marker date="1554172030588" expanded="false" signature="17798:17811" ph="..." />
+                <marker date="1554172030588" expanded="false" signature="17921:17934" ph="..." />
+                <marker date="1554172030588" expanded="false" signature="18044:18057" ph="..." />
+                <marker date="1554172030588" expanded="false" signature="18167:18180" ph="..." />
+                <marker date="1554172030588" expanded="false" signature="18290:18303" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="18603:18919" ph="..." />
+                <marker date="1554172030588" expanded="false" signature="18774:18786" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="19054:19385" ph="..." />
+                <marker date="1554172030588" expanded="false" signature="19234:19246" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="19510:19820" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="20208:20266" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="20332:20424" ph="SELECT `phot... photo" />
+                <marker date="1554172030588" expanded="true" signature="20591:21682" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="20683:21631" ph="..." />
+                <marker date="1554172030588" expanded="false" signature="20749:20794" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="21033:21260" ph="..." />
+                <marker date="1554172030588" expanded="false" signature="21374:21387" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="22873:24185" ph="..." />
+                <marker date="1554172030588" expanded="true" signature="22941:23477" ph="{...}" />
+                <marker date="1554172030588" expanded="true" signature="23016:23465" ph="{...}" />
+                <marker date="1554172030588" expanded="true" signature="23096:23280" ph="{...}" />
+                <marker date="1554172030588" expanded="true" signature="23286:23451" ph="{...}" />
+                <marker date="1554172030588" expanded="true" signature="23505:23530" ph="/*...*/" />
+                <marker date="1554172030588" expanded="true" signature="23645:23738" ph="{...}" />
+                <marker date="1554172030588" expanded="true" signature="23794:23873" ph="{...}" />
+                <marker date="1554172030588" expanded="true" signature="23921:24164" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="list_products.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin/list_products.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="250">
+              <caret line="112" column="111" lean-forward="false" selection-start-line="112" selection-start-column="111" selection-end-line="112" selection-end-column="111" />
+              <folding>
+                <marker date="1553059783346" expanded="true" signature="1008:1075" ph="UPDATE `item... " />
+                <marker date="1553059783346" expanded="true" signature="1149:1274" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="1323:1420" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="1557:1677" ph="SELECT `item... item" />
+                <marker date="1553059783346" expanded="true" signature="1822:3748" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="1931:3748" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="2015:3748" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="2082:3748" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="2187:3748" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="2242:2794" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="2375:2698" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="2435:2659" ph="..." />
+                <marker date="1553059783346" expanded="false" signature="2561:2572" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="2876:3748" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="2984:3748" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="3029:3704" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="3074:3659" ph="..." />
+                <marker date="1553059783346" expanded="false" signature="3131:3139" ph="..." />
+                <marker date="1553059783346" expanded="false" signature="3202:3211" ph="..." />
+                <marker date="1553059783346" expanded="false" signature="3286:3295" ph="..." />
+                <marker date="1553059783346" expanded="false" signature="3368:3377" ph="..." />
+                <marker date="1553059783346" expanded="false" signature="3444:3453" ph="..." />
+                <marker date="1553059783346" expanded="false" signature="3521:3529" ph="..." />
+                <marker date="1553059783346" expanded="false" signature="3598:3607" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="3782:3950" ph="SELECT `item... item" />
+                <marker date="1553059783346" expanded="true" signature="4018:4167" ph="SELECT `item... item" />
+                <marker date="1553059783346" expanded="true" signature="4285:4356" ph="SELECT * FRO... category" />
+                <marker date="1553059783346" expanded="true" signature="4413:4534" ph="SELECT * FRO... photo" />
+                <marker date="1553059783346" expanded="true" signature="4652:7119" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="4701:7071" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="4777:5087" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="5163:5303" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="5379:5526" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="5602:5745" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="5821:5963" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="6016:6322" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="6375:7021" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="6451:6967" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="6649:6738" ph="..." />
+                <marker date="1553059783346" expanded="false" signature="7521:7535" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="7536:10350" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="7599:10311" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="7770:10268" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="7841:7989" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="8058:9969" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="8133:9918" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="8231:8455" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="8606:8745" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="8896:9113" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="9264:9483" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="9634:9863" ph="..." />
+                <marker date="1553059783346" expanded="true" signature="10040:10221" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="checkout.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web/checkout.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="326">
+              <caret line="507" column="124" lean-forward="false" selection-start-line="507" selection-start-column="124" selection-end-line="507" selection-end-column="124" />
+              <folding>
+                <marker date="1556074736018" expanded="true" signature="240:310" ph="SELECT `valu... setting_seagods" />
+                <marker date="1556074736018" expanded="true" signature="1290:1359" ph="SELECT * FRO... transaction" />
+                <marker date="1556074736018" expanded="true" signature="1586:1932" ph="INSERT INTO `transaction`... " />
+                <marker date="1556074736018" expanded="true" signature="1958:2116" ph="UPDATE `cart... " />
+                <marker date="1556074736018" expanded="true" signature="2319:2457" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="2717:2846" ph="SELECT * FRO... cart" />
+                <marker date="1556074736018" expanded="true" signature="3066:3267" ph="SELECT `memb... member" />
+                <marker date="1556074736018" expanded="true" signature="3367:3470" ph="SELECT * FRO... countries" />
+                <marker date="1556074736018" expanded="true" signature="3684:3827" ph="SELECT * FRO... provinsi" />
+                <marker date="1556074736018" expanded="true" signature="3928:4019" ph="SELECT * FRO... kota" />
+                <marker date="1556074736018" expanded="true" signature="4651:4772" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="14708:14856" ph="SELECT * FRO... item" />
+                <marker date="1556074736018" expanded="true" signature="15105:15279" ph="SELECT * FRO... custom_collection" />
+                <marker date="1556074736018" expanded="true" signature="30494:30519" ph="SELECT * FRO... countries" />
+                <marker date="1556074736018" expanded="true" signature="32934:33049" ph="SELECT * FRO... provinsi" />
+                <marker date="1556074736018" expanded="true" signature="38376:38922" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="38475:38634" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="38716:38875" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="39098:43963" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="39197:39335" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="39417:43916" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="39471:39620" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="39731:39872" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="40000:43856" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="40057:40496" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="40130:40438" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="40202:40217" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="40218:40376" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="40553:43203" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="40626:43145" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="40725:43083" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="40859:41411" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="40933:41340" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="41074:41164" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="41549:42260" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="41623:42189" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="41764:41859" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="42380:43016" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="42528:42611" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="43260:43799" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="43387:43741" ph="..." />
+                <marker date="1556074736018" expanded="true" signature="43487:43679" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="photo.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Downloads/photo.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="329">
+              <caret line="450" column="35" lean-forward="false" selection-start-line="450" selection-start-column="35" selection-end-line="450" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="fungsi_images.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/admin/config/fungsi_images.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="536">
+              <caret line="82" column="26" lean-forward="false" selection-start-line="82" selection-start-column="26" selection-end-line="82" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="check_payment.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/auto/check_payment.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="25">
+              <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="2" selection-end-column="38" />
+              <folding>
+                <marker date="1556074394804" expanded="true" signature="181:380" ph="SELECT * FRO... paypals" />
+                <marker date="1556074394804" expanded="true" signature="779:895" ph="UPDATE `payp... " />
+                <marker date="1556074394804" expanded="true" signature="970:1100" ph="UPDATE `tran... " />
               </folding>
             </state>
           </provider>
@@ -163,9 +699,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>changeProvince()</find>
-      <find>price_shipping</find>
-      <find>console</find>
       <find>$shipping</find>
       <find>$row_cart</find>
       <find>$total_amount_shipping</find>
@@ -190,15 +723,18 @@
       <find>$rowMemberUpdate</find>
       <find>$queryMemberUpdate</find>
       <find>paypalTokenProductionClientID</find>
-      <find>configw/configuration_paypal.php</find>
       <find>paypalTokenSandboxSecret</find>
       <find>$tenMinuteTimestamp</find>
+      <find>configw/configuration_paypal.php</find>
+      <find>str_replace</find>
+      <find>0_2015-07-09 11.26.36.jpg</find>
+      <find>2015-07-09 16.08.06.jpg</find>
     </findStrings>
     <dirStrings>
-      <dir>C:\xampp1\xampp\htdocs\seagods</dir>
-      <dir>C:\xampp1\xampp\htdocs\seagods\admin</dir>
       <dir>C:\xampp1\xampp\htdocs\seagods\shipping</dir>
       <dir>C:\xampp1\xampp\htdocs\seagods\web</dir>
+      <dir>C:\xampp1\xampp\htdocs\seagods\admin</dir>
+      <dir>C:\xampp1\xampp\htdocs\seagods</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -207,8 +743,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/web/member/list-transaction.php" />
-        <option value="$PROJECT_DIR$/web/plugins/mailer/class.phpmailer.php" />
         <option value="dbtable:/a72f5753/783a0f99-7ba7-4ed7-92e5-b4420ef47551/u9814486_seagx2018.users" />
         <option value="$PROJECT_DIR$/web/getKota.php" />
         <option value="$PROJECT_DIR$/web/register.php" />
@@ -258,6 +792,8 @@
         <option value="$PROJECT_DIR$/admin/list_news.php" />
         <option value="$PROJECT_DIR$/web/auto/send_news_email.php" />
         <option value="$PROJECT_DIR$/admin/list_transaction.php" />
+        <option value="$USER_HOME$/Downloads/photo.sql" />
+        <option value="$PROJECT_DIR$/web/auto/change_name_photo_product.php" />
       </list>
     </option>
   </component>
@@ -324,7 +860,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="auto" />
+              <option name="myItemId" value="member" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -335,10 +871,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="seagods" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="admin" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -482,12 +1014,12 @@
       <workItem from="1555743125566" duration="9997000" />
       <workItem from="1555885294993" duration="30255000" />
       <workItem from="1555978722134" duration="25238000" />
-      <workItem from="1556064893176" duration="11286000" />
+      <workItem from="1556064893176" duration="16193000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="522448000" />
+    <option name="totallyTimeSpent" value="527355000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="2869" y="-11" width="2902" height="1582" extended-state="6" />
@@ -501,7 +1033,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39971036" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2635771" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -553,313 +1085,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/auto/send_order_email.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="129" column="30" lean-forward="true" selection-start-line="129" selection-start-column="30" selection-end-line="129" selection-end-column="30" />
-          <folding>
-            <marker date="1555995462984" expanded="true" signature="271:341" ph="SELECT `valu... setting_seagods" />
-            <marker date="1555995462984" expanded="true" signature="507:565" ph="SELECT * FRO... transaction" />
-            <marker date="1555995462984" expanded="true" signature="694:810" ph="SELECT * FRO... transaction_shipping" />
-            <marker date="1555995462984" expanded="true" signature="919:1027" ph="SELECT * FRO... cart" />
-            <marker date="1555995462984" expanded="true" signature="1311:1416" ph="SELECT * FRO... custom_collection" />
-            <marker date="1555995462984" expanded="true" signature="1669:1748" ph="SELECT * FRO... item" />
-            <marker date="1555995462984" expanded="true" signature="1875:1973" ph="SELECT * FRO... photo" />
-            <marker date="1555995462984" expanded="true" signature="2313:2396" ph="SELECT * FRO... guest" />
-            <marker date="1555995462984" expanded="true" signature="2527:2619" ph="SELECT * FRO... member" />
-            <marker date="1555995462984" expanded="true" signature="2893:3020" ph="SELECT * FRO... bank_transfer" />
-            <marker date="1555995462984" expanded="true" signature="3151:3260" ph="SELECT * FRO... bank_account" />
-            <marker date="1555995462984" expanded="true" signature="3410:3531" ph="SELECT * FRO... paypals" />
-            <marker date="1555995462984" expanded="true" signature="3801:3884" ph="SELECT `nama... provinsi" />
-            <marker date="1555995462984" expanded="true" signature="4154:4221" ph="SELECT `nama... kota" />
-            <marker date="1555995462984" expanded="true" signature="5932:6051" ph="UPDATE `tran... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="dbDummy://dbtable:/a72f5753/783a0f99-7ba7-4ed7-92e5-b4420ef47551/u9814486_seagx2018.news_email">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/auto/send_confirm_email.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="78" column="26" lean-forward="false" selection-start-line="78" selection-start-column="26" selection-end-line="78" selection-end-column="26" />
-          <folding>
-            <marker date="1555995864372" expanded="true" signature="272:342" ph="SELECT `valu... setting_seagods" />
-            <marker date="1555995864372" expanded="true" signature="508:632" ph="SELECT * FRO... transaction" />
-            <marker date="1555995864372" expanded="true" signature="753:861" ph="SELECT * FRO... cart" />
-            <marker date="1555995864372" expanded="true" signature="1046:1162" ph="SELECT * FRO... transaction_shipping" />
-            <marker date="1555995864372" expanded="true" signature="1339:1422" ph="SELECT * FRO... guest" />
-            <marker date="1555995864372" expanded="true" signature="1553:1645" ph="SELECT * FRO... member" />
-            <marker date="1555995864372" expanded="true" signature="1919:2046" ph="SELECT * FRO... bank_transfer" />
-            <marker date="1555995864372" expanded="true" signature="2177:2286" ph="SELECT * FRO... bank_account" />
-            <marker date="1555995864372" expanded="true" signature="2436:2557" ph="SELECT * FRO... paypals" />
-            <marker date="1555995864372" expanded="true" signature="4216:4337" ph="UPDATE `tran... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/admin/form_admin.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="280" column="109" lean-forward="true" selection-start-line="280" selection-start-column="67" selection-end-line="280" selection-end-column="109" />
-          <folding>
-            <marker date="1555922225048" expanded="true" signature="2332:2370" ph="SELECT * FRO... users" />
-            <marker date="1555922225048" expanded="true" signature="2332:2384" ph="SELECT * FRO... users" />
-            <marker date="1555922225048" expanded="true" signature="2495:2616" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="3866:4009" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="4171:4539" ph="INSERT INTO `member`... " />
-            <marker date="1555922225048" expanded="true" signature="4699:4828" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="4944:5021" ph="SELECT * FRO... member" />
-            <marker date="1555922225048" expanded="true" signature="5207:5434" ph="INSERT INTO `users`... " />
-            <marker date="1555922225048" expanded="true" signature="5592:5713" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="5848:5982" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="6071:6188" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="7982:8047" ph="SELECT * FRO... member" />
-            <marker date="1555922225048" expanded="true" signature="9395:9538" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="9662:10012" ph="UPDATE `memb... " />
-            <marker date="1555922225048" expanded="true" signature="9662:10013" ph="UPDATE `memb... " />
-            <marker date="1555922225048" expanded="true" signature="9662:10025" ph="UPDATE `memb... " />
-            <marker date="1555922225048" expanded="true" signature="10156:10296" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="10580:10661" ph="UPDATE `user... " />
-            <marker date="1555922225048" expanded="true" signature="10580:10673" ph="UPDATE `user... " />
-            <marker date="1555922225048" expanded="true" signature="10802:10934" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="11047:11157" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="11047:11158" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="11047:11221" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="11047:11243" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="11332:11449" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="11617:11846" ph="SELECT `memb... member" />
-            <marker date="1555922225048" expanded="true" signature="12017:22759" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12047:22744" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12087:22725" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12139:22702" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12190:12359" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12243:12328" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12432:22675" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12543:22444" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12543:22445" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12543:22644" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12593:13964" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12652:13375" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12745:13332" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="12926:13065" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="13178:13285" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="13434:13925" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="13527:13882" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="13697:13835" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="14047:15193" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="14106:14653" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="14200:14517" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="14200:14610" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="14378:14437" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="14378:14516" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="14378:14517" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="14712:15154" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="14844:15111" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="15276:16430" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="15335:15827" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="15429:15784" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="15602:15737" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="15886:16391" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="15980:16348" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="16165:16301" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="16513:18548" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="16572:17433" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="16656:17390" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="16828:16922" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="16828:17343" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="17492:18509" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="17577:18466" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="17737:17827" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="17737:18419" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="18631:19179" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="18691:19140" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="18776:19097" ph="..." />
-            <marker date="1555922225048" expanded="false" signature="18936:18947" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="19262:20716" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="19321:20187" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="19406:20144" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="19566:19656" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="19566:20097" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="19710:19738" ph="SELECT * FRO... bank_aco" />
-            <marker date="1555922225048" expanded="true" signature="19710:19758" ph="SELECT * FRO... bank_account" />
-            <marker date="1555922225048" expanded="true" signature="20246:20677" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="20331:20634" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="20799:21941" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="20858:21354" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="20943:21311" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="21126:21264" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="21413:21902" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="21498:21859" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="22094:22388" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="22795:22828" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="22795:23362" ph="..." />
-            <marker date="1555922225048" expanded="true" signature="22867:23338" ph="{...}" />
-            <marker date="1555922225048" expanded="true" signature="22958:23322" ph="{&quot;type&quot;: &quot;POST&quot;...}" />
-            <marker date="1555922225048" expanded="true" signature="23067:23139" ph="{&quot;id_province&quot;: id_province...}" />
-            <marker date="1555922225048" expanded="true" signature="23186:23304" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/config/template_old.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="33" column="86" lean-forward="false" selection-start-line="33" selection-start-column="86" selection-end-line="33" selection-end-column="86" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/custom/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4087">
-          <caret line="283" column="33" lean-forward="true" selection-start-line="283" selection-start-column="33" selection-end-line="283" selection-end-column="33" />
-          <folding>
-            <marker date="1556006597785" expanded="true" signature="43568:43683" ph="..." />
-            <marker date="1556006597785" expanded="true" signature="43772:43889" ph="..." />
-            <marker date="1556006597785" expanded="true" signature="44056:44169" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/config/template_web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5925">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/member/profile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="5" lean-forward="true" selection-start-line="0" selection-start-column="5" selection-end-line="12" selection-end-column="11" />
-          <folding>
-            <marker date="1556004467898" expanded="true" signature="1797:1882" ph="SELECT * FRO... member" />
-            <marker date="1556004467898" expanded="true" signature="3163:3306" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="3413:3501" ph="UPDATE `user... " />
-            <marker date="1556004467898" expanded="true" signature="3618:3727" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="3825:4124" ph="UPDATE `memb... " />
-            <marker date="1556004467898" expanded="true" signature="4243:4353" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="4450:4571" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="5122:5203" ph="SELECT `pass... users" />
-            <marker date="1556004467898" expanded="true" signature="5651:5753" ph="UPDATE `user... " />
-            <marker date="1556004467898" expanded="true" signature="5897:6034" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="6163:6299" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="6400:6542" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="6649:6763" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="7256:7396" ph="UPDATE `memb... " />
-            <marker date="1556004467898" expanded="true" signature="7516:7628" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="7725:7846" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="7931:8103" ph="SELECT `memb... member" />
-            <marker date="1556004467898" expanded="true" signature="8215:8243" ph="SELECT * FRO... " />
-            <marker date="1556004467898" expanded="true" signature="8215:8258" ph="SELECT * FRO... bank_account" />
-            <marker date="1556004467898" expanded="true" signature="8215:8289" ph="SELECT * FRO... bank_account" />
-            <marker date="1556004467898" expanded="true" signature="8410:27404" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="8506:27132" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="8602:27043" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="8665:27016" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="8779:26985" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="9011:9810" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="9065:9274" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="9328:9526" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="9580:9776" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="9940:26147" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="10048:19279" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="10118:19240" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="10202:13218" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="10284:13171" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="10454:13120" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="10772:11503" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="10851:11109" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="11188:11444" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="13281:19197" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="13363:19150" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="13554:19099" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="13640:18832" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="13741:14067" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="14160:15426" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="14243:14763" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="14351:14696" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="14846:15363" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="14954:15296" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="15527:15835" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="15936:16253" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="16354:17287" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="16501:17224" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="16617:16618" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="16617:16727" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="16617:17156" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="16779:16807" ph="SELECT * FRO... " />
-            <marker date="1556004467898" expanded="true" signature="16779:16827" ph="SELECT * FRO... bank_account" />
-            <marker date="1556004467898" expanded="true" signature="17388:17723" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="17824:18028" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="17824:18157" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="17824:18832" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="18036:18049" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="18258:18773" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="18406:18516" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="18406:18710" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="19380:21725" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="19450:21682" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="19606:21635" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="19692:21584" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="19854:21526" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="19944:21245" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="20049:20358" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="20463:20764" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="20869:21182" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="21830:26108" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="21904:26065" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="21992:22602" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="22078:22551" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="22256:22496" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="22669:26018" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="22755:25967" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="22924:25912" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="23014:25635" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="23119:24075" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="23274:24008" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="23402:23520" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="23402:23936" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="24180:25085" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="24335:25018" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="24455:24569" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="24455:24946" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="25190:25572" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="25444:25457" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="26267:26950" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="26351:26571" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="26632:26846" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="27497:27992" ph="..." />
-            <marker date="1556004467898" expanded="true" signature="27561:27976" ph="{...}" />
-            <marker date="1556004467898" expanded="true" signature="27644:27964" ph="{&quot;type&quot;: &quot;POST&quot;...}" />
-            <marker date="1556004467898" expanded="true" signature="27737:27801" ph="{&quot;id_province&quot;: id_province...}" />
-            <marker date="1556004467898" expanded="true" signature="27844:27950" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="dbDummy://dbtable:/a72f5753/783a0f99-7ba7-4ed7-92e5-b4420ef47551/u9814486_seagx2018.cart">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/member/config/configuration.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-150">
@@ -1625,83 +1850,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/checkout.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="970" column="45" lean-forward="true" selection-start-line="970" selection-start-column="45" selection-end-line="970" selection-end-column="45" />
-          <folding>
-            <marker date="1556074736018" expanded="true" signature="240:310" ph="SELECT `valu... setting_seagods" />
-            <marker date="1556074736018" expanded="true" signature="1290:1359" ph="SELECT * FRO... transaction" />
-            <marker date="1556074736018" expanded="true" signature="1586:1932" ph="INSERT INTO `transaction`... " />
-            <marker date="1556074736018" expanded="true" signature="1958:2116" ph="UPDATE `cart... " />
-            <marker date="1556074736018" expanded="true" signature="2319:2457" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="2717:2846" ph="SELECT * FRO... cart" />
-            <marker date="1556074736018" expanded="true" signature="3066:3267" ph="SELECT `memb... member" />
-            <marker date="1556074736018" expanded="true" signature="3367:3470" ph="SELECT * FRO... countries" />
-            <marker date="1556074736018" expanded="true" signature="3684:3827" ph="SELECT * FRO... provinsi" />
-            <marker date="1556074736018" expanded="true" signature="3928:4019" ph="SELECT * FRO... kota" />
-            <marker date="1556074736018" expanded="true" signature="4651:4772" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="14708:14856" ph="SELECT * FRO... item" />
-            <marker date="1556074736018" expanded="true" signature="15105:15279" ph="SELECT * FRO... custom_collection" />
-            <marker date="1556074736018" expanded="true" signature="30494:30519" ph="SELECT * FRO... countries" />
-            <marker date="1556074736018" expanded="true" signature="32934:33049" ph="SELECT * FRO... provinsi" />
-            <marker date="1556074736018" expanded="true" signature="38376:38922" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="38475:38634" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="38716:38875" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="39098:43963" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="39197:39335" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="39417:43916" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="39471:39620" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="39731:39872" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="40000:43856" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="40057:40496" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="40130:40438" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="40202:40217" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="40218:40376" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="40553:43203" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="40626:43145" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="40725:43083" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="40859:41411" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="40933:41340" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="41074:41164" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="41549:42260" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="41623:42189" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="41764:41859" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="42380:43016" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="42528:42611" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="43260:43799" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="43387:43741" ph="..." />
-            <marker date="1556074736018" expanded="true" signature="43487:43679" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/auto/check_payment.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="12" column="28" lean-forward="true" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
-          <folding>
-            <marker date="1556074394804" expanded="true" signature="181:380" ph="SELECT * FRO... paypals" />
-            <marker date="1556074394804" expanded="true" signature="779:895" ph="UPDATE `payp... " />
-            <marker date="1556074394804" expanded="true" signature="970:1100" ph="UPDATE `tran... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/auto/send_news_email.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="17" column="43" lean-forward="false" selection-start-line="17" selection-start-column="43" selection-end-line="17" selection-end-column="43" />
-          <folding>
-            <marker date="1556076142361" expanded="true" signature="188:290" ph="SELECT * FRO... news_subscriber" />
-            <marker date="1556076142361" expanded="true" signature="412:494" ph="SELECT * FRO... member" />
-            <marker date="1556076142361" expanded="true" signature="1702:1884" ph="INSERT INTO `news_email`... " />
-            <marker date="1556076142361" expanded="true" signature="1969:2132" ph="UPDATE `news... " />
-            <marker date="1556076142361" expanded="true" signature="2245:2434" ph="INSERT INTO `news_email_failed`... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/admin/list_news.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4090">
@@ -1748,10 +1896,97 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/web/auto/send_news_email.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="17" column="43" lean-forward="false" selection-start-line="17" selection-start-column="43" selection-end-line="17" selection-end-column="43" />
+          <folding>
+            <marker date="1556076142361" expanded="true" signature="188:290" ph="SELECT * FRO... news_subscriber" />
+            <marker date="1556076142361" expanded="true" signature="412:494" ph="SELECT * FRO... member" />
+            <marker date="1556076142361" expanded="true" signature="1702:1884" ph="INSERT INTO `news_email`... " />
+            <marker date="1556076142361" expanded="true" signature="1969:2132" ph="UPDATE `news... " />
+            <marker date="1556076142361" expanded="true" signature="2245:2434" ph="INSERT INTO `news_email_failed`... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/auto/check_payment.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="2" selection-end-column="38" />
+          <folding>
+            <marker date="1556074394804" expanded="true" signature="181:380" ph="SELECT * FRO... paypals" />
+            <marker date="1556074394804" expanded="true" signature="779:895" ph="UPDATE `payp... " />
+            <marker date="1556074394804" expanded="true" signature="970:1100" ph="UPDATE `tran... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://dbtable:/a72f5753/783a0f99-7ba7-4ed7-92e5-b4420ef47551/u9814486_seagx2018.item">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin/config/fungsi_thumb.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="108" column="9" lean-forward="false" selection-start-line="108" selection-start-column="9" selection-end-line="108" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin/config/fungsi_images.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="536">
+          <caret line="82" column="26" lean-forward="false" selection-start-line="82" selection-start-column="26" selection-end-line="82" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/photo.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="329">
+          <caret line="450" column="35" lean-forward="false" selection-start-line="450" selection-start-column="35" selection-end-line="450" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/auto/change_name_photo_product.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding>
+            <marker date="1556085620688" expanded="true" signature="87:128" ph="SELECT * FRO... photo" />
+            <marker date="1556085620688" expanded="true" signature="1022:1114" ph="UPDATE `phot... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://dbtable:/a72f5753/783a0f99-7ba7-4ed7-92e5-b4420ef47551/u9814486_seagx2018.photo">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/admin/list_transaction.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="775">
-          <caret line="52" column="40" lean-forward="true" selection-start-line="52" selection-start-column="40" selection-end-line="52" selection-end-column="40" />
+        <state relative-caret-position="325">
+          <caret line="19" column="27" lean-forward="false" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
           <folding>
             <marker date="1556076357235" expanded="true" signature="815:882" ph="SELECT * FRO... transaction" />
             <marker date="1556076357235" expanded="true" signature="947:995" ph="SELECT * FRO... transaction" />
@@ -1787,6 +2022,217 @@
             <marker date="1556076357235" expanded="true" signature="5939:6311" ph="..." />
             <marker date="1556076357235" expanded="true" signature="6194:6235" ph="..." />
             <marker date="1556076357235" expanded="true" signature="6387:6674" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin/config/functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="117" column="9" lean-forward="false" selection-start-line="117" selection-start-column="9" selection-end-line="117" selection-end-column="9" />
+          <folding>
+            <marker date="1554796336784" expanded="true" signature="1447:1525" ph="SELECT * FRO... sessions" />
+            <marker date="1554796336784" expanded="true" signature="1824:1906" ph="SELECT * FRO... users" />
+            <marker date="1554796336784" expanded="true" signature="2877:2955" ph="SELECT * FRO... sessions" />
+            <marker date="1554796336784" expanded="true" signature="3254:3333" ph="SELECT * FRO... users" />
+            <marker date="1554796336784" expanded="true" signature="4287:4496" ph="SELECT * FRO... sessions" />
+            <marker date="1554796336784" expanded="true" signature="4795:4877" ph="SELECT * FRO... users" />
+            <marker date="1554796336784" expanded="true" signature="5962:6170" ph="SELECT * FRO... sessions" />
+            <marker date="1554796336784" expanded="true" signature="6469:6657" ph="SELECT `user... users" />
+            <marker date="1554796336784" expanded="true" signature="8604:8610" ph="..." />
+            <marker date="1554796336784" expanded="true" signature="11803:11809" ph="..." />
+            <marker date="1554796336784" expanded="true" signature="19643:19709" ph="SELECT count... custom_collection" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin/form_products.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="117" column="46" lean-forward="false" selection-start-line="117" selection-start-column="46" selection-end-line="117" selection-end-column="46" />
+          <folding>
+            <marker date="1554172030588" expanded="true" signature="495:565" ph="SELECT `valu... setting_seagods" />
+            <marker date="1554172030588" expanded="true" signature="2802:3062" ph="INSERT INTO `item`... " />
+            <marker date="1554172030588" expanded="true" signature="3202:3334" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="3543:3597" ph="SELECT * FRO... item" />
+            <marker date="1554172030588" expanded="true" signature="4653:4802" ph="INSERT INTO `photo`... " />
+            <marker date="1554172030588" expanded="true" signature="4967:5130" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="5305:5397" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="6279:6561" ph="UPDATE `item... " />
+            <marker date="1554172030588" expanded="true" signature="6701:6831" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="8024:8169" ph="INSERT INTO `photo`... " />
+            <marker date="1554172030588" expanded="true" signature="8346:8521" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="9035:9105" ph="SELECT `phot... photo" />
+            <marker date="1554172030588" expanded="true" signature="9973:10082" ph="UPDATE `phot... " />
+            <marker date="1554172030588" expanded="true" signature="10259:10434" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="10785:10939" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="11206:11266" ph="SELECT `phot... photo" />
+            <marker date="1554172030588" expanded="true" signature="11366:11429" ph="UPDATE `phot... " />
+            <marker date="1554172030588" expanded="true" signature="11514:11664" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="11943:12021" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="12267:12387" ph="SELECT `item... item" />
+            <marker date="1554172030588" expanded="true" signature="12483:12593" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="12839:13790" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="12869:13790" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="12909:13790" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="12961:13790" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="13012:13450" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="13057:13419" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="13123:13220" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="13293:13385" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="13524:13790" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="13652:13790" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="13702:13790" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="13905:14479" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="14640:14865" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="14903:14992" ph="SELECT * FRO... category" />
+            <marker date="1554172030588" expanded="true" signature="15180:15289" ph="SELECT * FRO... category" />
+            <marker date="1554172030588" expanded="true" signature="15931:16244" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="16379:16704" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="16830:16908" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="16995:17074" ph="SELECT * FRO... photo" />
+            <marker date="1554172030588" expanded="true" signature="17257:17270" ph="..." />
+            <marker date="1554172030588" expanded="false" signature="17429:17442" ph="..." />
+            <marker date="1554172030588" expanded="false" signature="17552:17565" ph="..." />
+            <marker date="1554172030588" expanded="false" signature="17675:17688" ph="..." />
+            <marker date="1554172030588" expanded="false" signature="17798:17811" ph="..." />
+            <marker date="1554172030588" expanded="false" signature="17921:17934" ph="..." />
+            <marker date="1554172030588" expanded="false" signature="18044:18057" ph="..." />
+            <marker date="1554172030588" expanded="false" signature="18167:18180" ph="..." />
+            <marker date="1554172030588" expanded="false" signature="18290:18303" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="18603:18919" ph="..." />
+            <marker date="1554172030588" expanded="false" signature="18774:18786" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="19054:19385" ph="..." />
+            <marker date="1554172030588" expanded="false" signature="19234:19246" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="19510:19820" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="20208:20266" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="20332:20424" ph="SELECT `phot... photo" />
+            <marker date="1554172030588" expanded="true" signature="20591:21682" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="20683:21631" ph="..." />
+            <marker date="1554172030588" expanded="false" signature="20749:20794" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="21033:21260" ph="..." />
+            <marker date="1554172030588" expanded="false" signature="21374:21387" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="22873:24185" ph="..." />
+            <marker date="1554172030588" expanded="true" signature="22941:23477" ph="{...}" />
+            <marker date="1554172030588" expanded="true" signature="23016:23465" ph="{...}" />
+            <marker date="1554172030588" expanded="true" signature="23096:23280" ph="{...}" />
+            <marker date="1554172030588" expanded="true" signature="23286:23451" ph="{...}" />
+            <marker date="1554172030588" expanded="true" signature="23505:23530" ph="/*...*/" />
+            <marker date="1554172030588" expanded="true" signature="23645:23738" ph="{...}" />
+            <marker date="1554172030588" expanded="true" signature="23794:23873" ph="{...}" />
+            <marker date="1554172030588" expanded="true" signature="23921:24164" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/admin/list_products.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="112" column="111" lean-forward="false" selection-start-line="112" selection-start-column="111" selection-end-line="112" selection-end-column="111" />
+          <folding>
+            <marker date="1553059783346" expanded="true" signature="1008:1075" ph="UPDATE `item... " />
+            <marker date="1553059783346" expanded="true" signature="1149:1274" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="1323:1420" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="1557:1677" ph="SELECT `item... item" />
+            <marker date="1553059783346" expanded="true" signature="1822:3748" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="1931:3748" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="2015:3748" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="2082:3748" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="2187:3748" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="2242:2794" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="2375:2698" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="2435:2659" ph="..." />
+            <marker date="1553059783346" expanded="false" signature="2561:2572" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="2876:3748" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="2984:3748" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="3029:3704" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="3074:3659" ph="..." />
+            <marker date="1553059783346" expanded="false" signature="3131:3139" ph="..." />
+            <marker date="1553059783346" expanded="false" signature="3202:3211" ph="..." />
+            <marker date="1553059783346" expanded="false" signature="3286:3295" ph="..." />
+            <marker date="1553059783346" expanded="false" signature="3368:3377" ph="..." />
+            <marker date="1553059783346" expanded="false" signature="3444:3453" ph="..." />
+            <marker date="1553059783346" expanded="false" signature="3521:3529" ph="..." />
+            <marker date="1553059783346" expanded="false" signature="3598:3607" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="3782:3950" ph="SELECT `item... item" />
+            <marker date="1553059783346" expanded="true" signature="4018:4167" ph="SELECT `item... item" />
+            <marker date="1553059783346" expanded="true" signature="4285:4356" ph="SELECT * FRO... category" />
+            <marker date="1553059783346" expanded="true" signature="4413:4534" ph="SELECT * FRO... photo" />
+            <marker date="1553059783346" expanded="true" signature="4652:7119" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="4701:7071" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="4777:5087" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="5163:5303" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="5379:5526" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="5602:5745" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="5821:5963" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="6016:6322" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="6375:7021" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="6451:6967" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="6649:6738" ph="..." />
+            <marker date="1553059783346" expanded="false" signature="7521:7535" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="7536:10350" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="7599:10311" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="7770:10268" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="7841:7989" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="8058:9969" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="8133:9918" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="8231:8455" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="8606:8745" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="8896:9113" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="9264:9483" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="9634:9863" ph="..." />
+            <marker date="1553059783346" expanded="true" signature="10040:10221" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/checkout.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="507" column="124" lean-forward="false" selection-start-line="507" selection-start-column="124" selection-end-line="507" selection-end-column="124" />
+          <folding>
+            <marker date="1556074736018" expanded="true" signature="240:310" ph="SELECT `valu... setting_seagods" />
+            <marker date="1556074736018" expanded="true" signature="1290:1359" ph="SELECT * FRO... transaction" />
+            <marker date="1556074736018" expanded="true" signature="1586:1932" ph="INSERT INTO `transaction`... " />
+            <marker date="1556074736018" expanded="true" signature="1958:2116" ph="UPDATE `cart... " />
+            <marker date="1556074736018" expanded="true" signature="2319:2457" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="2717:2846" ph="SELECT * FRO... cart" />
+            <marker date="1556074736018" expanded="true" signature="3066:3267" ph="SELECT `memb... member" />
+            <marker date="1556074736018" expanded="true" signature="3367:3470" ph="SELECT * FRO... countries" />
+            <marker date="1556074736018" expanded="true" signature="3684:3827" ph="SELECT * FRO... provinsi" />
+            <marker date="1556074736018" expanded="true" signature="3928:4019" ph="SELECT * FRO... kota" />
+            <marker date="1556074736018" expanded="true" signature="4651:4772" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="14708:14856" ph="SELECT * FRO... item" />
+            <marker date="1556074736018" expanded="true" signature="15105:15279" ph="SELECT * FRO... custom_collection" />
+            <marker date="1556074736018" expanded="true" signature="30494:30519" ph="SELECT * FRO... countries" />
+            <marker date="1556074736018" expanded="true" signature="32934:33049" ph="SELECT * FRO... provinsi" />
+            <marker date="1556074736018" expanded="true" signature="38376:38922" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="38475:38634" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="38716:38875" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="39098:43963" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="39197:39335" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="39417:43916" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="39471:39620" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="39731:39872" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="40000:43856" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="40057:40496" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="40130:40438" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="40202:40217" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="40218:40376" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="40553:43203" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="40626:43145" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="40725:43083" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="40859:41411" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="40933:41340" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="41074:41164" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="41549:42260" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="41623:42189" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="41764:41859" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="42380:43016" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="42528:42611" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="43260:43799" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="43387:43741" ph="..." />
+            <marker date="1556074736018" expanded="true" signature="43487:43679" ph="..." />
           </folding>
         </state>
       </provider>
