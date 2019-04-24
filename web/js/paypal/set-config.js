@@ -3,10 +3,10 @@ var sandboxUrl = 'https://api.sandbox.paypal.com';
 var productionUrl = 'https://api.paypal.com';
 
 // URL Main Paypal
-var paypalApiMainUrl = sandboxUrl; // TODO: Ubah sandboxUrl => productionUrl
+var paypalApiMainUrl = sandboxUrl; // TODO: Ubah sandboxUrl (testing) => productionUrl (production)
 
 // Set Evn
-var paypalEvn = 'sandbox'; // TODO: Ubah sandbox => production
+var paypalEvn = 'sandbox'; // TODO: Ubah sandbox (testing) => production (production)
 
 // Set Style
 var paypalStyle = {

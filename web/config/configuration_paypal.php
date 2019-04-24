@@ -15,13 +15,13 @@ $productionSecret = 'EGAchFE36H4IxFT3BQbk8V9FJ8dFJE5kDTNit9hXMF9uog_QJx2el-ilarD
 
 $api = new ApiContext(
     new OAuthTokenCredential(
-        $sandboxClientId,  // TODO: Ubah $sandboxClientId => $productionClientId
-        $sandboxSecret  // TODO: Ubah $sandboxSecret => $productionSecret
+        $sandboxClientId,  // TODO: Ubah $sandboxClientId (testing) => $productionClientId (production)
+        $sandboxSecret  // TODO: Ubah $sandboxSecret (testing) => $productionSecret (production)
     )
 );
 
 $api->setConfig([
-    'mode' => 'sandbox', // TODO: Ubah sandbox => production
+    'mode' => 'sandbox', // TODO: Ubah sandbox (testing) => production (production)
     'http.ConnectionTimeOut' => 30,
     'log.LogEnabled' => false,
     'log.FileName' => '',

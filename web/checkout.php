@@ -954,7 +954,7 @@ if ($loggedin = logged_in()) {
                         type: 'POST',
                         url: paypalApiMainUrl + '/v1/oauth2/token',
                         headers: {
-                            'Authorization': 'Basic ' + btoa(paypalTokenSandboxClientID + ":" + paypalTokenSandboxSecret), // TODO: Ubah paypalTokenSandboxClientID & paypalTokenSandboxSecret => paypalTokenProductionClientID & paypalTokenProductionSecret
+                            'Authorization': 'Basic ' + btoa(paypalTokenSandboxClientID + ":" + paypalTokenSandboxSecret), // TODO: Ubah paypalTokenSandboxClientID (testing) & paypalTokenSandboxSecret (testing) => paypalTokenProductionClientID (production) & paypalTokenProductionSecret (production)
                             'Content-Type': 'application/x-www-form-urlencoded'
                         },
                         data: {grant_type: 'client_credentials'},
