@@ -1,6 +1,8 @@
 <?php
 
 require "config/configuration.php";
+include("config/shipping/action_raja_ongkir.php");
+include("config/shipping/province_city.php");
 session_start();
 ob_start();
 
@@ -17,18 +19,28 @@ $USDtoIDR = get_price('currency-value-usd-to-idr');
 
 $loggedin = logged_in();
 
+// Action select province
 if (isset($_GET["select_country"]) && $_GET["select_country"] == "select_country") {
+
+    // Set parameter request
     $id_country = isset($_GET['id_country']) ? strip_tags(trim($_GET['id_country'])) : "";
 
-    $query_province = mysql_query("SELECT * FROM `provinsi` WHERE `idCountry` = '$id_country'");
-
+    // Set default results
     $result_province = array();
-    while ($row_province = mysql_fetch_array($query_province)) {
-        $result_province[] = $row_province;
+
+    if ($id_country == 'ID') {
+
+        // Get province
+        $get_province = get_province();
+
+        // Set results
+        foreach ($get_province->rajaongkir->results as $row_province) {
+            $result_province[] = $row_province;
+        }
+
     }
 
-    $count_province = mysql_num_rows($query_province);
-    if ($count_province > 0) {
+    if (count($result_province) > 0) {
         $return_province['failed'] = false;
         $return_province['results'] = $result_province;
     } else {
@@ -38,18 +50,27 @@ if (isset($_GET["select_country"]) && $_GET["select_country"] == "select_country
     echo json_encode($return_province);
 }
 
+// Action select city
 if (isset($_GET["select_province"]) && $_GET["select_province"] == "select_province") {
+
+    // Set parameter request
     $id_province = isset($_GET['id_province']) ? strip_tags(trim($_GET['id_province'])) : "";
 
-    $query_city = mysql_query("SELECT * FROM `kota` WHERE `idProvinsi` = '$id_province';");
+    // Set parameter
+    $parameter = [
+        'province' => $id_province
+    ];
 
+    // Get city
+    $get_city = get_city($parameter);
+
+    // Set result city
     $result_city = array();
-    while ($row_city = mysql_fetch_array($query_city)) {
+    foreach ($get_city->rajaongkir->results as $row_city) {
         $result_city[] = $row_city;
     }
 
-    $count_city = mysql_num_rows($query_city);
-    if ($count_city > 0) {
+    if (count($result_city) > 0) {
         $return_city['failed'] = false;
         $return_city['results'] = $result_city;
     } else {

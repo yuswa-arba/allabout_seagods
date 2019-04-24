@@ -609,6 +609,34 @@ function template_order($transaction)
     $shipping_query = mysql_query("SELECT * FROM `transaction_shipping` WHERE `id_transaction` = '" . $transaction["id_transaction"] . "' LIMIT 0,1;");
     $row_shipping = mysql_fetch_assoc($shipping_query);
 
+    // Set weight round
+    $weight_round = (($row_shipping['weight'] < 1) ? 1 : round($row_shipping['weight']));
+
+    // Set subtotal if transaction with transfer bank
+    if ($transaction['payment_method'] == 'Paypal') {
+
+        // Set price
+        $price_shipping = round(($row_shipping['price'] / $USDtoIDR), 2);
+
+        // Set total shipping
+        $total_shipping = ($price_shipping * $weight_round);
+
+        // Set total transaction
+        $total_transaction = ($total_amount + $total_shipping);
+
+    } else {
+
+        // Set price
+        $price_shipping = $row_shipping['price'];
+
+        // Set total shipping
+        $total_shipping = ($price_shipping * $weight_round);
+
+        // Set total transaction
+        $total_transaction = (($total_amount * $USDtoIDR) + $total_shipping);
+
+    }
+
     $template .= '
         
                     <tfoot>
@@ -664,7 +692,7 @@ function template_order($transaction)
                                 </td>
                                 <td class="p-l-10 p-b-5 fs-14 color-black">
                                     <span class="pull-right">: </span>
-                                    ' . $currency . ' ' . (($transaction['payment_method'] == 'Paypal') ? number_format_many(($row_shipping['amount'] / $USDtoIDR), 2) : number_format_many($row_shipping['amount'])) . '
+                                    ' . $currency . ' ' . (($transaction['payment_method'] == 'Paypal') ? number_format_many($total_shipping, 2) : number_format_many($total_shipping)) . '
                                 </td>
                             </tr>
                             <tr>
@@ -673,7 +701,7 @@ function template_order($transaction)
                                 </td>
                                 <td class="p-l-10 fs-16 color-black">
                                     <span class="pull-right">: </span>
-                                    <b>' . $currency . ' ' . (($transaction['payment_method'] == 'Paypal') ? number_format_many($transaction['total'], 2) : number_format_many($transaction['total'] * $USDtoIDR)) . '</b>
+                                    <b>' . $currency . ' ' . (($transaction['payment_method'] == 'Paypal') ? number_format_many($total_transaction, 2) : number_format_many($total_transaction)) . '</b>
                                 </td>
                             </tr>
                         </table>

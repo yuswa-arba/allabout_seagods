@@ -13,14 +13,20 @@ function order_confirmed_template($transaction, $carts, $shipping, $buyer, $curr
     // Set USD to IDR
     $USDtoIDR = $currency_properties['USDtoIDR'];
 
+    // Set weight round
+    $weight_round = (($shipping['weight'] < 1) ? 1 : round($shipping['weight']));
+
     // Set subtotal if transaction with transfer bank
     if ($transaction['payment_method'] == 'Paypal') {
 
         // SEt subtotal
         $subtotal = array_sum(array_column($carts, 'amount'));
 
+        // Set price
+        $price_shipping = round(($shipping['price'] / $USDtoIDR), 2);
+
         // Set total shipping
-        $total_shipping = round(($shipping['amount'] / $USDtoIDR), 2);
+        $total_shipping = ($price_shipping * $weight_round);
 
         // Set total transaction
         $total_transaction = ($subtotal + $total_shipping);
@@ -30,8 +36,11 @@ function order_confirmed_template($transaction, $carts, $shipping, $buyer, $curr
         // SEt subtotal
         $subtotal = array_sum(array_column($carts, 'amount')) * $USDtoIDR;
 
+        // Set price
+        $price_shipping = $shipping['price'];
+
         // Set total shipping
-        $total_shipping = $shipping['amount'];
+        $total_shipping = ($price_shipping * $weight_round);
 
         // Set total transaction
         $total_transaction = ($subtotal + $total_shipping);

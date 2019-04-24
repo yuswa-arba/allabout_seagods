@@ -2,6 +2,8 @@
 session_start();
 include("config/configuration.php");
 include("config/currency_types.php");
+include("config/shipping/action_raja_ongkir.php");
+include("config/shipping/province_city.php");
 
 if ($loggedin = logged_in()) {
 
@@ -191,7 +193,7 @@ if ($loggedin = logged_in()) {
                      data-src-retina="member/assets/img/s-logo.png" height="20">
             </div>
             <h2 class="page-title align-self-end">
-                SeaGods Wetsuit Cart
+                Checkout
             </h2>
         </div>
 
@@ -206,7 +208,7 @@ if ($loggedin = logged_in()) {
                     <a href="member/profile.php"><span class="title">Profile</span></a>
                 </li>
                 <li class="">
-                    <a href="member/list-transaction.php">List Transaction</a>
+                    <a href="member/list-transaction.php">Transaction List</a>
                 </li>
                 <li>
                     <a href="member/wishlist.php"><span class="title">Wishlist</span></a>
@@ -215,10 +217,13 @@ if ($loggedin = logged_in()) {
                     <a href="member/custommade.php"><span class="title">Custom Made</span></a>
                 </li>
                 <li>
-                    <a href="index.php" target="_blank"><span class="title">Homepage Website</span></a>
+                    <a href="index.php" target="_blank"><span class="title">Homepage</span></a>
                 </li>
                 <li>
                     <a href="list_product.php" target="_blank"><span class="title">Collection</span></a>
+                </li>
+                <li>
+                    <a href="cart.php" target="_blank"><span class="title">My Cart</span></a>
                 </li>
             </ul>
         </div>
@@ -366,9 +371,9 @@ if ($loggedin = logged_in()) {
                                                             Shipping Cost</h5>
                                                         <p class="no-margin"><?php echo $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? ($total_weight_round * $kurs) : number_format(($total_weight_round * $kurs), 0, '.', ',')); ?></p>
                                                         <input type="hidden" name="courier" id="courier"
-                                                               value="<?php echo (isset($guest['courier']) ? $guest['courier'] : ''); ?>">
+                                                               value="<?php echo(isset($guest['courier']) ? $guest['courier'] : ''); ?>">
                                                         <input type="hidden" name="service" id="service"
-                                                               value="<?php echo (isset($guest['service']) ? $guest['service'] : ''); ?>">
+                                                               value="<?php echo(isset($guest['service']) ? $guest['service'] : ''); ?>">
                                                         <input type="hidden" name="price_shipping" id="price_shipping"
                                                                value="<?php echo $kurs_IDR; ?>">
                                                         <input type="hidden" name="shipping" id="shipping"
@@ -486,7 +491,7 @@ if ($loggedin = logged_in()) {
                                                         <select class="full-width" id="country_code"
                                                                 data-placeholder="Select Country"
                                                                 name="country_code" data-init-plugin="select2">
-                                                            <option type="hidden" value="0">Chose Country</option>
+                                                            <option hidden>Chose Country</option>
                                                             <?php while ($row_country = mysql_fetch_array($query_country)) {
                                                                 echo '<option value="' . $row_country["id_country"] . '">' . $row_country["name"] . '</option>';
                                                             } ?>
@@ -511,10 +516,17 @@ if ($loggedin = logged_in()) {
                                                         <select class="full-width" id="province"
                                                                 data-placeholder="Chose Province"
                                                                 name="province" data-init-plugin="select2">
-                                                            <option type="hidden" value="">Chose Province</option>
-                                                            <?php while ($row_all_province = mysql_fetch_array($all_province_query)) {
-                                                                echo '<option value="' . $row_all_province["namaProvinsi"] . '-' . $row_all_province["idProvinsi"] . '">' . $row_all_province["namaProvinsi"] . '</option>';
-                                                            } ?>
+                                                            <option hidden>-- Choose Province --</option>
+                                                            <?php
+
+                                                            // Get province
+                                                            $get_province = get_province();
+
+                                                            foreach ($get_province->rajaongkir->results as $province) {
+                                                                echo '<option value="' . $province->province . '-' . $province->province_id . '">' . $province->province . '</option>';
+                                                            }
+
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 <?php } ?>
@@ -537,7 +549,17 @@ if ($loggedin = logged_in()) {
                                                             <select class="full-width" id="city"
                                                                     data-placeholder="Chose City"
                                                                     name="city" data-init-plugin="select2">
-                                                                <option type="hidden" value="">Chose City</option>
+                                                                <option hidden>-- Choose City --</option>
+                                                                <?php
+
+                                                                // Get province
+                                                                $get_city = get_city();
+
+                                                                foreach ($get_city->rajaongkir->results as $city) {
+                                                                    echo '<option value="' . $city->city_id . '">' . $city->city_name . '</option>';
+                                                                }
+
+                                                                ?>
                                                             </select>
                                                         </div>
                                                     <?php } ?>
@@ -618,7 +640,7 @@ if ($loggedin = logged_in()) {
                                                                 <div class="col-md-6 text-right bg-primary padding-10">
                                                                     <h6 class="font-montserrat all-caps small no-margin hint-text text-white bold">
                                                                         Total</h6>
-                                                                    <h6 class="no-margin text-white">'.$currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? number_format(($item_total + ($total_weight_round * $kurs)), 2, '.', ',') : number_format((($item_total * $USDtoIDR) + ($total_weight_round * $kurs)), 0, '.', ',')).'</h6>
+                                                                    <h6 class="no-margin text-white">' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? number_format(($item_total + ($total_weight_round * $kurs)), 2, '.', ',') : number_format((($item_total * $USDtoIDR) + ($total_weight_round * $kurs)), 0, '.', ',')) . '</h6>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -725,10 +747,10 @@ if ($loggedin = logged_in()) {
                 success: function (data) {
                     if (!data.failed) {
                         var province = $('#province');
-                        province.html("");
+                        province.html("").append('<option hidden>-- Choose Province --</option>');
                         for (var i = 0; i < data.results.length; i++) {
                             province.append(
-                                '<option value="' + data.results[i].namaProvinsi + '-' + data.results[i].idProvinsi + '">' + data.results[i].namaProvinsi + '</option>'
+                                '<option value="' + data.results[i].province + '-' + data.results[i].province_id + '">' + data.results[i].province + '</option>'
                             );
                         }
                     }
@@ -748,10 +770,10 @@ if ($loggedin = logged_in()) {
                     if (!data.failed) {
                         $('#state').val(province[0]);
                         var city = $('#city');
-                        city.html("");
+                        city.html("").append('<option hidden>-- Choose City --</option>');
                         for (var i = 0; i < data.results.length; i++) {
                             city.append(
-                                '<option value="' + data.results[i].namaKota + '-' + data.results[i].idKota + '">' + data.results[i].namaKota + '</option>'
+                                '<option value="' + data.results[i].city_name + '-' + data.results[i].city_id + '">' + data.results[i].city_name + '</option>'
                             );
                         }
                     }
