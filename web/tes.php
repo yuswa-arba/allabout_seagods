@@ -9,30 +9,6 @@ ob_start();
 $titlebar = "Register Guest";
 $menu = "";
 
-$curl = curl_init();
-
-curl_setopt_array($curl, array(
-    CURLOPT_URL => "https://api.rajaongkir.com/starter/city?id=39&province=5",
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => "",
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 30,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => "GET",
-    CURLOPT_HTTPHEADER => array(
-        "key: 7423ce43385bd0d2340dfe6c6d55b256"
-    ),
-));
-
-// Set parameters
-$parameters = [
-//    'id' => 39,
-    'province' => 4
-];
-
-// Get city
-$get_city = get_city($parameters);
-
 //foreach ($get_province->rajaongkir->results as $province) {
 //    if ($province->province_id == 2) {
 //        echo $province->province_id . ' ';
@@ -41,7 +17,7 @@ $get_city = get_city($parameters);
 //unset($_SESSION['guest']);
 
 echo "<pre>";
-print_r($_SESSION['guest']);
+print_r($_SESSION['cart_item']);
 echo "</pre>";
 
 $content = '

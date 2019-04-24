@@ -41,7 +41,7 @@ $menu = '
                                 </div>
                             </div>
                             <div class="top_bar_right">
-                                <div class="top_bar_right_wrapper"><a id="header_cart" href="cart.php"><i class="icon-bag-fine"></i><span>0</span></a>
+                                <div class="top_bar_right_wrapper"><a id="header_cart" href="cart.php"><i class="icon-bag-fine"></i><span id="notify_value">0</span></a>
                                 </div>
                             </div>
                         </div>
@@ -299,6 +299,20 @@ $template = '
                 });
             }
         });
+        
+        function notification() {
+            console.log("testing");
+            jQuery.ajax({
+                type: "POST",
+                url: "notification.php",
+                data: {action: "notification"},
+                dataType: "json",
+                success: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+        
     </script>
 	
   </body>

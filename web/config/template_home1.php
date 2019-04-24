@@ -41,7 +41,7 @@ $menu = '
                                 </div>
                             </div>
                             <div class="top_bar_right">
-                                <div class="top_bar_right_wrapper"><a id="header_cart" href="cart.php"><i class="icon-bag-fine"></i><span>0</span></a>
+                                <div class="top_bar_right_wrapper"><a id="header_cart" href="cart.php"><i class="icon-bag-fine"></i><span id="notify_value"></span></a>
                                 </div>
                             </div>
                         </div>
@@ -254,6 +254,7 @@ $template = '
     <script src="plugins/rs-plugin/js/extensions/revolution.extension.parallax.min.js"></script>
     <script type="text/javascript" src="vendor/slick/slick.min.js"></script>
     <script type="text/javascript" src="js/slick-custom.js"></script>
+    <script type="text/javascript" src="js/notification/notify.js"></script>
 
     <script src="js/email.js"></script>
     <script>
@@ -299,6 +300,13 @@ $template = '
                 });
             }
         });
+        
+        notification();
+        
+        setInterval(function() {
+            notification();
+        }, 5000);
+        
     </script>
 	
   </body>

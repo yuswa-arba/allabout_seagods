@@ -6,22 +6,22 @@ use PayPal\Auth\OAuthTokenCredential;
 require __DIR__ . '/../vendor/autoload.php';
 
 // Access with sandbox
-$sandboxClientId = 'AU7qnuopCNgOrHZd1Dmpir5NwKTTpmO-lJ2x6d85Th6m-RAuZrTLchW5VgMvACgCvBf6Y_FlVBpf4Rea';
-$sandboxSecret = 'EA818dIpMBRh8vZ3Fq4HhTA-7CIANsaojG8CAJ-OrlBQkJ7V81gY1V8funDXuJ4SB262_3uyR5rDzVxL';
+$sandboxClientId = 'AV1rngNO32yw87iDNr2G7nC67FNU8ashq1EBqc39zDgAgjrQy9PMFNuMr4ys8HO4IIPZZvN3g3TEsSpY';
+$sandboxSecret = 'EHFUpL7tx2QjpwQOxIvAcXUytZlFi5_rWbVtb3bBfUp5zwd_2E92G5oZ7vouA6pWVh-w2_autUAUkg9t';
 
 // Access with Production
-$productionClientId = 'AR6FGeTTxwJgQlv9WcAyJIN0-ct2xdl2qdj-U5m8u-dIOw61nbu68vZuLMJzBBXYNhJjn0nvFjguBmxa';
-$productionSecret = 'EJ43dekCpQZ7r1gGrnMG_UznvkJ3Hhu0jHNERohoVyi9HjJCgwZgbwog0pinCp_hcfhCczJMLW_WXQgQ';
+$productionClientId = 'ATU84RpAReTMjTSw8Kcid9fqnYjD4bgLMj9t9T8pFbMSTCmbNYK3dDSAsmGNaSw2aRVWR3DDCVsr3hwh';
+$productionSecret = 'EGAchFE36H4IxFT3BQbk8V9FJ8dFJE5kDTNit9hXMF9uog_QJx2el-ilarDLpW-FIGAr1f9tHMOuTL9u';
 
 $api = new ApiContext(
     new OAuthTokenCredential(
-        $sandboxClientId,
-        $sandboxSecret
+        $sandboxClientId,  // TODO: Ubah $sandboxClientId => $productionClientId
+        $sandboxSecret  // TODO: Ubah $sandboxSecret => $productionSecret
     )
 );
 
 $api->setConfig([
-    'mode' => 'sandbox',
+    'mode' => 'sandbox', // TODO: Ubah sandbox => production
     'http.ConnectionTimeOut' => 30,
     'log.LogEnabled' => false,
     'log.FileName' => '',

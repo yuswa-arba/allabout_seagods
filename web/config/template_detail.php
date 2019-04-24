@@ -33,7 +33,7 @@ $menu = '<div class="column one">
             	</div>
         	</div>
             <div class="top_bar_right">
-                <div class="top_bar_right_wrapper"><a id="header_cart" href="cart.php"><i class="icon-bag-fine"></i><span>0</span></a>
+                <div class="top_bar_right_wrapper"><a id="header_cart" href="cart.php"><i class="icon-bag-fine"></i><span id="notify_value"></span></a>
                 </div>
             </div>
         </div>';
@@ -244,6 +244,7 @@ $template ='<!DOCTYPE html>
     <script src="js/animations/animations.js"></script>
     <script src="js/translate3d.js"></script>
     <script src="js/scripts.js"></script>
+    <script type="text/javascript" src="js/notification/notify.js"></script>
     
     <script>
         function subscribe() {
@@ -266,6 +267,13 @@ $template ='<!DOCTYPE html>
         function notification_cart() {
             console.log("Testing notification");
         }
+        
+        notification();
+        
+        setInterval(function() {
+            notification();
+        }, 5000);
+        
     </script>
 
 </body>

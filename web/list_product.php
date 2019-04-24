@@ -266,6 +266,7 @@ $plugin = '
 
 <!-- Global Site Tag (gtag.js) - Google Analytics -->
 <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-131936719-1"></script>
+<script type="text/javascript" src="js/notification/notify.js"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -313,7 +314,7 @@ $plugin = '
                   alert(data.msg);
               } else {
                   add_cart_button.text("Added to cart").attr("disabled", true);
-                  notification_cart();
+                  notification();
               }
           }
         });

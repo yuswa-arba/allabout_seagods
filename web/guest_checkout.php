@@ -1065,7 +1065,7 @@ $plugin = '
                         type: "POST",
                         url: paypalApiMainUrl + "/v1/oauth2/token",
                         headers: {
-                            "Authorization": "Basic " + btoa(paypalTokenSandboxClientID + ":" + paypalTokenSandboxSecret),
+                            "Authorization": "Basic " + btoa(paypalTokenSandboxClientID + ":" + paypalTokenSandboxSecret), // TODO: Ubah paypalTokenSandboxClientID & paypalTokenSandboxSecret => paypalTokenProductionClientID & paypalTokenProductionSecret
                             "Content-Type": "application/x-www-form-urlencoded"
                         },
                         data: {grant_type: "client_credentials"},
