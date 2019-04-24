@@ -42,10 +42,6 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         // Set value request
         $id_transaction = isset($_POST['id_transaction']) ? mysql_real_escape_string(trim($_POST['id_transaction'])) : '';
 
-        // Now Date
-        $nowDate = get_date();
-        $confirmed_at = $nowDate->format("d/m/Y H:i");
-
         // Update confirmation status
         $update_transaction_query = "UPDATE `transaction` SET `status` = 'completed', `konfirm` = 'Confirmated', `confirmed_at` = NOW(),
             `confirmed_by` = '" . $user . "' WHERE `id_transaction` = '$id_transaction';";

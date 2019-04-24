@@ -83,13 +83,8 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
             exit();
         }
 
-        // Set date timestamp
-        $nowDate = new DateTime();
-        $nowDate->setTimezone(new DateTimeZone('Asia/Kuala_Lumpur'));
-        $dateTimestamp = $nowDate->getTimestamp();
-
         // query send news
-        $query_send_news = "UPDATE `news_subscriber` SET `dateTimestamp` = '$dateTimestamp', `sent` = TRUE,
+        $query_send_news = "UPDATE `news_subscriber` SET `sent` = TRUE,
             `delivery_process` = TRUE, `date_upd` = NOW() WHERE `id` = '$news_id';";
 
         // If error

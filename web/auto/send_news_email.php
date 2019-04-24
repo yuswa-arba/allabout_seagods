@@ -4,15 +4,6 @@ require '../config/configuration.php';
 require 'template/news_subscribe.php';
 include("../plugins/mailer/class.phpmailer.php");
 
-// Set now time
-$nowDate = get_date();
-$nowDateTimestamp = $nowDate->getTimestamp();
-
-// Set after 10 minutes
-$afterTenMinute = get_date();
-$afterTenMinute->modify('last hour');
-$tenMinuteTimestamp = $afterTenMinute->getTimestamp();
-
 // Check news subscriber
 $query_news = mysql_query("SELECT * FROM `news_subscriber` 
     WHERE `delivery_process` = '1' AND `sent` = '1' AND `level` = '0';");
