@@ -137,11 +137,11 @@ function purchase_order_template($transaction, $carts, $shipping, $buyer, $provi
                         </tr>
         
                         <tr>
-                            <td style="padding-bottom: 5px;">
-                                Province <span style="float: right;">:</span>
+                            <td style="padding-bottom: 15px;vertical-align: top;">
+                                Shipping Address <span style="float: right;">:</span>
                             </td>
-                            <td style="padding-left: 10px;padding-bottom: 5px;font-size: 14px;color: #000;">
-                                ' . $province . '
+                            <td style="padding-left: 10px;padding-bottom: 15px;font-size: 14px;vertical-align: top;color: #000;">
+                                ' . ($transaction["is_guest"] ? $buyer['address'] : $buyer['alamat']) . '
                             </td>
                         </tr>
                         <tr>
@@ -154,18 +154,26 @@ function purchase_order_template($transaction, $carts, $shipping, $buyer, $provi
                         </tr>
                         <tr>
                             <td style="padding-bottom: 5px;">
+                                Province/State <span style="float: right;">:</span>
+                            </td>
+                            <td style="padding-left: 10px;padding-bottom: 5px;font-size: 14px;color: #000;">
+                                ' . $province . '
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 5px;">
+                                Country <span style="float: right;">:</span>
+                            </td>
+                            <td style="padding-left: 10px;padding-bottom: 5px;font-size: 14px;color: #000;">
+                                ' . ($transaction["is_guest"] ? 'Indonesian' : 'Indonesian') . '
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-bottom: 5px;">
                                 Postal Code <span style="float: right;">:</span>
                             </td>
                             <td style="padding-left: 10px;padding-bottom: 5px;font-size: 14px;color: #000;">
                                 ' . ($transaction["is_guest"] ? $buyer['zip_code'] : $buyer['kode_pos']) . '
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding-bottom: 15px;vertical-align: top;">
-                                Shipping Address <span style="float: right;">:</span>
-                            </td>
-                            <td style="padding-left: 10px;padding-bottom: 15px;font-size: 14px;vertical-align: top;color: #000;">
-                                ' . ($transaction["is_guest"] ? $buyer['address'] : $buyer['alamat']) . '
                             </td>
                         </tr>
         

@@ -90,7 +90,7 @@ if ($loggedin = logged_inadmin()) {
                                     <thead>
                                         <tr>
                                             <th style="width:20%">Images</th>
-                                            <th style="width:15%">Member</th>
+                                            <th style="width:15%">Customer</th>
                                             <th style="width:10%">Gender</th>
                                             <th style="width:18%">Wet Suit Type</th>
                                             <th style="width:15%">Current Price</th>

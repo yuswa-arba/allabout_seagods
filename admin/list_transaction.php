@@ -84,13 +84,13 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                 <table class="table table-hover demo-table-dynamic table-responsive-block" >
                                     <thead>
                                         <tr>
-                                            <th style="width:20%">INVOICE</th>
-                                            <th style="width:15%">NAME</th>
-                                            <th style="width:15%">DATE</th>
+                                            <th style="width:20%">INVOICE#</th>
+                                            <th style="width:15%">CUSTOMER</th>
+                                            <th style="width:15%">ORDER DATE</th>
                                             <th style="width:15%">TOTAL</th>
-                                            <th style="width:10%">STATUS</th>
-                                            <th style="width:5%"></th>
-                                            <th style="width:5%"></th>
+                                            <th style="width:10%">PAMENT STATUS</th>
+                                            <th style="width:5%">CONFIRMATION</th>
+                                            <th style="width:5%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>';
@@ -138,8 +138,8 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                                 </td>
                                                 <td class="v-align-middle">
                                                     ' . (($row_transaction['konfirm'] == 'not confirmated') ?
-                '<button type="submit" name="confirm" class="btn btn-danger">Confirmation</button>' :
-                '<a class="label" style="background-color: #69b6f3; color: #ffffff">Confirmated</a>') . '
+                '<button type="submit" name="confirm" class="btn btn-danger">Unconfirmed</button>' :
+                '<a class="label" style="background-color: #69b6f3; color: #ffffff">Confirmed</a>') . '
                                                 </td>
                                                 <td class="v-align-middle">
                                                     <div class="btn-group">

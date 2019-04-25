@@ -412,10 +412,10 @@ function template_order($transaction)
         </head>
         <body>
         <div class="header">
-            <div class="w-65" style="padding-top: 8px;">
+            <div class="w-60" style="padding-top: 8px;">
                 <img src="http://seagodswetsuit.com/new/web/images/logo.png" alt="" height="auto">
             </div>
-            <div class="pull-right w-35 text-left">
+            <div class="pull-right w-40 text-left">
                 <p class="fs-35 color-black-dop no-margin"><b>Order</b></p>
                 <table class="color-black-dop">
                     <tr>
@@ -462,21 +462,11 @@ function template_order($transaction)
         
                     <tr>
                         <td class="p-b-5">
-                            Province 
+                            Address 
                         </td>
                         <td class="p-l-10 p-b-5 fs-14 color-black">
-                            <span class="pull-right">: </span>';
-
-    // Set province ID
-    $id_province = ($transaction['is_guest'] ? $row_buyer['id_province'] : $row_buyer['idpropinsi']);
-
-    // Get province
-    $get_province = get_province($id_province);
-
-    // Result province
-    $template .= $get_province->rajaongkir->results->province;
-
-    $template .= '
+                            <span class="pull-right">: </span>
+                            ' . ($transaction['is_guest'] ? $row_buyer['address'] : $row_buyer['alamat']) . '
                         </td>
                     </tr>
                     <tr>
@@ -485,6 +475,9 @@ function template_order($transaction)
                         </td>
                         <td class="p-l-10 p-b-5 fs-14 color-black">
                             <span class="pull-right">: </span>';
+
+    // Set province ID
+    $id_province = ($transaction['is_guest'] ? $row_buyer['id_province'] : $row_buyer['idpropinsi']);
 
     // Set city ID
     $id_city = ($transaction['is_guest'] ? $row_buyer['id_city'] : $row_buyer['idkota']);
@@ -506,20 +499,36 @@ function template_order($transaction)
                     </tr>
                     <tr>
                         <td class="p-b-5">
+                            Province/State 
+                        </td>
+                        <td class="p-l-10 p-b-5 fs-14 color-black">
+                            <span class="pull-right">: </span>';
+
+    // Get province
+    $get_province = get_province($id_province);
+
+    // Result province
+    $template .= $get_province->rajaongkir->results->province;
+
+    $template .= '
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="p-b-5">
+                            Country 
+                        </td>
+                        <td class="p-l-10 p-b-5 fs-14 color-black">
+                            <span class="pull-right">: </span>
+                            ' . ($transaction['is_guest'] ? 'Indonesian' : 'Indonesian') . '
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="p-b-5">
                             Postal Code 
                         </td>
                         <td class="p-l-10 p-b-5 fs-14 color-black">
                             <span class="pull-right">: </span>
                             ' . ($transaction['is_guest'] ? $row_buyer['zip_code'] : $row_buyer['kode_pos']) . '
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-v-top">
-                            Address 
-                        </td>
-                        <td class="p-l-10 fs-14 color-black">
-                            <span class="pull-right">: </span>
-                            ' . ($transaction['is_guest'] ? $row_buyer['address'] : $row_buyer['alamat']) . '
                         </td>
                     </tr>
         

@@ -87,13 +87,13 @@ if ($loggedin = logged_in()) {
                                 <table class="table table-hover demo-table-dynamic table-responsive-block" >
                                     <thead>
                                         <tr>
-                                            <th style="width:20%">Invoice</th>
-                                            <th style="width:20%">Buyers</th>
-                                            <th style="width:15%">Date</th>
+                                            <th style="width:20%">Invoice#</th>
+                                            <th style="width:20%">Customer</th>
+                                            <th style="width:15%">Order Date</th>
                                             <th style="width:15%">Total</th>
-                                            <th style="width:15%">Status</th>
-                                            <th style="width:15%">Confirm</th>
-                                            <th style="width:5%">Detail</th>
+                                            <th style="width:15%">Payment Status</th>
+                                            <th style="width:15%">Confirmation</th>
+                                            <th style="width:5%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>';
@@ -147,7 +147,7 @@ if ($loggedin = logged_in()) {
                                             <td class="v-align-middle">';
 
         if ($row_transaction['konfirm'] == 'not confirmated') {
-            $content .= '<span class="btn btn-danger">not confirm</span>';
+            $content .= '<span class="btn btn-danger">Unconfirmed</span>';
         } else {
             $content .= '<span class="btn btn-warning">Confirmed</span>';
         }
