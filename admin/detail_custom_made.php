@@ -146,6 +146,9 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                 <label>Current Price</label>
                                 <h5>$ ' . $price . '</h5>
                                 
+                                <label>Weight</label>
+                                <h5>' . get_price('default-weight-custom-item') . ' Kg</h5>
+        
                                 <label>Date Add</label>
                                 <h5>' . $row_collection["date_add"] . '</h5>
         

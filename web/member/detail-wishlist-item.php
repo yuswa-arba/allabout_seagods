@@ -119,9 +119,14 @@ if ($loggedin = logged_in()) {
                                 <h5><b>' . $row_item["code"] . '</b></h5>
                             </div>
                             
-                            <div class="col-md-4 detail-container">
+                            <div class="col-md-2 detail-container">
                                 <label>Price :</label>
                                 <h5><b>' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_item["price"] : number_format(($row_item["price"] * $USDtoIDR), 0, '.', ',')) . '</b></h5>
+                            </div>
+                            
+                            <div class="col-md-2 detail-container">
+                                <label>Weight :</label>
+                                <h5><b>' . $row_item["weight"] . ' Kg</b></h5>
                             </div>
                             
                         </div><br>

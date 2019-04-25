@@ -122,11 +122,16 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                 <div class="row">
                                 
                                     <div class="col-md-4 detail-container">
+                                        <label>Weight :</label>
+                                        <h5><b>' . (isset($_GET['id']) ? $row_product["weight"] : "") . ' Kg</b></h5>
+                                    </div>
+                                    
+                                    <div class="col-md-4 detail-container">
                                         <label>Detail :</label>
                                         <h5><b>' . (isset($_GET['id']) ? $row_product["detail"] : "") . '</b></h5>
                                     </div>
                                     
-                                    <div class="col-md-8 detail-container">
+                                    <div class="col-md-4 detail-container">
                                         <label>Description :</label>
                                         <h5><b>' . (isset($_GET['id']) ? $row_product["description"] : "") . '</b></h5>
                                     </div>

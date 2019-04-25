@@ -157,6 +157,9 @@ if($loggedin = logged_in()){ // Check if they are logged in
                                 <label>Current Price</label>
                                 <h5> ' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $current_price : number_format(($current_price * $USDtoIDR), 0, '.', ',')) . '</h5>
                                 
+                                <label>Weight</label>
+                                <h5>' . get_price('default-weight-custom-item') . ' Kg</h5>
+        
                                 <label>Status</label>
                                 <h5>' . $row_collection["status"] . '</h5>
         

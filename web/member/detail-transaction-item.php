@@ -135,6 +135,9 @@ if ($loggedin = logged_in()) {
                                 <label>Current Price</label>
                                 <h5>' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $price : number_format(($price * $USDtoIDR), 0, '.', ',')) . '</h5>
                                 
+                                <label>Weight</label>
+                                <h5>' . get_price('default-weight-custom-item') . ' Kg</h5>
+        
                                 <label>Date Add</label>
                                 <h5>' . $row_collection["date_add"] . '</h5>
         
@@ -342,9 +345,14 @@ if ($loggedin = logged_in()) {
                                 <h5><b>' . $row_product["code"] . '</b></h5>
                             </div>
                             
-                            <div class="col-md-4 detail-container">
+                            <div class="col-md-2 detail-container">
                                 <label>Price :</label>
                                 <h5><b>' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_product["price"] : number_format(($row_product["price"] * $USDtoIDR), 0, '.', ',')) . '</b></h5>
+                            </div>
+                            
+                            <div class="col-md-2 detail-container">
+                                <label>Weigh :</label>
+                                <h5><b>' . $row_product["weight"] . ' Kg</b></h5>
                             </div>
                             
                         </div><br>

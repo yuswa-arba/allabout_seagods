@@ -117,6 +117,9 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                 <label>Current Price</label>
                                 <h5>$ ' . $price . '</h5>
                                 
+                                <label>Weight</label>
+                                <h5>' . get_price('default-weight-custom-item') . ' Kg</h5>
+        
                                 <label>Date Add</label>
                                 <h5>' . $row_collection["date_add"] . '</h5>
         
@@ -363,11 +366,16 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                         <div class="row">
                         
                             <div class="col-md-4 detail-container">
+                                <label>Weight :</label>
+                                <h5><b>' . $row_product["weight"] . ' Kg</b></h5>
+                            </div>
+                            
+                            <div class="col-md-4 detail-container">
                                 <label>Detail :</label>
                                 <h5><b>' . $row_product["detail"] . '</b></h5>
                             </div>
                             
-                            <div class="col-md-8 detail-container">
+                            <div class="col-md-4 detail-container">
                                 <label>Description :</label>
                                 <h5><b>' . $row_product["description"] . '</b></h5>
                             </div>
