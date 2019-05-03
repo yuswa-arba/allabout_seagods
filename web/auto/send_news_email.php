@@ -36,6 +36,9 @@ while ($row_news = mysql_fetch_array($query_news)) {
                 $mail->AddAddress($row_member['email'], $row_member['firstname'] . ' ' . $row_member['lastname']);
                 $mail->SetFrom('info@seagodswetsuit.com', 'Seagods Wetsuit');
 
+                // Add BCC
+                $mail->addBCC('order@seagodswetsuit.com');
+
                 $mail->Subject = $row_news['title'];
                 $mail->MsgHTML($message_template);
 

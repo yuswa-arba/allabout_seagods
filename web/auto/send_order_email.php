@@ -139,6 +139,9 @@ while ($row_transaction = mysql_fetch_array($transaction_query)) {
             // Set Holder name
             $holder_name = ($row_transaction['is_guest'] ? ($row_buyer['first_name'] . ' ' . $row_buyer['last_name']) : ($row_buyer['firstname'] . ' ' . $row_buyer['lastname']));
 
+            // Add BCC
+            $mail->addBCC('order@seagodswetsuit.com');
+
             $mail->AddAddress($row_buyer['email'], $holder_name);
             $mail->SetFrom('info@seagodswetsuit.com', 'Seagods Wetsuit');
 

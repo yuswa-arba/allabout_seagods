@@ -96,6 +96,9 @@ while ($row_transaction = mysql_fetch_assoc($transaction_query)) {
             $mail->AddAddress($row_buyer['email'], $holder_name);
             $mail->SetFrom('info@seagodswetsuit.com', 'Seagods Wetsuit');
 
+            // Add BCC
+            $mail->addBCC('order@seagodswetsuit.com');
+
             $mail->Subject = 'Order Confirmed - Seagods Wetsuit';
             $mail->MsgHTML($message_template);
 
