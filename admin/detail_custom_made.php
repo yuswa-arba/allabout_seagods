@@ -140,6 +140,9 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                 <label>Ankle Zipper</label>
                                 <h5>' . $row_collection["ankle_zipper"] . '</h5>
         
+                                <label>Genital Zipper</label>
+                                <h5>' . $row_collection["genital_zipper"] . '</h5>
+        
                                 <label>Old Price</label>
                                 <h5>$ ' . $row_collection["price"] . '</h5>
                                 

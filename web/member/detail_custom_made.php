@@ -151,6 +151,9 @@ if($loggedin = logged_in()){ // Check if they are logged in
                                 <label>Ankle Zipper</label>
                                 <h5>' . $row_collection["ankle_zipper"] . '</h5>
         
+                                <label>Genital Zipper</label>
+                                <h5>' . $row_collection["genital_zipper"] . '</h5>
+        
                                 <label>Old Price</label>
                                 <h5> ' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? $row_collection["price"] : number_format(($row_collection["price"] * $USDtoIDR), 0, '.', ',')) . '</h5>
                                 

@@ -13,6 +13,7 @@ if (isset($_POST['canvasData'])) {
     $wetsuit = isset($_POST["wetsuitType"]) ? $_POST["wetsuitType"] : "";
     $ankleZipper = isset($_POST["ankleZipper"]) ? $_POST["ankleZipper"] : "";
     $armZipper = isset($_POST["armZipper"]) ? $_POST["armZipper"] : "";
+    $genitalZipper = isset($_POST["genitalZipper"]) ? $_POST["genitalZipper"] : "";
 
     // Measure value
     $measureTotalBodyHeight = isset($_POST['measureTotalBodyHeight']) ? strip_tags(trim($_POST['measureTotalBodyHeight'])) : "";
@@ -86,6 +87,7 @@ if (isset($_POST['canvasData'])) {
             'wet_suit_type' => $wetsuit,
             'arm_zipper' => $armZipper,
             'ankle_zipper' => $ankleZipper,
+            'genital_zipper' => $genitalZipper,
             'image' => $img,
             'price' => $row_price['value'],
             'status' => 'saved'

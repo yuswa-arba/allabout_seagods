@@ -81,8 +81,8 @@ if ($loggedin = logged_in()) { // Check if they are logged in
                                         $cart_collection = $cart_item['collection'];
 
                                         // Insert custom collection
-                                        mysql_query("INSERT INTO `custom_collection` (`code`, `id_member`, `is_guest`, `gender`, `wet_suit_type`, `arm_zipper`, `ankle_zipper`, `image`, `price`, `status`, `date_add`, `date_upd`, `level`)
-                                            VALUES('" . $cart_collection["code"] . "', '$id_member', '0', '" . $cart_collection["gender"] . "', '" . $cart_collection["wet_suit_type"] . "', '" . $cart_collection["arm_zipper"] . "', '" . $cart_collection["ankle_zipper"] . "', '" . $cart_collection["image"] . "', '" . $cart_collection["price"] . "', '" . $cart_collection["status"] . "', NOW(), NOW(), '0');");
+                                        mysql_query("INSERT INTO `custom_collection` (`code`, `id_member`, `is_guest`, `gender`, `wet_suit_type`, `arm_zipper`, `ankle_zipper`, `genital_zipper`, `image`, `price`, `status`, `date_add`, `date_upd`, `level`)
+                                            VALUES('" . $cart_collection["code"] . "', '$id_member', '0', '" . $cart_collection["gender"] . "', '" . $cart_collection["wet_suit_type"] . "', '" . $cart_collection["arm_zipper"] . "', '" . $cart_collection["ankle_zipper"] . "', '" . $cart_collection["genital_zipper"] . "', '" . $cart_collection["image"] . "', '" . $cart_collection["price"] . "', '" . $cart_collection["status"] . "', NOW(), NOW(), '0');");
 
                                         // Get custom collection
                                         $custom_collection_query = mysql_query("SELECT * FROM `custom_collection` WHERE `code` = '" . $cart_collection["code"] . "' AND `id_member` = '$id_member' AND `level` = '0' ORDER BY `id_custom_collection` DESC LIMIT 0,1;");

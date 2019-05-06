@@ -53,7 +53,7 @@ if (isset($_POST['remove'])) {
     $action = isset($_POST['action']) ? mysql_real_escape_string(trim($_POST['action'])) : '';
     $id_cart = isset($_POST['id_cart']) ? mysql_real_escape_string(trim($_POST['id_cart'])) : '';
 
-    if (!empty($action) && !empty($id_cart)) {
+    if (!empty($action)) {
 
         // Action
         if ($action == 'session') {
@@ -512,6 +512,7 @@ if ($loggedin) {
             $total_quantity = ($total_quantity + $cart_item['quantity']);
             $total_amount = $total_amount + (($currency_code == CURRENCY_USD_CODE) ? $cart_item['amount'] : $cart_item['amount'] * $USDtoIDR);
 
+            $key++;
         }
 
         // content for shipping

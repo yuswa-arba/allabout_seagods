@@ -119,6 +119,7 @@ if ($loggedin = logged_in()) {
                         gender: $('[name="gender"]').val(),
                         wetsuitType: $('[name="wetsuitType"]').val(),
                         ankleZipper: $('[name="ankleZipper"]').val(),
+                        genitalZipper: $('[name="genitalZipper"]').val(),
                         armZipper: $('[name="armZipper"]').val(),
                         measureTotalBodyHeight: $('[name="measureTotalBodyHeight"]').val(),
                         measureHead: $('[name="measureHead"]').val(),
@@ -196,6 +197,7 @@ if ($loggedin = logged_in()) {
                         gender: $('[name="gender"]').val(),
                         wetsuitType: $('[name="wetsuitType"]').val(),
                         ankleZipper: $('[name="ankleZipper"]').val(),
+                        genitalZipper: $('[name="genitalZipper"]').val(),
                         armZipper: $('[name="armZipper"]').val(),
                         measureTotalBodyHeight: $('[name="measureTotalBodyHeight"]').val(),
                         measureHead: $('[name="measureHead"]').val(),
@@ -807,6 +809,13 @@ if ($loggedin = logged_in()) {
                                 <option value="no" selected>No</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label>Genital Zipper</label>
+                            <select name="genitalZipper" class="form-control" onchange="change_leg_zipper(this.value);">
+                                <option value="yes">Yes</option>
+                                <option value="no" selected>No</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1398,6 +1407,11 @@ if ($loggedin = logged_in()) {
                 if ($('[name="ankleZipper"]').val() == "yes") { // sipper
                     Marvin.combineByAlpha(image, image9, image, 0, 0);
                 }
+
+                if ($('[name="genitalZipper"]').val() == "yes") { // sipper
+                    Marvin.combineByAlpha(image, image9, image, 0, 0);
+                }
+
                 if ($('[name="wetsuitType"]').val() == "back") { // sipper
                     Marvin.combineByAlpha(image, image10, image, 0, 0);
                 }
@@ -1479,6 +1493,11 @@ if ($loggedin = logged_in()) {
                 if ($('[name="ankleZipper"]').val() === "yes") { // sipper
                     Marvin.combineByAlpha(image, image9, image, 0, 0);
                 }
+
+                if ($('[name="genitalZipper"]').val() === "yes") { // sipper
+                    Marvin.combineByAlpha(image, image9, image, 0, 0);
+                }
+
                 if ($('[name="wetsuitType"]').val() === "back") { // sipper
                     Marvin.combineByAlpha(image, image10, image, 0, 0);
                 }
@@ -1556,6 +1575,11 @@ if ($loggedin = logged_in()) {
                 if ($('[name="ankleZipper"]').val() == "yes") { // sipper
                     Marvin.combineByAlpha(image, image8, image, 0, 0);
                 }
+
+                if ($('[name="genitalZipper"]').val() == "yes") { // sipper
+                    Marvin.combineByAlpha(image, image8, image, 0, 0);
+                }
+
                 if ($('[name="wetsuitType"]').val() == "back") { // sipper
                     Marvin.combineByAlpha(image, image9, image, 0, 0);
                 }
