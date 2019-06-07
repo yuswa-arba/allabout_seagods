@@ -16,7 +16,7 @@ function get_price($name)
 }
 
 // Default currency
-$currency_code = CURRENCY_USD_CODE;
+$currency_code = CURRENCY_IDR_CODE;
 
 // Set currency from session
 if (isset($_SESSION['currency_code'])) {

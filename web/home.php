@@ -21,19 +21,19 @@ $content ='<div class="mfn-main-slider" id="mfn-rev-slider" >
                         <!-- Wrapper for slides -->
                         <div class="carousel-inner">                          
                           <div class="item active">
-                            <a href="list_product.php?id_cats=9" target="_blank"><img src="images/slider/1.jpg" alt="" style="width:100%;"></a>
+                            <a href="list_product.php?id_cats=9" target="_blank"><img src="images/slider/Wetsuit.jpg" alt="" style="width:100%;"></a>
                           </div>
                     
                           <div class="item">
-                            <a href="list_product.php?id_cats=8" target="_blank"><img src="images/slider/2.jpg" alt="" style="width:100%;"></a>
+                            <a href="list_product.php?id_cats=8" target="_blank"><img src="images/slider/Rashguard.jpg" alt="" style="width:100%;"></a>
                           </div>
                         
                           <div class="item">
-                            <a href="list_product.php?id_cats=7" target="_blank"><img src="images/slider/3.jpg" alt="" style="width:100%;"></a>
+                            <a href="list_product.php?id_cats=7" target="_blank"><img src="images/slider/Accessories.jpg" alt="" style="width:100%;"></a>
                           </div>
                           
                           <div class="item">
-                            <a href="custom" target="_blank"><img src="images/slider/4.jpg" alt="" style="width:100%;"></a>
+                            <a href="custom" target="_blank"><img src="images/slider/Custom.jpg" alt="" style="width:100%;"></a>
                           </div>
                           
                         </div>
@@ -340,7 +340,7 @@ $content ='<div class="mfn-main-slider" id="mfn-rev-slider" >
                         </div>
                         <div><a href="list_product.php?id_cats=8"><img src="images/banner/2.jpg"  height="50%"></a>
                         
-                        <br><br><div align="center" style="margin-bottom:-15px"><h6 style="color:#9DB8C6;"><strong>Check us on Instagram</strong></h6></div><br>
+                        <br><br><div align="center" style="margin-bottom:-15px"><h6 style="color:#9DB8C6;"><strong><a href="https://www.instagram.com/seagodswetsuitofficial/?hl=en" target="_blank">Check us on Instagram</a></strong></h6></div><br>
                         </div>
                         
                           
@@ -348,7 +348,7 @@ $content ='<div class="mfn-main-slider" id="mfn-rev-slider" >
    
                         <br>
                         
-                        <a href="blog.php"><img src="images/slider/1000/Blogpost.jpg"  height="50%"></a>
+                        <a href="blog.php"><img src="images/banner/3.jpg"  height="50%"></a>
                         
                         
                         <!-- LightWidget WIDGET lama <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script><iframe src="//lightwidget.com/widgets/44d586157e885018b3f31d7805e8454e.html" scrolling="no" allowtransparency="true" class="lightwidget-widget" style="width:100%;border:0;overflow:hidden;"></iframe>-->

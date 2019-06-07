@@ -42,7 +42,7 @@ function get_cost($parameters)
 }
 
 // Default currency
-$currency_code = CURRENCY_USD_CODE;
+$currency_code = CURRENCY_IDR_CODE;
 
 // If session is exists
 if (isset($_SESSION['currency_code'])) {

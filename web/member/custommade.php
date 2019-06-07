@@ -68,7 +68,7 @@ if ($loggedin = logged_in()) {
     }
 
     // Default currency
-    $currency_code = CURRENCY_USD_CODE;
+    $currency_code = CURRENCY_IDR_CODE;
 
     // Set currency from session
     if (isset($_SESSION['currency_code'])) {
@@ -158,7 +158,7 @@ if ($loggedin = logged_in()) {
                     <td class="v-align-middle">
 					  <div class="btn-group">
                         <button type="button" onclick="add_to_cart(' . $row_collection['id_custom_collection'] . ', ' . $key . ');" id="add_custom_cart' . $key . '" class="btn btn-primary btn-xs"><i class="fa fa-credit-card-alt"></i> Add to Cart</button>
-					  <a href="?action=deleted&id=' . $row_collection["id_custom_collection"] . '" class="btn btn-danger btn-xs">Deleted</a>
+					  <a href="?action=deleted&id=' . $row_collection["id_custom_collection"] . '" class="btn btn-danger btn-xs">Delete</a>
 					  </div>
                     </td>
                 </tr>

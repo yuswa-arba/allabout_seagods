@@ -254,9 +254,9 @@ if ($loggedin = logged_in()) {
 <body id="bd" class="cms-index-index4 header-style4 prd-detail cms-simen-home-page-v2 default cmspage">
 <div id="sns_wrapper">
     <!-- HEADER -->
-    <header id="Header" style="margin-top:0;">
+    <header id="Header" style="margin-top:0; min-height: 60px;">
 
-        <div id="Top_bar" style="margin-top:0;">
+        <div id="Top_bar" style="margin-top:0; top: 0px;">
             <div class="container" style="margin-top:0;">
 
                 <div class="top_bar_left clearfix">

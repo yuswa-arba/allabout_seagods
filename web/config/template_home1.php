@@ -146,14 +146,13 @@ $template = '
                     <div class="column one-fourth">
                         <aside class="widget_text widget widget_custom_html">
                             <div class="textwidget custom-html-widget">
-                                <h3>Have a question?<br> Or maybe you want<br> to cooperate?</h3>
                                 <br> <a class="button button_size_2 button_js" href="https://bit.ly/SeaGodsWetsuit" target="_blank" style=" background-color:#45b5e9 !important; color:#000;"><span class="button_label">Whatsapp</span></a>
                             </div>
                         </aside>
                     </div>
                     <div class="column one-fourth">
                         <aside class="widget_text widget widget_custom_html">
-                            <h4>Sea Gods Wet Suit</h4>
+                            <h4>SeaGods Wetsuit</h4>
                             <div class="textwidget custom-html-widget">
                                 <ul class="list-footer">
                                      <li><i class="icon-dot themecolor"></i><a href="about_us.php">Company Profile</a>
@@ -212,7 +211,7 @@ $template = '
                 <div class="container">
                     <div class="column one">
                          <a id="back_to_top" class="button button_js" href="#"><i class="icon-up-open-big"></i></a>
-                        <div class="copyright"> &copy; 2019. Sea Gods Wetsuit </div>
+                        <div class="copyright"> &copy; 2019. SeaGods Wetsuit </div>
 
                     </div>
                 </div>

@@ -88,7 +88,7 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                             <th style="width:15%">CUSTOMER</th>
                                             <th style="width:15%">ORDER DATE</th>
                                             <th style="width:15%">TOTAL</th>
-                                            <th style="width:10%">PAMENT STATUS</th>
+                                            <th style="width:10%">PAYMENT STATUS</th>
                                             <th style="width:5%">CONFIRMATION</th>
                                             <th style="width:5%">Action</th>
                                         </tr>
