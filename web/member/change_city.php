@@ -27,44 +27,34 @@ if (isset($_POST['action'])) {
         // Set value request
         $id_province = isset($_POST['id_province']) ? mysql_real_escape_string(trim($_POST['id_province'])) : '';
 
-        // if is logged in
-        if ($loggedin) {
-
-            // Update member query
-            $update_member_query = "UPDATE `member` SET `idpropinsi` = '$id_province' WHERE `id_member` = '" . $loggedin["id_member"] . "';";
-
-            // Error
-            if (!mysql_query($update_member_query)) {
-                $msg = 'Unable to update province in member';
-                echo json_encode(error_response($msg));
-                exit();
-            }
-
-        } else {
-
-            // Set province in session
-            $_SESSION['guest']['id_province'] = $id_province;
-
+        // if empty
+        if (empty($id_province)) {
+            $msg = 'Province ID parameter required';
+            echo json_encode(error_response($msg));
+            exit();
         }
 
+        // Set session id_province
+        $_SESSION['customer']['id_province'] = $id_province;
+
         // Unset City
-        if (isset($_SESSION['guest']['id_city'])) {
-            unset($_SESSION['guest']['id_city']);
+        if (isset($_SESSION['customer']['id_city'])) {
+            unset($_SESSION['customer']['id_city']);
         }
 
         // Unset Courier
-        if (isset($_SESSION['guest']['courier'])) {
-            unset($_SESSION['guest']['courier']);
+        if (isset($_SESSION['customer']['courier'])) {
+            unset($_SESSION['customer']['courier']);
         }
 
         // Unset service
-        if (isset($_SESSION['guest']['service'])) {
-            unset($_SESSION['guest']['service']);
+        if (isset($_SESSION['customer']['service'])) {
+            unset($_SESSION['customer']['service']);
         }
 
         // Unset cost
-        if (isset($_SESSION['guest']['courier_cost'])) {
-            unset($_SESSION['guest']['courier_cost']);
+        if (isset($_SESSION['customer']['courier_cost'])) {
+            unset($_SESSION['customer']['courier_cost']);
         }
 
         // Set parameter city
@@ -95,39 +85,22 @@ if (isset($_POST['action'])) {
             exit();
         }
 
-        // if is logged in
-        if ($loggedin) {
-
-            // Update member query
-            $update_member_query = "UPDATE `member` SET `idkota` = '$id_city' WHERE `id_member` = '" . $loggedin["id_member"] . "';";
-
-            // Error
-            if (!mysql_query($update_member_query)) {
-                $msg = 'Unable to update city in member';
-                echo json_encode(error_response($msg));
-                exit();
-            }
-
-        } else {
-
-            // Set province in session
-            $_SESSION['guest']['id_city'] = $id_city;
-
-        }
+        // Set province in session
+        $_SESSION['customer']['id_city'] = $id_city;
 
         // Unset Courier
-        if (isset($_SESSION['guest']['courier'])) {
-            unset($_SESSION['guest']['courier']);
+        if (isset($_SESSION['customer']['courier'])) {
+            unset($_SESSION['customer']['courier']);
         }
 
         // Unset service
-        if (isset($_SESSION['guest']['service'])) {
-            unset($_SESSION['guest']['service']);
+        if (isset($_SESSION['customer']['service'])) {
+            unset($_SESSION['customer']['service']);
         }
 
         // Unset cost
-        if (isset($_SESSION['guest']['courier_cost'])) {
-            unset($_SESSION['guest']['courier_cost']);
+        if (isset($_SESSION['customer']['courier_cost'])) {
+            unset($_SESSION['customer']['courier_cost']);
         }
 
         // Get couriers

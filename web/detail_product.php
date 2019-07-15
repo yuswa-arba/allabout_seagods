@@ -40,10 +40,11 @@ if ($wishlist = isset($_POST["wishlist"]) ? $_POST["wishlist"] : "") {
             $code = isset($_POST["code"]) ? strip_tags(trim($_POST["code"])) : "";
             $quantity = isset($_POST["quantity"]) ? strip_tags(trim($_POST["quantity"])) : "";
             $price = isset($_POST["price"]) ? strip_tags(trim($_POST["price"])) : "";
+            $size = isset($_POST["size"]) ? strip_tags(trim($_POST["size"])) : "";
             $amount = $quantity * $price;
 
-            $sql = "INSERT INTO `wishlist` (`id_wishlist`, `id_member`, `code`, `qty`, `price`, `amount`, `date_add`, `date_upd`, `level`) 
-                VALUES ('', '" . $loggedin["id_member"] . "', '$code', '$quantity', '$price', '$amount', NOW(), NOW(), '0');";
+            $sql = "INSERT INTO `wishlist` (`id_wishlist`, `id_member`, `code`, `qty`, `price`, `amount`, `size`, `date_add`, `date_upd`, `level`) 
+                VALUES ('', '" . $loggedin["id_member"] . "', '$code', '$quantity', '$price', '$amount', '$size', NOW(), NOW(), '0');";
 
             mysql_query($sql) or die (mysql_error());
             echo "<script language='JavaScript'>
@@ -65,7 +66,7 @@ if (isset($_GET['id'])) {
     $id_item = isset($_GET['id']) ? strip_tags(trim($_GET['id'])) : "";
     $query = "SELECT `item`.* FROM `item` WHERE `item`.`level` = '0' AND `item`.`id_item` = '$id_item' ;";
     $id = mysql_query($query);
-    $data_item = mysql_fetch_array($id);
+    $data_item = mysql_fetch_assoc($id);
     $title = $data_item["title"];
 
 //    $rows = mysql_fetch_array(mysql_query("SELECT `photo`.* from `photo` where `photo`.`id_item` = '$id_item' AND `photo`.`level` = '0'; "));
@@ -107,7 +108,7 @@ $content = '<!--<div id="Subheader" style="padding:50px 0px 30px;">
 if (isset($_GET['id'])) {
     $rows = mysql_query("SELECT `photo`.* from `photo` where `photo`.`id_item` = '$id_item' AND `photo`.`level` = '0'; ");
     $photo = isset($_GET['id']) ? strip_tags(trim($rows["photo"])) : "";
-    while ($row_photo = mysql_fetch_array($rows)){
+    while ($row_photo = mysql_fetch_array($rows)) {
         if ($row_photo["photo"] == "") {
             $content .= '<li data-thumb="admin/images/no-images.jpg">
                             <img src="../admin/images/no-images.jpg" alt="">
@@ -134,21 +135,68 @@ $content .= '
                                                     <del>
                                                     
                                                     <span class="woocommerce-Price-amount amount">
-                                                    <span class="woocommerce-Price-currencySymbol"></span></span></del><ins><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">'.$currency.'</span> ' . (isset($_GET['id']) ? ($currency_code == CURRENCY_USD_CODE) ? round($data_item['price'], 2) : number_format(($data_item['price'] * $USDtoIDR), 2, '.', ',') : 0) . '</span></ins>
+                                                    <span class="woocommerce-Price-currencySymbol"></span></span></del><ins><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . (isset($_GET['id']) ? ($currency_code == CURRENCY_USD_CODE) ? round($data_item['price'], 2) : number_format(($data_item['price'] * $USDtoIDR), 2, '.', ',') : 0) . '</span></ins>
                                                 </p><br><br>
                                                 
                                                <form method="post" action="?id=' . (isset($_GET['id']) ? $_GET['id'] : "") . '&code=' . $data_item['code'] . '">
-                                                    <div class="quantity">
-                                                        <label class="screen-reader-text" for="quantity">Quantity</label>
-                                                        <input type="number" id="quantity" class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Qty" size="4"  pattern="[0-9]*" inputmode="numeric" />
-                                                        <input type="hidden" name="title" value="' . (isset($_GET['id']) ? strip_tags(trim($data_item["title"])) : "") . '">
-                                                        <input type="hidden" name="code" value="' . (isset($_GET['id']) ? strip_tags(trim($data_item["code"])) : "") . '">
-                                                        <input type="hidden" name="price" value="' . (isset($_GET['id']) ? strip_tags(trim($data_item["price"])) : "") . '">
+                                                    
+                                                    <div class="full-width wrap mcb-wrap">
+                                                        <div class="width-100 wrap mcb-wrap p-r-25">
+                                                
+                                                            <div class="wrap mcb-wrap full-width m-b-10">
+                                                                <div class="wrap mcb-wrap width-50 pull-left p-r-10">
+                                                                    <label class="fs-13 fw-500 text-black">Quantity</label>
+                                                                    <input type="number" id="quantity" class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Qty" size="4"  pattern="[0-9]*" inputmode="numeric" />
+                                                                </div>';
+
+// Set size item
+$size_item = $data_item['size'];
+
+if ($size_item) {
+
+    // Explode size to array
+    $size_array = explode(',', $size_item);
+
+    if (count($size_array) > 0) {
+        $content .= '
+                                                                <div class="wrap mcb-wrap width-35 pull-left p-r-10">
+                                                                    <label class="fs-13 fw-500 text-black">Size</label>
+                                                                    <select id="size" name="size" class="input-text">
+                                                                        <option hidden>Chose Size</option>';
+
+        foreach ($size_array as $size) {
+            $content .= '<option value="' . $size . '">' . $size . '</option>';
+        }
+
+        $content .= '
+                                                                    </select>
+                                                                </div>';
+    }
+
+}
+
+$content .= '
+                                                            </div>
+                                                            
+                                                            <div class="wrap mcb-wrap full-width m-b-10">
+                                                                <div class="wrap mcb-wrap width-50 pull-left">
+                                                                    <label class="fs-13 fw-500 text-black">Stock</label>
+                                                                    <h4 style="padding-top: 10px;"><b>' . $data_item['stock'] . '</b></h4>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <input type="hidden" name="title" value="' . (isset($_GET['id']) ? strip_tags(trim($data_item["title"])) : "") . '">
+                                                            <input type="hidden" name="code" value="' . (isset($_GET['id']) ? strip_tags(trim($data_item["code"])) : "") . '">
+                                                            <input type="hidden" name="price" value="' . (isset($_GET['id']) ? strip_tags(trim($data_item["price"])) : "") . '">
+                                                        
+                                                            <button type="button" id="add_cart" onclick="add_to_cart(' . $data_item['id_item'] . ')" value="70" class="single_add_to_cart_button button alt">
+                                                                Add to cart
+                                                            </button>
+                                                            <input type="submit" name="wishlist" value="add-to-wishlist" class="single_add_to_cart_button button alt">
+                                                            
+                                                        </div>
                                                     </div>
-                                                    <button type="button" id="add_cart" onclick="add_to_cart('.$data_item['id_item'].')" value="70" class="single_add_to_cart_button button alt">
-                                                        Add to cart
-                                                    </button>
-                                                    <input type="submit" name="wishlist" value="add-to-wishlist" class="single_add_to_cart_button button alt">
+                                                    
                                                 </form>
                                                 <!--<div class="product_meta">
                                                     <span class="posted_in">Categories: <a href="for-her.html" rel="tag">For her</a>, <a href="category_page.html" rel="tag">Shoes</a></span>
@@ -198,13 +246,14 @@ $plugin = '
           
         var add_cart_button = jQuery("#add_cart");
         var quantity = jQuery("#quantity").val();
-        console.log(add_cart_button);
+        var size = jQuery("#size").val();
         
         jQuery.ajax({
           type: "POST",
           url: "member/action_cart.php",
           data: {
               action: "add_cart",
+              size: size, 
               id_item: id_item, 
               quantity: quantity
          },

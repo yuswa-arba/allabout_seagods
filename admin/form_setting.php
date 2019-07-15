@@ -59,11 +59,17 @@ if ($loggedin = logged_inadmin()) { //  Check if they are logged in
 
         // Set value
         $id_setting = isset($_POST['id_setting']) ? mysql_real_escape_string(trim($_POST['id_setting'])) : '';
+        $name = isset($_POST['name']) ? mysql_real_escape_string(trim($_POST['name'])) : '';
         $value = isset($_POST['value']) ? mysql_real_escape_string(trim($_POST['value'])) : '';
         $description = isset($_POST['description']) ? mysql_real_escape_string(trim($_POST['description'])) : '';
 
         // Check is empty or no
-        if (!empty($id_setting) && !empty($value) && !empty($description)) {
+        if (!empty($id_setting) && !empty($name) && !empty($value) && !empty($description)) {
+
+            // Check name is custom-size
+            if ($name == 'custom-size') {
+                $value = str_replace(" ", "", $value);
+            }
 
             // Setting update query
             $update_setting_query = "UPDATE `setting_seagods` SET `value` = '$value', `description` = '$description' WHERE `id` = '$id_setting';";
@@ -102,6 +108,7 @@ if ($loggedin = logged_inadmin()) { //  Check if they are logged in
                     <div class="card-block no-scroll card-toolbar">
                         <form method="post" action="" enctype="multipart/form-data" role="form">
                             <input type="hidden" name="id_setting" value="' . (isset($_GET['id']) ? $row_setting['id'] : '') . '">
+                            <input type="hidden" name="name" value="' . (isset($_GET['id']) ? $row_setting['name'] : '') . '">
                             <div class="form-group form-group-default ">
                                 <label>Value</label>';
 

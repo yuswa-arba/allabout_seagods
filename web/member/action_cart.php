@@ -35,6 +35,7 @@ if (isset($_POST['action'])) {
 
             // Set value request
             $id_item = isset($_POST['id_item']) ? mysql_real_escape_string(trim($_POST['id_item'])) : '';
+            $size = isset($_POST['size']) ? mysql_real_escape_string(trim($_POST['size'])) : null;
             $quantity = isset($_POST['quantity']) ? mysql_real_escape_string(trim($_POST['quantity'])) : 1;
 
             // Check item
@@ -62,8 +63,8 @@ if (isset($_POST['action'])) {
                 if (mysql_num_rows($cart_query) == 0) {
 
                     // Add cart
-                    $insert_cart_query = "INSERT INTO `cart` (`id_item`, `qty`, `amount`, `id_member`, `date_add`, `date_upd`, `level`)
-                    VALUES('$id_item', '$quantity', '$amount', '" . $loggedin["id_member"] . "', NOW(), NOW(), '0')";
+                    $insert_cart_query = "INSERT INTO `cart` (`id_item`, `qty`, `amount`, `size`, `id_member`, `date_add`, `date_upd`, `level`)
+                    VALUES('$id_item', '$quantity', '$amount', '$size', '" . $loggedin["id_member"] . "', NOW(), NOW(), '0')";
 
                     // Error
                     if (!mysql_query($insert_cart_query)) {
@@ -77,12 +78,17 @@ if (isset($_POST['action'])) {
                     // Set row cart
                     $row_cart = mysql_fetch_array($cart_query);
 
+                    // Set size
+                    if (!$size) {
+                        $size = $row_cart['size'];
+                    }
+
                     // Set last amount cart and quantity
                     $last_amount_cart = $amount + (float)$row_cart['amount'];
                     $last_quantity = (float)$quantity + (float)$row_cart['qty'];
 
                     // Update cart
-                    $update_cart_query = "UPDATE `cart` SET `qty` = '$last_quantity', `amount` = '$last_amount_cart', `date_upd` = NOW()
+                    $update_cart_query = "UPDATE `cart` SET `qty` = '$last_quantity', `amount` = '$last_amount_cart', `size` = '$size', `date_upd` = NOW()
                         WHERE `id_cart` = '" . $row_cart["id_cart"] . "';";
 
                     // Error
@@ -108,6 +114,7 @@ if (isset($_POST['action'])) {
                 $item_array = array(
                     'is_custom_cart' => false,
                     'id_item' => $id_item,
+                    'size' => $size,
                     'quantity' => $quantity,
                     'amount' => $amount
                 );
@@ -122,11 +129,19 @@ if (isset($_POST['action'])) {
                         foreach ($_SESSION["cart_item"] as $key => $cart_item) {
 
                             if (!$cart_item['is_custom_cart']) {
+
+                                // Set size
+                                if (!$size) {
+                                    $size = $cart_item['size'];
+                                }
+
                                 // If item is exists in session
                                 if ($cart_item['id_item'] == $id_item) {
                                     $_SESSION["cart_item"][$key]['quantity'] = (float)$cart_item["quantity"] + (float)$quantity;
                                     $_SESSION["cart_item"][$key]['amount'] = (float)$cart_item['amount'] + $amount;
+                                    $_SESSION["cart_item"][$key]['size'] = $size;
                                 }
+
                             }
 
                         }
@@ -241,6 +256,68 @@ if (isset($_POST['action'])) {
             echo json_encode(error_response($msg));
             exit();
         }
+
+    }
+
+    // Action for change size item
+    if (isset($_POST['id_cart']) && $action == 'change_size_item') {
+
+        // Set request parameter
+        $id_cart = isset($_POST['id_cart']) ? mysql_real_escape_string(trim((string)$_POST['id_cart'])) : '';
+        $size_item = isset($_POST['size_item']) ? mysql_real_escape_string(trim($_POST['size_item'])) : '';
+
+        // Check validation
+        if (($id_cart == '') || empty($size_item)) {
+            $msg = 'Missing parameter required.';
+            echo json_encode(error_response($msg));
+            exit();
+        }
+
+        // Check status logged in
+        if ($loggedin) {
+
+            // Set cart
+            $cart_query = mysql_query("SELECT `id_cart`, `size` FROM `cart` WHERE `id_cart` = '$id_cart' AND `level` = '0' LIMIT 0,1;");
+            if (mysql_num_rows($cart_query) == 0) {
+                $msg = 'Cart data not found.';
+                echo json_encode(error_response($msg));
+                exit();
+            }
+            $row_cart = mysql_fetch_assoc($cart_query);
+
+            // Update size
+            $update_size_query = "UPDATE `cart` SET `size` = '$size_item' WHERE `id_cart` = '$id_cart'";
+            if (!mysql_query($update_size_query)) {
+                $msg = 'Unable to change size item.';
+                echo json_encode(error_response($msg));
+                exit();
+            }
+
+        } else {
+
+            // Check session
+            if (!isset($_SESSION['cart_item'])) {
+                $msg = 'Cart in session does not exists.[1]';
+                echo json_encode(error_response($msg));
+                exit();
+            }
+
+            // Check cart in session
+            if (!isset($_SESSION['cart_item'][$id_cart])) {
+                $msg = 'Cart in session does not exists.[2]';
+                echo json_encode(error_response($msg));
+                exit();
+            }
+
+            // Update session
+            $_SESSION['cart_item'][$id_cart]['size'] = $size_item;
+
+        }
+
+        // Success
+        $msg = 'Change size item has been successfully.';
+        echo json_encode(success_response($msg));
+        exit();
 
     }
 

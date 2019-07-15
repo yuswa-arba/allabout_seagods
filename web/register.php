@@ -23,6 +23,17 @@ if ($loggedin = logged_in()) { // Check if they are logged in
         $address = isset($_POST['address']) ? mysql_real_escape_string(strip_tags(trim($_POST["address"]))) : '';
         $notelp = isset($_POST['notelp']) ? mysql_real_escape_string(strip_tags(trim($_POST["notelp"]))) : '';
 
+        // Check validation
+        if (empty($username) || empty($password) || empty($confirm) || empty($firstname) ||
+            empty($lastname) || empty($email) || empty($province) || empty($city) || empty($address) || empty($notelp)
+        ) {
+            echo "<script language='JavaScript'>
+                alert('Missing required all parameter');
+                window.history.go(-1);
+            </script>";
+            exit();
+        }
+
         // Check username query
         $check_username_query = mysql_query("SELECT * FROM `users` WHERE `username` = '$username';");
         if (mysql_num_rows($check_username_query) > 0) {
@@ -71,8 +82,8 @@ if ($loggedin = logged_in()) { // Check if they are logged in
         }
 
         // Insert member
-        $insert_member_query = "INSERT INTO `member` (`firstname`, `lastname`, `idpropinsi`, `idkota`, `alamat`, `email`, `notelp`, `new_member`, `date_add`, `date_upd`, `level`)
-            VALUES ('$firstname', '$lastname', '$province', '$city', '$address', '$email', '$notelp', NOW(), NOW(), NOW(), '0')";
+        $insert_member_query = "INSERT INTO `member` (`firstname`, `lastname`, `idCountry`, `idpropinsi`, `idkota`, `alamat`, `email`, `notelp`, `new_member`, `date_add`, `date_upd`, `level`)
+            VALUES ('$firstname', '$lastname', 'ID', '$province', '$city', '$address', '$email', '$notelp', NOW(), NOW(), NOW(), '0')";
         if (!mysql_query($insert_member_query)) {
             roll_back();
             echo "<script language='JavaScript'>
@@ -155,7 +166,7 @@ if ($loggedin = logged_in()) { // Check if they are logged in
                                required>
                     </div>
                 </div>
-                </span><span id="sstt">
+                <span id="sstt"></span>
             </div>
 
             <div class="row">

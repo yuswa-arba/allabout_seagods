@@ -59,9 +59,9 @@ $titlebar = "Guest Checkout";
 $menu = "";
 
 // Save to session
-$guest = ['customer'];
-if (isset($_SESSION['customer'])) {
-    $guest = $_SESSION['customer'];
+$guest = ['guest'];
+if (isset($_SESSION['guest'])) {
+    $guest = $_SESSION['guest'];
 }
 
 // Set transaction number
@@ -196,20 +196,20 @@ if (isset($_POST['checkout'])) {
         begin_transaction();
 
         // Save session guest
-        $_SESSION['customer']['first_name'] = $first_name;
-        $_SESSION['customer']['last_name'] = $last_name;
-        $_SESSION['customer']['account_number'] = $account_number;
-        $_SESSION['customer']['address'] = $address;
-        $_SESSION['customer']['id_province'] = $province;
-        $_SESSION['customer']['id_city'] = $city;
-        $_SESSION['customer']['courier'] = $courier;
-        $_SESSION['customer']['service'] = $service_courier;
-        $_SESSION['customer']['courier_cost'] = $price_shipping;
-        $_SESSION['customer']['zip_code'] = $zip_code;
-        $_SESSION['customer']['email'] = $email;
-        $_SESSION['customer']['phone_no'] = $phone_no;
-        $_SESSION['customer']['from_bank'] = $from_bank;
-        $_SESSION['customer']['id_bank'] = $id_bank;
+        $_SESSION['guest']['first_name'] = $first_name;
+        $_SESSION['guest']['last_name'] = $last_name;
+        $_SESSION['guest']['account_number'] = $account_number;
+        $_SESSION['guest']['address'] = $address;
+        $_SESSION['guest']['id_province'] = $province;
+        $_SESSION['guest']['id_city'] = $city;
+        $_SESSION['guest']['courier'] = $courier;
+        $_SESSION['guest']['service'] = $service_courier;
+        $_SESSION['guest']['courier_cost'] = $price_shipping;
+        $_SESSION['guest']['zip_code'] = $zip_code;
+        $_SESSION['guest']['email'] = $email;
+        $_SESSION['guest']['phone_no'] = $phone_no;
+        $_SESSION['guest']['from_bank'] = $from_bank;
+        $_SESSION['guest']['id_bank'] = $id_bank;
 
         // Set photo
         if ($_FILES['photo']['tmp_name'] != "") {
@@ -403,18 +403,6 @@ if (isset($_POST['checkout'])) {
             exit();
         }
 
-        // Insert shipping address
-        $insert_shipping_address_query = "INSERT INTO `transaction_shipping_address` (`id_transaction`, `id_city`, `id_province`, `id_country`, `address`, `zip_code`, `date_add`, `date_upd`)
-                VALUES('" . $row_transaction["id_transaction"] . "', '$city', '$province', 'ID', '$address', '$zip_code', NOW(), NOW());";
-        if (!mysql_query($insert_shipping_address_query)) {
-            roll_back();
-            echo "<script>
-                alert('Unable to save shipping');
-                window.history.back(-1);
-            </script>";
-            exit();
-        }
-
         // Commit
         commit();
 
@@ -424,7 +412,7 @@ if (isset($_POST['checkout'])) {
         // Success
         echo "<script>
             alert('Payment process successfully');
-            window.location.href = 'guest_checkout_information.php'
+            window.location.href = 'home.php'
         </script>";
         exit();
 

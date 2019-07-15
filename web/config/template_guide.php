@@ -26,7 +26,7 @@ $menu = '<div class="column one">
                                             <li><a href="list_product.php?id_cats=9"><span>Collection</span></a></li>
                                             <li><a href="custom/"><span>Custom Wetsuit</span></a></li>
                                             <li><a href="blog.php"><span>Blog</span></a></li>
-                                            <li><a href="member/index.php" target="_blank"><span>Memberpage</span></a></li>
+                                            <li><a href="member/index.php" target="_blank"><span>Login</span></a></li>
                     	</ul>
                 	</nav>
                 	<a class="responsive-menu-toggle" href="#"><i class="icon-menu-fine"></i></a>

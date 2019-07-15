@@ -127,11 +127,25 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                     </div>
                                     
                                     <div class="col-md-4 detail-container">
+                                        <label>Stock :</label>
+                                        <h5><b>' . (isset($_GET['id']) ? $row_product["stock"] : "") . '</b></h5>
+                                    </div>
+                                    
+                                    <div class="col-md-4 detail-container">
+                                        <label>Size :</label>
+                                        <h5><b>' . (isset($_GET['id']) ? str_replace(',', ', ', $row_product['size']) : "") . '</b></h5>
+                                    </div>
+                                    
+                                </div><br>
+                                
+                                <div class="row">
+                                
+                                    <div class="col-md-4 detail-container">
                                         <label>Detail :</label>
                                         <h5><b>' . (isset($_GET['id']) ? $row_product["detail"] : "") . '</b></h5>
                                     </div>
                                     
-                                    <div class="col-md-4 detail-container">
+                                    <div class="col-md-8 detail-container">
                                         <label>Description :</label>
                                         <h5><b>' . (isset($_GET['id']) ? $row_product["description"] : "") . '</b></h5>
                                     </div>

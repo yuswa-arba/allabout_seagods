@@ -28,11 +28,6 @@ if (isset($_GET['page'])) {
 $titlebar = "List Product";
 $menu = "";
 
-$sql_item = mysql_query("SELECT *  FROM `item` WHERE `item`.`level` = '0' 
-						    Order by `item`.`id_item`  DESC LIMIT $start,$perhalaman;");
-
-$sql_total_data = mysql_num_rows(mysql_query("SELECT * FROM `item` WHERE `item`.`level` = '0' order by `item`.`id_item`"));
-
 if (isset($_GET['id_cat'])) {
     $id_cat = isset($_GET['id_cat']) ? strip_tags(trim($_GET['id_cat'])) : "";
     $query = mysql_query("SELECT * FROM `item` where `item`.`id_cat` = '$id_cat' AND `item`.`level` = '0' order by `id_item`;");
@@ -76,194 +71,143 @@ $currency = get_currency($currency_code);
 // Set nominal curs from USD to IDR
 $USDtoIDR = get_price('currency-value-usd-to-idr');
 
-$content = '<div class="sections_group">
-                    <div class="section">
-                        <div class="section_wrapper clearfix">
-                            <div class="items_group clearfix">
-                                <div class="column one woocommerce-content">
-                                    <div class="shop-filters">
-                                        <p class="woocommerce-result-count">
-                                            Showing all ' . $loggedin['id_member'] . ' results - <strong>' . (isset($_GET['id_cat']) || isset($_GET['id_cats']) ? $category_name['category'] : "") . '</strong>
-                                        </p>
-                                            <form class="woocommerce-ordering" method="get" style="width:80px;height:50">
-                                            <select id="currency_code" class="currency" onchange="changeCurrency(' . $id_cat_currency . ');">';
+$content = '
+    <div class="sections_group">
+        <div class="section">
+            <div class="section_wrapper clearfix">
+                <div class="items_group clearfix">
+                    <div class="column one woocommerce-content">
+                        <div class="shop-filters">
+                            <p class="woocommerce-result-count">
+                                Showing all ' . $loggedin['id_member'] . ' results - <strong>' . (isset($_GET['id_cat']) || isset($_GET['id_cats']) ? $category_name['category'] : "") . '</strong>
+                            </p>
+                            <form class="woocommerce-ordering" method="get" style="width:80px;height:50">
+                                <select id="currency_code" class="currency" onchange="changeCurrency(' . $id_cat_currency . ');">';
 
 foreach (get_all_currency() as $row_currency) {
     $content .= '<option value="' . $row_currency . '" ' . (($row_currency == $currency_code) ? "selected" : "") . '>' . $row_currency . '</option>';
 }
 
 $content .= '
-                                            </select>
-                                        </form>
-                                    </div>
-                                    <div class="products_wrapper isotope_wrapper">
-                                    
-
-                                        <ul class="products isotope grid">';
-
-if (isset($_GET['id_cat'])) {
-    $id_cat = isset($_GET['id_cat']) ? strip_tags(trim($_GET['id_cat'])) : "";
-    $query = mysql_query("SELECT * FROM `item` where `item`.`id_cat` = '$id_cat' AND `item`.`level` = '0' order by `id_item`;");
-
-    $key = 0;
-    while ($row_item = mysql_fetch_array($query)) {
-        $id_item = $row_item['id_item'];
-        $row = mysql_query("SELECT * FROM  `photo` WHERE `id_item` = '$id_item' order by `id_item`;");
-        $row_photo = mysql_fetch_array($row);
-        $rows = mysql_num_rows($row);
-        $photo = $row_photo["photo"];
-
-        $content .= '
-                                                    <li class="isotope-item product has-post-thumbnail" >
-                                                        <div class="image_frame scale-with-grid product-loop-thumb" ontouchstart="this.classList.toggle("hover");">
-                                                            <div class="image_wrapper">
-                                                                <a href="detail_product.php?id=' . $row_item["id_item"] . '">
-                                                                    <div class="mask"></div>';
-        if ($photo == "") {
-            $content .= '<img src="../admin/images/no-images.jpg" alt="' . $row_item['title'] . '" class="scale-with-grid wp-post-image">';
-        } else {
-            $content .= '
-                                                                    <img src="../admin/images/product/150/thumb_' . $row_photo['photo'] . '" alt="' . $row_item['title'] . '" class="scale-with-grid wp-post-image">';
-        }
-
-        $content .= '
-                                                                </a>
-                                                                <div class="image_links double">
-                                                                    <a rel="nofollow" href="" data-quantity="1" data-product_id="76" class="add_to_cart_button ajax_add_to_cart product_type_simple"><i class="icon-basket"></i></a><a class="link" href="product_page.html"><i class="icon-link"></i></a>
-                                                                </div>
-                                                            </div><a href="detail_product.php?id=' . $row_item["id_item"] . '"><span class="product-loading-icon added-cart"></span></a>
-                                                        </div>
-                                                        <div class="desc">
-                                                            <h4><a href="detail_product.php?id=' . $row_item["id_item"] . '">' . $row_item['title'] . '</a></h4>
-                                                            
-                                                            <span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . (($currency_code == CURRENCY_USD_CODE) ? round($row_item['price'], 2) : number_format(($row_item['price'] * $USDtoIDR), 2, '.', ',')) . '</span>
-                                                            </span>
-                                                        </div>
-                                                        <div class="desc">
-                                                            <form method="post" action="">
-                                                                <input type="text" id="quantity' . $key . '" value="1" size="2">
-                                                                <button class="button" type="button" id="add_cart' . $key . '" onclick="add_to_cart(' . $row_item["id_item"] . ', ' . $key . ')" value="">add to cart</button>
-                                                            </form>
-                                                        </div>
-                                                    </li>';
-        $key++;
-    }
-
-} else if (isset($_GET['id_cats'])) {
-
-    $id_cats = isset($_GET['id_cats']) ? strip_tags(trim($_GET['id_cats'])) : "";
-    $query = mysql_query("SELECT * FROM `item` where `item`.`id_category` = '$id_cats' AND `item`.`level` = '0' order by `id_item`;");
-
-    $key = 0;
-    while ($row_item = mysql_fetch_array($query)) {
-        $id_item = $row_item['id_item'];
-        $row = mysql_query("SELECT * FROM  `photo` WHERE `id_item` = '$id_item' order by `id_item`;");
-        $row_photo = mysql_fetch_array($row);
-        $rows = mysql_num_rows($row);
-        $photo = $row_photo["photo"];
-
-        $content .= '
-                                                    <li class="isotope-item product has-post-thumbnail">
-                                                        <div class="image_frame scale-with-grid product-loop-thumb" ontouchstart="this.classList.toggle("hover");">
-                                                            <div class="image_wrapper">
-                                                                <a href="detail_product.php?id=' . $row_item["id_item"] . '">
-                                                                    <div class="mask"></div>';
-        if ($photo == "") {
-            $content .= '<img src="../admin/images/no-images.jpg" alt="' . $row_item['title'] . '" class="scale-with-grid wp-post-image">';
-        } else {
-            $content .= '
-                                                                    <img src="../admin/images/product/150/thumb_' . $row_photo['photo'] . '" alt="' . $row_item['title'] . '" class="scale-with-grid wp-post-image">';
-        }
-
-        $content .= '
-                                                                </a>
-                                                                <div class="image_links double">
-                                                                    <a rel="nofollow" href="" data-quantity="1" data-product_id="76" class="add_to_cart_button ajax_add_to_cart product_type_simple"><i class="icon-basket"></i></a><a class="link" href="product_page.html"><i class="icon-link"></i></a>
-                                                                </div>
-                                                            </div><a href="detail_product.php?id=' . $row_item["id_item"] . '"><span class="product-loading-icon added-cart"></span></a>
-                                                        </div>
-                                                        <div class="desc">
-                                                            <h4><a href="detail_product.php?id=' . $row_item["id_item"] . '">' . $row_item['title'] . '</a></h4>
-                                                            
-                                                            <span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . (($currency_code == CURRENCY_USD_CODE) ? round($row_item['price'], 2) : number_format(($row_item['price'] * $USDtoIDR), 2, '.', ',')) . '</span>
-                                                            </span>
-                                                        </div>
-                                                        <div class="desc">
-                                                            <form method="post" action="">
-                                                                <input type="text" id="quantity' . $key . '" value="1" size="2">
-                                                                <button class="button" type="button" id="add_cart' . $key . '" onclick="add_to_cart(' . $row_item["id_item"] . ', ' . $key . ')" value="">add to cart</button>
-                                                            </form>
-                                                        </div>
-                                                    </li>';
-        $key++;
-    }
-
-} else {
-
-    $key = 0;
-    while ($row_item = mysql_fetch_array($sql_item)) {
-        $id_item = $row_item['id_item'];
-        $row = mysql_query("SELECT * FROM  `photo` WHERE `id_item` = '$id_item' order by `id_item`;");
-        $row_photo = mysql_fetch_array($row);
-        $rows = mysql_num_rows($row);
-        $photo = $row_photo["photo"];
-
-        $content .= '
-                                                    <li class="isotope-item product has-post-thumbnail">
-                                                        <div class="image_frame scale-with-grid product-loop-thumb" ontouchstart="this.classList.toggle("hover");">
-                                                            <div class="image_wrapper">
-                                                                <a href="detail_product.php?id=' . $row_item["id_item"] . '">
-                                                                    <div class="mask"></div>';
-        if ($photo == "") {
-            $content .= '<img src="../admin/images/no-images.jpg" alt="' . $row_item['title'] . '" class="scale-with-grid wp-post-image">';
-        } else {
-            $content .= '
-                                                                    <img src="../admin/images/product/150/thumb_' . $row_photo['photo'] . '" alt="' . $row_item['title'] . '" class="scale-with-grid wp-post-image">';
-        }
-
-        $content .= '
-                                                                </a>
-                                                                <div class="image_links double">
-                                                                    <a rel="nofollow" href="" data-quantity="1" data-product_id="76" class="add_to_cart_button ajax_add_to_cart product_type_simple"><i class="icon-basket"></i></a><a class="link" href="product_page.html"><i class="icon-link"></i></a>
-                                                                </div>
-                                                            </div><a href="detail_product.php?id=' . $row_item["id_item"] . '"><span class="product-loading-icon added-cart"></span></a>
-                                                        </div>
-                                                        <div class="desc">
-                                                            <h4><a href="detail_product.php?id=' . $row_item["id_item"] . '">' . $row_item['title'] . '</a></h4>
-                                                            
-                                                            <span class="price"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">' . $currency . '</span> ' . (($currency_code == CURRENCY_USD_CODE) ? round($row_item['price'], 2) : number_format(($row_item['price'] * $USDtoIDR), 2, '.', ',')) . '</span>
-                                                            </span>
-                                                        </div>
-                                                        <div class="desc">
-                                                            <form method="post" action="">
-                                                                <input type="text" id="quantity' . $key . '" value="1" size="2">
-                                                                <button class="button" type="button" id="add_cart' . $key . '" onclick="add_to_cart(' . $row_item["id_item"] . ', ' . $key . ')" value="">add to cart</button>
-                                                            </form>
-                                                        </div>
-                                                    </li>';
-        $key++;
-    }
-}
-
-$content .= '
-                                        </ul>
-                                    </div>
-                                    ';
-
-if (isset($_GET['id_cat']) || isset($_GET['id_cats'])) {
-    $content .= '';
-} else {
-    $content .= '' . (halaman($sql_total_data, $perhalaman, 1, '?')) . '';
-}
-
-$content .= '
-                                </div>
+                                </select>
+                            </form>
+                            <div class="woocommerce-ordering" style="height: 50px;">
+                                <button type="button" onclick="search_collection();" class="btn btn-sm form-control">
+                                    Search
+                                </button>
+                            </div>
+                            <div class="woocommerce-ordering" style="height: 50px;">
+                                <input type="text" id="search_text" class="form-control">
                             </div>
                         </div>
-                    </div>
-                </div>';
-$plugin = '
+                        <div class="products_wrapper isotope_wrapper">
+                            <ul class="products isotope grid">';
 
+// Set default parameter var
+$id_cat_param = '';
+$id_cats_param = '';
+$search_param = '';
+
+// Get with id_cat
+if (isset($_GET['id_cat'])) {
+    $id_cat = isset($_GET['id_cat']) ? strip_tags(trim($_GET['id_cat'])) : "";
+    $id_cat_param = "AND `item`.`id_cat` = '$id_cat'";
+}
+
+// Get with id_cats
+if (isset($_GET['id_cats'])) {
+    $id_cats = isset($_GET['id_cats']) ? strip_tags(trim($_GET['id_cats'])) : "";
+    $id_cats_param = "AND `item`.`id_category` = '$id_cats'";
+}
+
+// Get with search text v
+if (isset($_GET['v'])) {
+    $text_search = isset($_GET['v']) ? strip_tags(trim($_GET['v'])) : "";
+    $search_param = "AND (`item`.`title` LIKE '%$text_search%' OR `item`.`detail` LIKE '%$text_search%')";
+}
+
+// Query for get item
+$query = mysql_query("SELECT * FROM `item`
+                        WHERE `item`.`level` = '0' $id_cat_param $id_cats_param $search_param ORDER BY `item`.`id_item` DESC LIMIT $start,$perhalaman;");
+$sql_total_data = mysql_num_rows(mysql_query("SELECT * FROM `item`
+                        WHERE `item`.`level` = '0' $id_cat_param $id_cats_param $search_param ORDER BY `item`.`id_item` DESC"));
+
+$key = 0;
+while ($row_item = mysql_fetch_array($query)) {
+
+    // Set id_item
+    $id_item = $row_item['id_item'];
+
+    // Get photo item
+    $row = mysql_query("SELECT * FROM  `photo` WHERE `id_item` = '$id_item' order by `id_item`;");
+    $row_photo = mysql_fetch_array($row);
+    $rows = mysql_num_rows($row);
+
+    // Set photo var
+    $photo = $row_photo["photo"];
+
+    $content .= '
+                                <li class="isotope-item product has-post-thumbnail" ' . (($row_item['stock'] <= 0) ? ('style="pointer-events: none; opacity: 0.4;"') : '') . '>
+                                    <div class="image_frame scale-with-grid product-loop-thumb" ontouchstart="this.classList.toggle("hover");">
+                                        <div class="image_wrapper">
+                                            <a href="detail_product.php?id=' . $row_item["id_item"] . '">
+                                                <div class="mask"></div>';
+    if ($photo == "") {
+        $content .= '<img src="../admin/images/no-images.jpg" alt="' . $row_item['title'] . '" class="scale-with-grid wp-post-image">';
+    } else {
+        $content .= '<img src="../admin/images/product/600/thumb_' . $row_photo['photo'] . '" alt="' . $row_item['title'] . '" class="scale-with-grid wp-post-image">';
+    }
+
+    $content .= '
+                                            </a>
+                                            <div class="image_links double">
+                                                <a rel="nofollow" href="" data-quantity="1" data-product_id="76" class="add_to_cart_button ajax_add_to_cart product_type_simple"><i class="icon-basket"></i></a><a class="link" href="product_page.html"><i class="icon-link"></i></a>
+                                            </div>
+                                        </div>
+                                        <a href="detail_product.php?id=' . $row_item["id_item"] . '"><span class="product-loading-icon added-cart"></span></a>
+                                    </div>
+                                    <div class="desc">
+                                        <h4>
+                                            <a href="detail_product.php?id=' . $row_item["id_item"] . '">' . $row_item['title'] . '</a>
+                                        </h4>
+                                        <span class="price">
+                                            <span class="woocommerce-Price-amount amount">
+                                                <span class="woocommerce-Price-currencySymbol">' . $currency . '</span> 
+                                                ' . (($currency_code == CURRENCY_USD_CODE) ? round($row_item['price'], 2) : number_format(($row_item['price'] * $USDtoIDR), 2, '.', ',')) . '
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="desc">
+                                        <form method="post" action="">
+                                            <input type="text" id="quantity' . $key . '" value="1" size="2">
+                                            '.(($row_item['stock'] <= 0) ? '<h4><b>Out of Stock</b></h4>' : '<button class="button" type="button" id="add_cart' . $key . '" onclick="add_to_cart(' . $row_item["id_item"] . ', ' . $key . ')" value="">add to cart</button>').'
+                                        </form>
+                                    </div>
+                                </li>';
+    $key++;
+}
+
+$content .= '
+                            </ul>
+                        </div>';
+
+// Set param
+$param = '?';
+$param .= (isset($_GET['id_cat']) ? ('id_cat=' . $_GET['id_cat'] . '&') : '');
+$param .= (isset($_GET['id_cats']) ? ('id_cats=' . $_GET['id_cats'] . '&') : '');
+$param .= (isset($_GET['v']) ? ('v=' . $_GET['v'] . '&') : '');
+
+$content .= (halaman($sql_total_data, $perhalaman, 1, $param));
+
+$content .= '
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>';
+
+
+$plugin = '
 <!-- Global Site Tag (gtag.js) - Google Analytics -->
 <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-131936719-1"></script>
 <script type="text/javascript" src="js/notification/notify.js"></script>
@@ -273,12 +217,12 @@ $plugin = '
     gtag("js", new Date());
 
     gtag("config", "UA-131936719-1");
-  
-      function changeCurrency(id_cat) {
-          
-          var currency_code = jQuery("#currency_code").val();
-          
-          jQuery.ajax({
+
+    function changeCurrency(id_cat) {
+
+        var currency_code = jQuery("#currency_code").val();
+
+        jQuery.ajax({
             type: "POST",
             url: "member/update_currency.php",
             data: {currency_code: currency_code},
@@ -290,37 +234,84 @@ $plugin = '
                     document.location.reload();
                 }
             }
-          });
+        });
     }
-    
+
     function add_to_cart(id_item, key) {
-          
+
         var add_cart_button = jQuery("#add_cart" + key);
         var quantity = jQuery("#quantity" + key).val();
         console.log(add_cart_button);
-        
+
         jQuery.ajax({
-          type: "POST",
-          url: "member/action_cart.php",
-          data: {
-              action: "add_cart",
-              id_item: id_item, 
-              quantity: quantity
-          },
-          dataType: "json",
-          success: function(data) {
-              console.log(data);
-              if (data.status == "error") {
-                  alert(data.msg);
-              } else {
-                  add_cart_button.text("Added to cart").attr("disabled", true);
-                  notification();
-              }
-          }
+            type: "POST",
+            url: "member/action_cart.php",
+            data: {
+                action: "add_cart",
+                id_item: id_item,
+                quantity: quantity
+            },
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+                if (data.status == "error") {
+                    alert(data.msg);
+                } else {
+                    add_cart_button.text("Added to cart").attr("disabled", true);
+                    notification();
+                }
+            }
         });
     }
-  
-  
+
+    function search_collection() {
+
+        // Set text for search
+        var text = jQuery("#search_text").val();
+
+        // Set origin url
+        var origin_url = location.origin + location.pathname;
+
+        // Set default parameter var
+        var parameters = {};
+
+        // Set parameter request GET
+        location.search.substr(1).split("&").forEach(function (param) {
+
+            // Split param
+            var paramSplit = param.split("=");
+
+            // Set parameters
+            if (paramSplit[0] != \'\') {
+            parameters[paramSplit[0]] = paramSplit[1];
+        }
+
+    });
+
+    // Set parameter request
+    var search_request = "";
+    for (var key in parameters) {
+
+        // Check parameters is null or no
+        if (search_request != "") {
+            search_request += "&";
+        }
+
+        // If parameter not page
+        if ((key != \'page\') && (key != \'v\')) {
+        search_request += key + "=" + encodeURIComponent(parameters[key]);
+    }
+
+    }
+
+    // Merge with search parameter
+    search_request += search_request ? \'&v=\' + text : \'v=\' + text;
+
+    // reload
+    window.location.href = origin_url + \'?\' + search_request;
+    }
+
+
 </script>
 
 

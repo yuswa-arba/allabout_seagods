@@ -74,6 +74,12 @@ if ($loggedin = logged_in()) { // Check if they are logged in
 
                                 foreach ($_SESSION['cart_item'] as $key => $cart_item) {
 
+                                    // Set size item
+                                    $size_item = null;
+                                    if (isset($cart_item['size'])) {
+                                        $size_item = $cart_item['size'];
+                                    }
+
                                     // Check if cart is custom
                                     if ($cart_item['is_custom_cart'] || $cart_item['is_custom_cart'] == true) {
 
@@ -100,8 +106,8 @@ if ($loggedin = logged_in()) { // Check if they are logged in
                                             '" . $collection_measure["above_ankle"] . "', '" . $collection_measure["shoulder_burst"] . "', '" . $collection_measure["shoulder_waist"] . "', '" . $collection_measure["shoulder_hip"] . "', '" . $collection_measure["hip_knee_length"] . "', '" . $collection_measure["knee_ankle_length"] . "', '" . $collection_measure["back_shoulder"] . "', '" . $collection_measure["dorsum"] . "', '" . $collection_measure["crotch_point"] . "');");
 
                                         // Insert cart
-                                        mysql_query("INSERT INTO `cart` (`id_item`, `id_member`, `is_custom_cart`, `qty`, `amount`, `date_add`, `date_upd`, `level`)
-                                            VALUES('" . $row_custom_collection["id_custom_collection"] . "', '$id_member', '1', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', NOW(), NOW(), '0')");
+                                        mysql_query("INSERT INTO `cart` (`id_item`, `id_member`, `is_custom_cart`, `qty`, `amount`, `size`, `date_add`, `date_upd`, `level`)
+                                            VALUES('" . $row_custom_collection["id_custom_collection"] . "', '$id_member', '1', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', '$size_item', NOW(), NOW(), '0')");
 
                                         // Remove session
                                         unset($_SESSION['cart_item'][$key]);
@@ -114,8 +120,8 @@ if ($loggedin = logged_in()) { // Check if they are logged in
                                         if (mysql_num_rows($cart_query) == 0) {
 
                                             // Add cart
-                                            mysql_query("INSERT INTO `cart` (`id_item`, `qty`, `amount`, `id_member`, `date_add`, `date_upd`, `level`)
-                                                VALUES('" . $cart_item["id_item"] . "', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', '$id_member', NOW(), NOW(), '0');");
+                                            mysql_query("INSERT INTO `cart` (`id_item`, `qty`, `amount`, `size`, `id_member`, `date_add`, `date_upd`, `level`)
+                                                VALUES('" . $cart_item["id_item"] . "', '" . $cart_item["quantity"] . "', '" . $cart_item["amount"] . "', '$size_item', '$id_member', NOW(), NOW(), '0');");
 
                                             // Remove session
                                             unset($_SESSION['cart_item'][$key]);
@@ -130,7 +136,7 @@ if ($loggedin = logged_in()) { // Check if they are logged in
                                             $last_quantity = (float)$cart_item['quantity'] + (float)$row_cart['qty'];
 
                                             // Update cart
-                                            mysql_query("UPDATE `cart` SET `qty` = '$last_quantity', `amount` = '$last_amount_cart', `date_upd` = NOW()
+                                            mysql_query("UPDATE `cart` SET `qty` = '$last_quantity', `amount` = '$last_amount_cart', `size` = '$size_item', `date_upd` = NOW()
                                                 WHERE `id_cart` = '" . $row_cart["id_cart"] . "';");
 
                                             // Remove session

@@ -386,6 +386,34 @@ if ($loggedin = logged_in()) {
                                 <option value="front" selected>Front Zipper</option>
                             </select>
                         </div>
+                        <?php
+
+                        // Get size custom product
+                        $custom_size_query = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = 'custom-size' LIMIT 0,1;");
+                        if (mysql_num_rows($custom_size_query) > 0) {
+
+                            // Set tag div
+                            echo '
+                                <div class="form-group">
+                                    <label>Chose Size</label>
+                                    <select name="wetsuitType" class="form-control" onchange="change_suit_type(this.value);">
+                                        <option hidden>Chose Size</option>';
+
+                            // Set row custom size
+                            $row_custom_size = mysql_fetch_assoc($custom_size_query);
+
+                            // Set custom size array
+                            $custom_size_array = explode(',', $row_custom_size['value']);
+                            foreach ($custom_size_array as $custom_size) {
+                                echo '<option value="' . $custom_size . '">' . $custom_size . '</option>';
+                            }
+
+                            echo '
+                                    </select>
+                                </div>';
+                        }
+
+                        ?>
                         <div class="form-group">
                             <label>1<sup>st</sup> Layer</label>
                             <select name="shoulderLayer" id="1-layer-thickness" class="form-control">

@@ -7,6 +7,32 @@ include("config/shipping/province_city.php");
 
 if ($loggedin = logged_in()) {
 
+    function get_cost($parameters)
+    {
+        // Set parameter request or data request
+        $parameters = set_parameter_or_data_request($parameters);
+
+        // Set where id_province
+        $action_parameter = '';
+        foreach ($parameters as $key => $parameter) {
+
+            // Set result parameter
+            if ($key == 0) {
+                $action_code = '';
+            } else {
+                $action_code = '&';
+            }
+
+            // Set key name
+            $name_key = key($parameter);
+
+            $action_parameter .= $action_code . $name_key . '=' . $parameter[$name_key];
+        }
+
+        // Get cost
+        return action_post('cost', $action_parameter);
+    }
+
     // Set price custom item
     function get_price($name)
     {
@@ -83,7 +109,7 @@ if ($loggedin = logged_in()) {
     if ($count_cart) {
 
         // Check session guest
-        $guest = isset($_SESSION['guest']) ? $_SESSION['guest'] : [];
+        $guest = isset($_SESSION['customer']) ? $_SESSION['customer'] : [];
 
         $query_member = mysql_query("SELECT `member`.*, `users`.`email` FROM `member`, `users`
             WHERE `member`.`id_member` = `users`.`id_member` 
@@ -113,6 +139,16 @@ if ($loggedin = logged_in()) {
             $update_member = false;
         }
     }
+
+    // Set city id company
+    $get_city_company_query = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = 'hometown' LIMIT 0,1;");
+    $row_city_company = mysql_fetch_assoc($get_city_company_query);
+
+    // Get province
+    $get_province = get_province();
+
+    // Get province
+    $get_city = get_city();
 
 } else {
     echo "<script language='JavaScript'>
@@ -246,9 +282,14 @@ if ($loggedin = logged_in()) {
                                         class="fa fa-shopping-cart tab-icon"></i> <span>Your cart</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="" id="item-shipping-information" data-toggle="tab" href="#" role="tab"><i
+                            <a class="" id="item-member-information" data-toggle="tab" href="#" role="tab"><i
                                         class="fa fa-m tab-icon"></i>
-                                <span>Shipping information</span></a>
+                                <span>Member information</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="" id="item-shipping-address" data-toggle="tab" href="#" role="tab"><i
+                                        class="fa fa-m tab-icon"></i>
+                                <span>Shipping address</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="" id="item-payment" data-toggle="tab" href="#" role="tab"><i
@@ -408,12 +449,12 @@ if ($loggedin = logged_in()) {
                             </div>
                         </div>
 
-                        <div class="tab-pane slide-left padding-20 sm-no-padding" id="tab-shipping-information">
+                        <div class="tab-pane slide-left padding-20 sm-no-padding" id="tab-member-information">
                             <div class="row row-same-height">
                                 <div class="col-md-5 b-r b-dashed b-grey ">
                                     <div class="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
                                         <h2>Your Information is safe with us!</h2>
-                                        <p>Please enter your data for shipping details of invoices and payments.</p>
+                                        <p>Please entry your personal data.</p>
                                         <p class="small hint-text">Make sure your email is active.</p>
                                     </div>
                                 </div>
@@ -463,16 +504,8 @@ if ($loggedin = logged_in()) {
                                             </div>
                                         </div>
                                         <br>
-                                        <p>Billing Address</p>
+                                        <p>Primary Address</p>
                                         <div class="form-group-attached">
-                                            <div class="form-group form-group-default ">
-                                                <label>Address</label>
-                                                <input type="text"
-                                                       class="form-control" <?php echo ($row_member["alamat"]) ? "readonly" : "" ?>
-                                                       name="category"
-                                                       placeholder="Address" id="address"
-                                                       value="<?php echo ($count_cart != 0) ? $row_member["alamat"] : ""; ?>">
-                                            </div>
                                             <div class="row clearfix">
                                                 <?php if ($row_member["idCountry"]) { ?>
                                                     <div class="form-group form-group-default form-group-default-select2">
@@ -519,9 +552,6 @@ if ($loggedin = logged_in()) {
                                                             <option hidden>-- Choose Province --</option>
                                                             <?php
 
-                                                            // Get province
-                                                            $get_province = get_province();
-
                                                             foreach ($get_province->rajaongkir->results as $province) {
                                                                 echo '<option value="' . $province->province . '-' . $province->province_id . '">' . $province->province . '</option>';
                                                             }
@@ -552,9 +582,6 @@ if ($loggedin = logged_in()) {
                                                                 <option hidden>-- Choose City --</option>
                                                                 <?php
 
-                                                                // Get province
-                                                                $get_city = get_city();
-
                                                                 foreach ($get_city->rajaongkir->results as $city) {
                                                                     echo '<option value="' . $city->city_id . '">' . $city->city_name . '</option>';
                                                                 }
@@ -575,12 +602,211 @@ if ($loggedin = logged_in()) {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group form-group-default ">
+                                                <label>Address</label>
+                                                <textarea
+                                                        class="form-control" <?php echo ($row_member["kode_pos"]) ? "readonly" : "" ?>
+                                                        name="address"
+                                                        placeholder="Address" id="address"
+                                                        style="height: 50px;"><?php echo ($count_cart != 0) ? $row_member["alamat"] : ""; ?></textarea>
+                                            </div>
 
                                         </div>
                                         <br>
-                                        <button class="btn btn-primary btn-block"
-                                                id="<?php echo $update_member ? 'update_member' : 'payment_now'; ?>"
-                                                type="button">Pay Now
+                                        <button class="btn btn-primary pull-right"
+                                                id="<?php echo $update_member ? 'update_member' : 'next_to_shipping_address'; ?>"
+                                                type="button">Next
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane slide-left padding-20 sm-no-padding" id="tab-shipping-address">
+                            <div class="row row-same-height">
+                                <div class="col-md-5 b-r b-dashed b-grey ">
+                                    <div class="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
+                                        <h2>Your Information shipping address!</h2>
+                                        <p>Please entry your shipping address.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="padding-30 sm-padding-5">
+                                        <p>Shipping Address</p>
+                                        <div class="form-group-attached">
+                                            <input type="hidden" value="<?php echo $row_city_company['value']; ?>" id="id_city_company">
+                                            <div class="row clearfix">
+                                                <div class="form-group form-group-default form-group-default-select2">
+                                                    <label class="">Select Country</label>
+                                                    <select class="full-width" id="shipping_country_code"
+                                                            data-placeholder="Select Country"
+                                                            name="shipping_country_code" data-init-plugin="select2">
+                                                        <option hidden>Chose Country</option>
+                                                        <?php
+                                                        $query_country = mysql_query("SELECT * FROM `countries`");
+                                                        while ($row_country = mysql_fetch_array($query_country)) {
+                                                            echo '<option value="' . $row_country["id_country"] . '" ' . (($row_member["idCountry"] == $row_country["id_country"]) ? 'selected' : '') . '>' . $row_country["name"] . '</option>';
+                                                        } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row clearfix">
+                                                <div class="form-group form-group-default form-group-default-select2">
+                                                    <label class="">Select Province</label>
+                                                    <select class="full-width" id="shipping_province"
+                                                            data-placeholder="Chose Province"
+                                                            name="shipping_province" data-init-plugin="select2" onchange="changeShippingProvince();">
+                                                        <option hidden>-- Choose Province --</option>
+                                                        <?php
+
+                                                        // Set id_province
+                                                        $id_province = (isset($guest["id_province"]) ? $guest["id_province"] : ($row_provinsi["idProvinsi"] ?: null));
+
+                                                        foreach ($get_province->rajaongkir->results as $province) {
+                                                            echo '<option value="' . $province->province_id . '" 
+                                                                    ' . ($id_province ? (($id_province == $province->province_id) ? 'selected' : '') : '') . '>' . $province->province . '</option>';
+                                                        }
+
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row clearfix">
+                                                <div class="col-sm-9">
+                                                    <div class="form-group form-group-default form-group-default-select2 required">
+                                                        <label class="">Select City</label>
+                                                        <select class="full-width" id="shipping_city"
+                                                                data-placeholder="Chose City"
+                                                                name="shipping_city" data-init-plugin="select2" onchange="changeShippingCity();">
+                                                            <option hidden>-- Choose City --</option>
+                                                            <?php
+
+                                                            // Set id_city
+                                                            $id_city = (isset($guest["id_city"]) ? $guest["id_city"] : ($row_kota["idKota"] ?: null));
+
+                                                            foreach ($get_city->rajaongkir->results as $city) {
+                                                                echo '<option value="' . $city->city_id . '" ' . ($id_city ? (($id_city == $city->city_id) ? 'selected' : '') : '') . '>' . $city->city_name . '</option>';
+                                                            }
+
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group form-group-default">
+                                                        <label>Postal Code</label>
+                                                        <input type="text"
+                                                               class="form-control"
+                                                               name="shipping_postal_code"
+                                                               placeholder="Postal Code" id="shipping_postal_code"
+                                                               value="<?php echo $row_member["kode_pos"]; ?>">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-group-default ">
+                                                <label>Address</label>
+                                                <textarea
+                                                        class="form-control"
+                                                        name="shipping_address"
+                                                        placeholder="Address" id="shipping_address"
+                                                        style="height: 50px;"><?php echo $row_member["alamat"]; ?></textarea>
+                                            </div>
+
+                                        </div>
+                                        <br>
+                                        <p>Shipping Courier</p>
+                                        <div class="form-group-attached">
+                                            <div class="row clearfix">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-group-default form-group-default-select2">
+                                                        <label class="">Courier</label>
+                                                        <select class="full-width" id="shipping_courier"
+                                                                data-placeholder="Select Country"
+                                                                name="shipping_courier" data-init-plugin="select2" onchange="changeShippingCourier();">
+                                                            <option hidden>Chose Courier</option>
+                                                            <?php
+
+                                                            // Set Couriers
+                                                            $couriers = get_couriers();
+
+                                                            foreach ($couriers as $courier) {
+
+                                                                // Set selected courier
+                                                                $selected_courier = (isset($guest['courier']) ? (($guest['courier'] == $courier['code']) ? 'selected' : '') : '');
+
+                                                                // Set option
+                                                                echo '<option value="' . $courier['code'] . '" ' . $selected_courier . '>' . $courier['name'] . '</option>';
+                                                            }
+
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group form-group-default form-group-default-select2">
+                                                        <label class="">Service</label>
+                                                        <select class="full-width" id="shipping_service"
+                                                                data-placeholder="Chose Province"
+                                                                name="shipping_service" data-init-plugin="select2" onchange="changeShippingService();">
+                                                            <option hidden>-- Choose Service --</option>
+                                                            <?php
+
+                                                            if (isset($guest['courier'])) {
+
+                                                                // Set parameter request
+                                                                $parameter_cost = [
+                                                                    'origin' => $row_city_company['value'],
+                                                                    'destination' => ($guest['id_city'] ?: ($row_kota["idKota"] ?: null)),
+                                                                    'weight' => (($weight < 1) ? 1 : $weight),
+                                                                    'courier' => $guest['courier']
+                                                                ];
+
+                                                                // Get courier
+                                                                $get_cost = get_cost($parameter_cost);
+
+                                                                if ($get_cost->rajaongkir->status->code == 200) {
+
+                                                                    foreach ($get_cost->rajaongkir->results[0]->costs as $cost) {
+
+                                                                        // Set selected courier
+                                                                        $selected_service = (isset($guest['service']) ? (($guest['service'] == $cost->service) ? 'selected' : '') : '');
+
+                                                                        // Set option
+                                                                        echo '<option value="' . $cost->service . '" ' . $selected_service . '>' . $cost->service . '</option>';
+
+                                                                    }
+
+                                                                }
+
+                                                            }
+
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <p>Cost</p>
+                                        <p style="font-size: 25px;;" id="shipping_courier_cost">
+                                            <?php
+
+                                            $courier_cost = 0;
+                                            if (isset($guest['courier_cost'])) {
+
+                                                // Set courier cost
+                                                $courier_cost = (($currency_code == CURRENCY_USD_CODE) ? round(($guest['courier_cost'] / $USDtoIDR), 2) : $guest['courier_cost']);
+
+                                                echo '<b>' . $currency . ' ' . number_format($courier_cost, (($currency_code == CURRENCY_USD_CODE) ? 2 : 0), '.', ',') . '</b>';
+                                            }
+
+                                            ?>
+                                        </p>
+                                        <br>
+                                        <button class="btn btn-primary pull-right"
+                                                id="<?php echo(($currency_code == CURRENCY_USD_CODE) ? 'next_to_paypal' : 'payment_transaction') ?>"
+                                                type="button">Payment Now
                                         </button>
 
                                     </div>
@@ -590,75 +816,14 @@ if ($loggedin = logged_in()) {
 
                         <div class="tab-pane padding-20 sm-no-padding slide-left" id="tab-paypal">
                             <div class="row row-same-height">
-                                <?php if ($currency_code == CURRENCY_USD_CODE) {
-                                    echo '
-                                        <div class="col-md-5 b-r b-dashed b-grey sm-b-b">
-                                            <div class="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
-                                                <h2>Please make a payment through your paypal account!</h2>
-                                            </div>
-                                            <div class="padding-30 sm-padding-5">
-                                                <div class="from-left pull-right" id="paypal-button"></div>
-                                            </div>
-                                        </div>';
-                                } else {
-                                    echo '
-                                        <div class="col-md-7 b-r b-dashed b-grey sm-b-b">
-                                            <div class="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
-                                                <h5>Or You Can Transfer To Us Via</h5>
-                                            </div>
-                                            <div class="cpadding-7 sm-padding-1">
-                                                <div><img src="images/mandiri.jpg" height="30px">Account Number : <strong>145-0010-897-318</strong>
-                                                </div>
-                                                <br><br>
-                                                <div><img src="images/bca.jpg" height="30px">Account Number : <strong>146-668-4848</strong>
-                                                </div>
-                                                <br><br>
-                                                <table class="col-12">
-                                                    <tr>
-                                                        <td colspan="2">
-                                                            <p style="font-size:12px;">After transferring, please confirm to us
-                                                                and send us the proof of payment by confirming us</p>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="2">
-                                                            <div class="row b-a b-grey no-margin">
-                                                                <div class="col-md-3 p-l-10 sm-padding-15 align-items-center d-flex">
-                                                                    <div>
-                                                                        <h6 class="font-montserrat all-caps small no-margin hint-text bold">
-                                                                            Discount</h6>
-                                                                        <p class="no-margin">$ 0</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3 col-middle sm-padding-15 align-items-center d-flex">
-                                                                    <div>
-                                                                        <h6 class="font-montserrat all-caps small no-margin hint-text bold">
-                                                                            Shipping Cost</h6>
-                                                                        <p class="no-margin">' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? ($total_weight_round * $kurs) : number_format(($total_weight_round * $kurs), 0, '.', ',')) . '</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6 text-right bg-primary padding-10">
-                                                                    <h6 class="font-montserrat all-caps small no-margin hint-text text-white bold">
-                                                                        Total</h6>
-                                                                    <h6 class="no-margin text-white">' . $currency . ' ' . (($currency_code == CURRENCY_USD_CODE) ? number_format(($item_total + ($total_weight_round * $kurs)), 2, '.', ',') : number_format((($item_total * $USDtoIDR) + ($total_weight_round * $kurs)), 0, '.', ',')) . '</h6>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td>
-                                                            <a href="member/form_confirmation.php"
-                                                               class="btn btn-primary pull-right"
-                                                               type="button">Confirmation </a>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-        
-                                            </div>
-                                        </div>';
-                                } ?>
-
+                                <div class="col-md-5 b-r b-dashed b-grey sm-b-b">
+                                    <div class="padding-30 sm-padding-5 sm-m-t-15 m-t-50">
+                                        <h2>Please make a payment through your paypal account!</h2>
+                                    </div>
+                                    <div class="padding-30 sm-padding-5">
+                                        <div class="from-left pull-right" id="paypal-button"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -730,14 +895,18 @@ if ($loggedin = logged_in()) {
 <script type="application/javascript">
     $(document).ready(function () {
 
+
+        // Next to member information
         $('#next-information').click(function () {
             $('#item-your-card').removeClass('active');
-            $('#item-shipping-information').addClass('active');
+            $('#item-member-information').addClass('active');
 
             $('#tab-your-cart').removeClass('active');
-            $('#tab-shipping-information').addClass('active');
+            $('#tab-member-information').addClass('active');
         });
 
+
+        // Update country
         $('#country_code').on('change', function () {
             $.ajax({
                 type: 'GET',
@@ -758,6 +927,8 @@ if ($loggedin = logged_in()) {
             })
         });
 
+
+        // Update province
         $('#province').on('change', function () {
             var province = $('#province').val().split('-');
 
@@ -781,6 +952,8 @@ if ($loggedin = logged_in()) {
             })
         });
 
+
+        // Process for update member data
         $('#update_member').click(function () {
             var id_member = $('#id_member').val();
             var first_name = $('#first_name').val();
@@ -829,11 +1002,11 @@ if ($loggedin = logged_in()) {
                     dataType: 'json',
                     success: function (data) {
                         if (!data.failed) {
-                            $('#item-shipping-information').removeClass('active');
-                            $('#item-payment').addClass('active');
+                            $('#item-member-information').removeClass('active');
+                            $('#item-shipping-address').addClass('active');
 
-                            $('#tab-shipping-information').removeClass('active');
-                            $('#tab-paypal').addClass('active');
+                            $('#tab-member-information').removeClass('active');
+                            $('#tab-shipping-address').addClass('active');
                         } else {
                             notifyAlert('Gagal menyimpan data member!', 'danger', 'top-right');
                         }
@@ -842,7 +1015,9 @@ if ($loggedin = logged_in()) {
             }
         });
 
-        $('#payment_now').click(function () {
+
+        // Next to process shipping address
+        $('#next_to_shipping_address').click(function () {
             var id_member = $('#id_member').val();
             var first_name = $('#first_name').val();
             var last_name = $('#last_name').val();
@@ -867,14 +1042,81 @@ if ($loggedin = logged_in()) {
                 notifyAlert('Isi semua data yang masih kosong..!!', 'danger', 'top-right');
 
             } else {
-                $('#item-shipping-information').removeClass('active');
-                $('#item-payment').addClass('active');
+                $('#item-member-information').removeClass('active');
+                $('#item-shipping-address').addClass('active');
 
-                $('#tab-shipping-information').removeClass('active');
-                $('#tab-paypal').addClass('active');
+                $('#tab-member-information').removeClass('active');
+                $('#tab-shipping-address').addClass('active');
             }
         });
 
+
+        // Process with bank transfer
+        $("#payment_transaction").click(function () {
+
+            // Show notification
+            notifyAlert('Please wait, it\'s being processed.', 'success', 'top-right', 6000);
+
+            // Set payment transaction var
+            var payment_transaction = $("#payment_transaction");
+
+            // Disable button
+            payment_transaction.attr('disabled', true);
+
+            // Set var
+            var address = $('#shipping_address').val();
+            var country_code = $('#shipping_country_code').val();
+            var province = $('#shipping_province').val();
+            var city = $('#shipping_city').val();
+            var postal_code = $('#shipping_postal_code').val();
+            var amount = $('#amount').val();
+            var weight = $('#weight').val();
+            var courier = $('#courier').val();
+            var service = $('#service').val();
+            var price_shipping = $('#price_shipping').val();
+            var shipping_IDR = $('#shipping_IDR').val();
+
+            $.ajax({
+                type: 'POST',
+                url: 'shipping_member.php',
+                data: {
+                    action: 'create_transaction',
+                    address: address,
+                    country_code: country_code,
+                    id_province: province,
+                    id_city: city,
+                    postal_code: postal_code,
+                    amount: amount,
+                    weight: weight,
+                    courier: courier,
+                    service: service,
+                    price_shipping: price_shipping,
+                    shipping_IDR: shipping_IDR
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status == 'success') {
+                        notifyAlert(data.msg, 'success', 'top-right', 3000);
+                        window.location.href = 'member/transaction_order_information.php?id=' + data.results.id_transaction;
+                    } else {
+                        notifyAlert(data.msg, 'error', 'top-right', 3000);
+                    }
+                }
+            });
+        });
+
+
+        // Next process to paypal
+        $("#next_to_paypal").click(function () {
+            $('#item-shipping-address').removeClass('active');
+            $('#item-payment').addClass('active');
+
+            $('#tab-shipping-address').removeClass('active');
+            $('#tab-paypal').addClass('active');
+        });
+
+
+        // Process with paypal
         paypal.Button.render({
 
             style: paypalStyle,
@@ -893,11 +1135,6 @@ if ($loggedin = logged_in()) {
                 var first_name = $('#first_name').val();
                 var last_name = $('#last_name').val();
                 var phone_number = $('#phone_number').val();
-                var address = $('#address').val();
-                var country_code = $('#country_code').val();
-                var province = $('#province').val().split('-');
-                var city = $('#city').val().split('-');
-                var postal_code = $('#postal_code').val();
 
                 var id_items = $('tr[class="form_items[]"]').map(function () {
                     return this;
@@ -960,6 +1197,7 @@ if ($loggedin = logged_in()) {
                         data: {grant_type: 'client_credentials'},
                         dataType: 'json',
                         success: function (token) {
+
                             $.ajax({
                                 type: 'GET',
                                 url: paypalApiMainUrl + '/v1/payments/payment/' + success.paymentID,
@@ -981,13 +1219,18 @@ if ($loggedin = logged_in()) {
                                             courier: $('#courier').val(),
                                             service: $('#service').val(),
                                             shipping: $('#shipping_IDR').val(),
-                                            price_shipping: $('#price_shipping').val()
+                                            price_shipping: $('#price_shipping').val(),
+                                            shipping_address: $('#shipping_address').val(),
+                                            shipping_country_code: $('#shipping_country_code').val(),
+                                            shipping_province: $('#shipping_province').val(),
+                                            shipping_city: $('#shipping_city').val(),
+                                            shipping_postal_code: $('#shipping_postal_code').val()
                                         },
                                         dataType: 'json',
                                         success: function (data) {
                                             if (data.status == "success") {
                                                 notifyAlert(data.msg, 'success', 'top-right');
-                                                window.location.href = 'member/list-transaction.php';
+                                                window.location.href = 'member/transaction_order_information.php?id=' + data.results.id_transaction;
                                             } else {
                                                 notifyAlert(data.msg, 'danger', 'top-right');
                                             }
@@ -1005,6 +1248,151 @@ if ($loggedin = logged_in()) {
 
         }, '#paypal-button');
     });
+
+
+    function changeShippingProvince() {
+        var id_province = $("#shipping_province").val();
+
+        $.ajax({
+            type: "POST",
+            url: "member/change_city.php",
+            data: {
+                action: "change_province",
+                id_province: id_province
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.status == "error") {
+                    notifyAlert(data.msg, 'error', 'top-right', 3000);
+                } else {
+
+                    $("#shipping_courier_cost").html("");
+
+                    var courier = $("#shipping_courier");
+                    courier.html("").attr("disabled", true);
+                    courier.append("<option hidden>Courier</option>");
+
+                    var service_courier = $("#shipping_service");
+                    service_courier.html("").attr("disabled", true);
+                    service_courier.append("<option hidden>Service Courier</option>");
+
+                    var city = $("#shipping_city");
+                    city.html("");
+                    city.append("<option hidden>city</option>");
+
+                    for (var i = 0; i < data.results.length; i++) {
+                        city.append(
+                            '<option value="' + data.results[i].city_id + '">' + data.results[i].city_name + '</option>'
+                        );
+                    }
+                }
+            }
+        });
+    }
+
+    function changeShippingCity() {
+        var id_city = $("#shipping_city").val();
+
+        $.ajax({
+            type: "POST",
+            url: "member/change_city.php",
+            data: {
+                action: "change_city",
+                id_city: id_city
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.status == "error") {
+                    notifyAlert(data.msg, 'error', 'top-right', 3000);
+                } else {
+
+                    $("#shipping_courier_cost").html("");
+
+                    var service_courier = $("#shipping_service");
+                    service_courier.html("").attr("disabled", true);
+                    service_courier.append("<option hidden>Service Courier</option>");
+
+                    var courier = $("#shipping_courier");
+                    courier.html("").attr("disabled", false);
+                    courier.append("<option hidden>Courier</option>");
+
+                    for (var i = 0; i < data.results.length; i++) {
+                        courier.append(
+                            '<option value="' + data.results[i].code + '">' + data.results[i].name + '</option>'
+                        );
+                    }
+                }
+            }
+        });
+    }
+
+    function changeShippingCourier() {
+        var id_city_company = $("#id_city_company").val();
+        var id_city = $("#shipping_city").val();
+        var weight = $("#weight").val();
+        var courier = $("#shipping_courier").val();
+
+        $.ajax({
+            type: "POST",
+            url: "member/change_courier.php",
+            data: {
+                action: "change_courier",
+                id_city_company: id_city_company,
+                id_city: id_city,
+                weight: weight,
+                courier: courier
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.status == "error") {
+                    notifyAlert(data.msg, 'error', 'top-right', 3000);
+                } else {
+
+                    $("#shipping_courier_cost").html("");
+
+                    var service_courier = $("#shipping_service");
+                    service_courier.html("").attr("disabled", false);
+                    service_courier.append("<option hidden>Service Courier</option>");
+
+                    var costs = data.results.rajaongkir.results[0].costs;
+                    for (var i = 0; i < costs.length; i++) {
+                        service_courier.append(
+                            '<option value="' + costs[i].service + '">' + costs[i].service + '</option>'
+                        );
+                    }
+                }
+            }
+        });
+    }
+
+    function changeShippingService() {
+        var service_courier = $("#shipping_service").val();
+        var id_city_company = $("#id_city_company").val();
+        var id_city = $("#shipping_city").val();
+        var weight = $("#weight").val();
+        var courier = $("#shipping_courier").val();
+
+        $.ajax({
+            type: "POST",
+            url: "member/change_courier.php",
+            data: {
+                action: "change_service_courier",
+                service_courier: service_courier,
+                id_city_company: id_city_company,
+                id_city: id_city,
+                weight: weight,
+                courier: courier
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.status == "error") {
+                    notifyAlert(data.msg, 'error', 'top-right', 3000);
+                } else {
+                    window.location.reload();
+                }
+            }
+        });
+    }
 
     function notifyAlert(message, type, position, timeout = 3600) {
         $('.page-container').pgNotification({

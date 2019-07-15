@@ -107,6 +107,96 @@ if (isset($_POST['action']) && $_POST['action'] == 'update_member') {
     echo json_encode($return_member);
 }
 
+if (isset($_POST['action']) && $_POST['action'] == 'create_transaction') {
+
+    // Set value request
+    $address = isset($_POST['address']) ? strip_tags(trim($_POST['address'])) : "";
+    $id_country = isset($_POST['country_code']) ? strip_tags(trim($_POST['country_code'])) : "";
+    $id_province = isset($_POST['id_province']) ? strip_tags(trim($_POST['id_province'])) : "";
+    $id_city = isset($_POST['id_city']) ? strip_tags(trim($_POST['id_city'])) : "";
+    $postal_code = isset($_POST['postal_code']) ? strip_tags(trim($_POST['postal_code'])) : "";
+    $amount = isset($_POST['amount']) ? strip_tags(trim($_POST['amount'])) : "";
+    $weight = isset($_POST['weight']) ? strip_tags(trim($_POST['weight'])) : "";
+    $courier = isset($_POST['courier']) ? strip_tags(trim($_POST['courier'])) : "";
+    $service = isset($_POST['service']) ? strip_tags(trim($_POST['service'])) : "";
+    $price_shipping = isset($_POST['price_shipping']) ? strip_tags(trim($_POST['price_shipping'])) : "";
+    $shipping_IDR = isset($_POST['shipping_IDR']) ? strip_tags(trim($_POST['shipping_IDR'])) : "";
+
+    // Set transaction number
+    $transaction_number = generate_transaction_number();
+
+    // if required
+    if (!empty($transaction_number) && !empty($address) && !empty($id_country)
+        && !empty($id_province) && !empty($id_city) && !empty($postal_code) && !empty($amount)
+        && !empty($courier) && !empty($service) && !empty($price_shipping) && !empty($shipping_IDR)
+    ) {
+
+        // Begin transaction
+        begin_transaction();
+
+        // Round amount
+        $amount = round($amount, 2);
+
+        // Insert transaction
+        $insert_transaction_query = "INSERT INTO `transaction` (`kode_transaction`, `id_member`, `status`, `konfirm`, `payment_method`, `total`, `date_add`, `date_upd`)
+                VALUES('$transaction_number', '" . $loggedin["id_member"] . "', 'process', 'not confirmated', 'Bank Transfer', '$amount', NOW(), NOW());";
+        if (!mysql_query($insert_transaction_query)) {
+            roll_back();
+            $msg = 'Unable to save transaction';
+            echo json_encode(error_response($msg));
+            exit();
+        }
+
+        // Select transaction
+        $transaction_query = mysql_query("SELECT * FROM `transaction` WHERE `kode_transaction` = '$transaction_number' AND `id_member` = '" . $loggedin["id_member"] . "'
+                AND `status` = 'process' AND `konfirm` = 'not confirmated' AND `payment_method` = 'Bank Transfer' ORDER BY `id_transaction` DESC LIMIT 0,1;");
+        $row_transaction = mysql_fetch_assoc($transaction_query);
+
+        // Assigned transaction to cart
+        $assigned_transaction_cart_query = "UPDATE `cart` SET `id_transaction` = '" . $row_transaction["id_transaction"] . "'
+                WHERE ISNULL(id_transaction) AND `id_member` = '" . $loggedin["id_member"] . "' AND `level` = '0';";
+        if (!mysql_query($assigned_transaction_cart_query)) {
+            roll_back();
+            $msg = 'Unable to assigned transaction in cart';
+            echo json_encode(error_response($msg));
+            exit();
+        }
+
+        // Insert shipping
+        $insert_shipping_query = "INSERT INTO `transaction_shipping` (`id_transaction`, `courier`, `service`, `weight`, `price`, `amount`, `date_add`, `date_upd`)
+                VALUES('" . $row_transaction["id_transaction"] . "', '$courier', '$service', '$weight', '$price_shipping', '$shipping_IDR', NOW(), NOW());";
+        if (!mysql_query($insert_shipping_query)) {
+            roll_back();
+            $msg = 'Unable to save shipping';
+            echo json_encode(error_response($msg));
+            exit();
+        }
+
+        // Insert shipping address
+        $insert_shipping_address_query = "INSERT INTO `transaction_shipping_address` (`id_transaction`, `id_city`, `id_province`, `id_country`, `address`, `zip_code`, `date_add`, `date_upd`)
+            VALUES ('" . $row_transaction["id_transaction"] . "', '$id_city', '$id_province', '$id_country', '$address', '$postal_code', NOW(), NOW());";
+        if (!mysql_query($insert_shipping_address_query)) {
+            roll_back();
+            $msg = 'Unable to save shipping address';
+            echo json_encode(error_response($msg));
+            exit();
+        }
+
+        // Commit
+        commit();
+
+        // Success
+        $msg = 'Save payment successfully';
+        echo json_encode(success_response($msg, $row_transaction));
+        exit();
+
+    } else {
+        $msg = 'All parameter rquired';
+        echo json_encode(error_response($msg));
+        exit();
+    }
+}
+
 if (isset($_POST['action']) && $_POST['action'] == 'save_payment') {
 
     // Set value request
@@ -120,6 +210,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'save_payment') {
     $courier = isset($_POST['courier']) ? mysql_real_escape_string(trim($_POST['courier'])) : '';
     $service = isset($_POST['service']) ? mysql_real_escape_string(trim($_POST['service'])) : '';
     $price_shipping = isset($_POST['price_shipping']) ? mysql_real_escape_string(trim($_POST['price_shipping'])) : '';
+    $shipping_address = isset($_POST['shipping_address']) ? mysql_real_escape_string(trim($_POST['shipping_address'])) : '';
+    $shipping_country_code = isset($_POST['shipping_country_code']) ? mysql_real_escape_string(trim($_POST['shipping_country_code'])) : '';
+    $shipping_province = isset($_POST['shipping_province']) ? mysql_real_escape_string(trim($_POST['shipping_province'])) : '';
+    $shipping_city = isset($_POST['shipping_city']) ? mysql_real_escape_string(trim($_POST['shipping_city'])) : '';
+    $shipping_postal_code = isset($_POST['shipping_postal_code']) ? mysql_real_escape_string(trim($_POST['shipping_postal_code'])) : '';
 
     $return_update_payment['failed'] = false;
 
@@ -245,6 +340,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'save_payment') {
                 exit();
             }
 
+            // Insert shipping address
+            $insert_shipping_address_query = "INSERT INTO `transaction_shipping_address` (`id_transaction`, `id_city`, `id_province`, `id_country`, `address`, `zip_code`, `date_add`, `date_upd`)
+            VALUES ('" . $row_transaction["id_transaction"] . "', '$shipping_city', '$shipping_province', '$shipping_country_code', '$shipping_address', '$shipping_postal_code', NOW(), NOW());";
+            if (!mysql_query($insert_shipping_address_query)) {
+                roll_back();
+                $msg = 'Unable to save shipping address';
+                echo json_encode(error_response($msg));
+                exit();
+            }
+
             // SEt shipping usd
             $shipping_USD = round(($shipping / $USDtoIDR), 2);
 
@@ -271,6 +376,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'save_payment') {
 
     // Success
     $msg = 'Save payment successfully';
-    echo json_encode(success_response($msg));
+    echo json_encode(success_response($msg, $row_transaction));
     exit();
 }

@@ -115,6 +115,14 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
 
         }
 
+        // Set custom size
+        if ($row_setting['name'] == 'custom-size') {
+
+            // Set value
+            $value = str_replace(',', ', ', $row_setting['value']);
+
+        }
+
         $content .= '
                                     <form action="" method="post">
                                         <tr>

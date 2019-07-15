@@ -93,7 +93,7 @@ if (isset($_POST['remove'])) {
             }
             $row_cart = mysql_fetch_array($cart_query);
 
-            // Check if 
+            // Check if
 
             // Delete cart
             $delete_cart_query = "UPDATE `cart` SET `level` = '1' WHERE `id_cart` = '$id_cart';";
@@ -175,6 +175,10 @@ $total_amount = 0;
 $get_city_company_query = mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = 'hometown' LIMIT 0,1;");
 $row_city_company = mysql_fetch_assoc($get_city_company_query);
 
+// Set custom size
+$custom_size_query = mysql_fetch_assoc(mysql_query("SELECT `value` FROM `setting_seagods` WHERE `name` = 'custom-size' LIMIT 0,1;"));
+$custom_size = $custom_size_query['value'];
+
 if ($loggedin) {
 
     // Set member
@@ -182,7 +186,7 @@ if ($loggedin) {
     $row_member = mysql_fetch_array($member_query);
 
     // Check session guest
-    $guest = isset($_SESSION['guest']) ? $_SESSION['guest'] : [];
+    $guest = isset($_SESSION['customer']) ? $_SESSION['customer'] : [];
 
     // Set shipping
     if ($row_member['idkota']) {
@@ -237,7 +241,33 @@ if ($loggedin) {
                                             </span>
                                         </p>
                                         
-                                        <div class="quantity">
+                                        <div class="quantity">';
+
+        // Set size item
+        if (!$row_cart['is_custom_cart']) {
+            $size_item = $row_item['size'];
+        } else {
+            $size_item = $custom_size;
+        }
+
+        // Explode size item
+        $size_array = explode(',', $size_item);
+
+        if (count($size_array) > 0) {
+            $content .= '
+                                            <label class="text-grey fw-500 fs-13">Size</label>
+                                            <select class="form-control" style="width: 100px;" id="size_item' . $row_cart['id_cart'] . '" onchange="change_size_cart(' . $row_cart['id_cart'] . ');">
+                                                <option hidden>Chose Size</option>';
+
+            foreach ($size_array as $size) {
+                $content .= '<option value="' . $size . '" ' . (isset($row_cart['size']) ? (($size == $row_cart['size']) ? 'selected' : '') : '') . '>' . $size . '</option>';
+            }
+
+            $content .= '
+                                            </select>';
+        }
+
+        $content .= '
                                             <label class="text-grey fw-500 fs-13">Quantity</label>
                                             <span class="woocommerce-Price-amount"><b>' . $row_cart['qty'] . '</b></span>
                                         </div>
@@ -291,10 +321,13 @@ if ($loggedin) {
         // Set results
         $result_provinces = $get_province->rajaongkir->results;
 
+        // Set id_province
+        $id_province = (isset($guest['id_province']) ? $guest['id_province'] : (isset($row_member['idpropinsi']) ? $row_member['idpropinsi'] : null));
+
         foreach ($result_provinces as $result_province) {
 
             // Set selected province
-            $selected_province = (isset($row_member['idpropinsi']) ? (($result_province->province_id == $row_member['idpropinsi']) ? 'selected' : '') : '');
+            $selected_province = ($id_province ? (($result_province->province_id == $id_province) ? 'selected' : '') : '');
 
             // Set option
             $content .= '<option value="' . $result_province->province_id . '" ' . $selected_province . '>' . $result_province->province . '</option>';
@@ -311,8 +344,8 @@ if ($loggedin) {
                                                 <option hidden>city</option>';
 
         // Set parameter
-        $parameter_city = isset($row_member['idpropinsi']) ? [
-            'province' => $row_member['idpropinsi']
+        $parameter_city = $id_province ? [
+            'province' => $id_province
         ] : [];
 
         // Get city
@@ -321,10 +354,13 @@ if ($loggedin) {
         // Set results
         $result_cities = $get_city->rajaongkir->results;
 
+        // Set id_province
+        $id_city = (isset($guest['id_city']) ? $guest['id_city'] : (isset($row_member['idkota']) ? $row_member['idkota'] : null));
+
         foreach ($result_cities as $result_city) {
 
             // Set selected province
-            $selected_city = (isset($row_member['idkota']) ? (($result_city->city_id == $row_member['idkota']) ? 'selected' : '') : '');
+            $selected_city = ($id_city ? (($result_city->city_id == $id_city) ? 'selected' : '') : '');
 
             // Set option
             $content .= '<option value="' . $result_city->city_id . '" ' . $selected_city . '>' . $result_city->city_name . '</option>';
@@ -430,7 +466,7 @@ if ($loggedin) {
     if (!empty($_SESSION['cart_item'])) {
 
         // Check session guest
-        $guest = isset($_SESSION['guest']) ? $_SESSION['guest'] : [];
+        $guest = isset($_SESSION['customer']) ? $_SESSION['customer'] : [];
 
         // Set shipping
         if (isset($guest['id_city'])) {
@@ -479,7 +515,33 @@ if ($loggedin) {
                                             </span>
                                         </p>
                                         
-                                        <div class="quantity">
+                                        <div class="quantity">';
+
+            // Set size item
+            if (!$cart_item['is_custom_cart']) {
+                $size_item = $row_item['size'];
+            } else {
+                $size_item = $custom_size;
+            }
+
+            // Explode size item
+            $size_array = explode(',', $size_item);
+
+            if (count($size_array) > 0) {
+                $content .= '
+                                            <label class="text-grey fw-500 fs-13">Size</label>
+                                            <select class="form-control" style="width: 100px;" id="size_item' . $key . '" onchange="change_size_cart(' . $key . ');">
+                                                <option hidden>Chose Size</option>';
+
+                foreach ($size_array as $size) {
+                    $content .= '<option value="' . $size . '" ' . (isset($cart_item['size']) ? (($size == $cart_item['size']) ? 'selected' : '') : '') . '>' . $size . '</option>';
+                }
+
+                $content .= '
+                                            </select>';
+            }
+
+            $content .= '
                                             <label class="text-grey fw-500 fs-13">Quantity</label>
                                             <span class="woocommerce-Price-amount"><b>' . $cart_item['quantity'] . '</b></span>
                                         </div>
@@ -710,7 +772,7 @@ if ($total_amount != 0) {
                                 </div>
                                         
                                 <div class="full-width m-b-15">
-                                    <a href="' . ($loggedin ? 'checkout.php' : 'login_checkout.php?action=checkout') . '" class="btn btn-blue-light full-width wrap mcb-wrap" '.(empty($total_shipping) ? 'style="pointer-events: none; cursor: default; background-color: lightskyblue"' : '').'>Check Out</a>
+                                    <a href="' . ($loggedin ? 'checkout.php' : 'login_checkout.php?action=checkout') . '" class="btn btn-blue-light full-width wrap mcb-wrap" ' . (empty($total_shipping) ? 'style="pointer-events: none; cursor: default; background-color: lightskyblue"' : '') . '>Check Out</a>
                                     <p class="fs-14 text-black">
                                         <span class="fs-12 text-red fw-700 m-b-0">*</span>
                                         please choose courier and service before checkout
@@ -913,8 +975,26 @@ $plugin = '
                     if (data.status == "error") {
                         alert(data.msg);
                     } else {
-                        console.log(data);
                         window.location.reload();
+                    }
+                }
+            });
+        }
+        
+        function change_size_cart(key_or_id) {
+                        console.log(key_or_id);
+            jQuery.ajax({
+                type: "POST",
+                url: "member/action_cart.php",
+                data: {
+                    action: "change_size_item",
+                    id_cart: key_or_id,
+                    size_item: jQuery("#size_item" + key_or_id).val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.status == "error") {
+                        alert(data.msg);
                     }
                 }
             });

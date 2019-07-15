@@ -342,10 +342,10 @@ $content ='<div class="mfn-main-slider" id="mfn-rev-slider" >
                         
                         <br><br><div align="center" style="margin-bottom:-15px"><h6 style="color:#9DB8C6;"><strong><a href="https://www.instagram.com/seagodswetsuitofficial/?hl=en" target="_blank">Check us on Instagram</a></strong></h6></div><br>
                         </div>
-                        <div id="instafeed" style="text-align: center"></div>
-                        <br>
                         
-                        <a href="blog.php"><img src="images/banner/3.jpg"  height="50%"></a>
+                        <div id="instafeed" style="text-align: center"></div>
+                        
+                        <br>
                         
                         
                         <!-- LightWidget WIDGET lama <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script><iframe src="//lightwidget.com/widgets/44d586157e885018b3f31d7805e8454e.html" scrolling="no" allowtransparency="true" class="lightwidget-widget" style="width:100%;border:0;overflow:hidden;"></iframe>-->

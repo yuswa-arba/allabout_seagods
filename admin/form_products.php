@@ -33,7 +33,7 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
     }
 
     $loggedin = logged_inadmin();
-    $titlebar = (isset($_GET['id']) ? "Edit Procut" : "Add Product");
+    $titlebar = (isset($_GET['id']) ? "Edit Product" : "Add Product");
     $titlepage = $titlebar;
     $menu = "";
     $user = '' . $loggedin['firstname'] . ' ' . $loggedin['lastname'] . '';
@@ -73,6 +73,8 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         $category = explode('-', isset($_POST['id_cat']) ? strip_tags(trim($_POST["id_cat"])) : "");
         $price = isset($_POST['price']) ? strip_tags(trim($_POST["price"])) : "";
         $weight = isset($_POST['weight']) ? strip_tags(trim($_POST["weight"])) : "";
+        $stock = isset($_POST['stock']) ? strip_tags(trim($_POST["stock"])) : "";
+        $size = isset($_POST['size']) ? strip_tags(trim(str_replace(" ", "", $_POST["size"]))) : "";
         $detail = isset($_POST['detail']) ? $_POST["detail"] : "";
         $describe = isset($_POST['describe']) ? $_POST["describe"] : "";
         $code = generate_item_number();
@@ -82,8 +84,8 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         $id_category = $category[1];
 
         // Create Item
-        $queryproduct = "INSERT INTO `item` (`id_item`, `code`, `title`, `id_category` , `id_cat`, `price`, `weight`, `detail`, `description`, `date_add`, `date_upd`, `level`) 
-		    VALUES (NULL, '$code', '$title', '$id_cat' ,'$id_category', '$price', '$weight', '$detail', '$describe', NOW(), NOW(), '0');";
+        $queryproduct = "INSERT INTO `item` (`id_item`, `code`, `title`, `id_category` , `id_cat`, `price`, `weight`, `stock`, `size`, `detail`, `description`, `date_add`, `date_upd`, `level`) 
+		    VALUES (NULL, '$code', '$title', '$id_cat' ,'$id_category', '$price', '$weight', '$stock', '$size', '$detail', '$describe', NOW(), NOW(), '0');";
 
         // Is Error
         if (!mysql_query($queryproduct)) {
@@ -161,6 +163,8 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         $category = explode('-', isset($_POST['id_cat']) ? strip_tags(trim($_POST["id_cat"])) : "");
         $price = isset($_POST['price']) ? strip_tags(trim($_POST["price"])) : "";
         $weight = isset($_POST['weight']) ? strip_tags(trim($_POST["weight"])) : "";
+        $stock = isset($_POST['stock']) ? strip_tags(trim($_POST["stock"])) : "";
+        $size = isset($_POST['size']) ? strip_tags(trim(str_replace(" ", "", $_POST["size"]))) : "";
         $detail = isset($_POST['detail']) ? $_POST["detail"] : "";
         $describe = isset($_POST['describe']) ? $_POST["describe"] : "";
         $id_photo = isset($_POST['id_photo']) ? $_POST["id_photo"] : "";
@@ -172,7 +176,8 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
         $queryproduct = "UPDATE `item` SET `title` = '$title', `id_category` = '$id_cat' ,
 	    											  `id_cat` = '$id_category',  `price` = '$price',
 													  `detail` = '$detail', `description` = '$describe',
-													  `weight` = '$weight', `date_upd` = NOW()
+													  `weight` = '$weight', `stock` = '$stock', 
+													  `size` = '$size', `date_upd` = NOW()
 												  WHERE `item`.`id_item` = '$id_items';";
 
         // Is Error
@@ -396,6 +401,16 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                         <div class="form-group form-group-default required ">
                                             <label>Weight</label>
                                             <input type="text" id="weight" name="weight" value="' . (isset($_GET['id']) ? strip_tags(trim($data_item["weight"])) : "") . '" class="form-control" required>
+                                        </div>
+                                        
+                                        <div class="form-group form-group-default required ">
+                                            <label>Stock</label>
+                                            <input type="text" id="stock" name="stock" value="' . (isset($_GET['id']) ? strip_tags(trim($data_item["stock"])) : "") . '" class="form-control" required>
+                                        </div>
+                                        
+                                        <div class="form-group form-group-default">
+                                            <label>Size</label>
+                                            <input type="text" id="size" name="size" value="' . (isset($_GET['id']) ? strip_tags(trim($data_item["size"])) : "") . '" class="form-control" placeholder="Ex: L,M,S">
                                         </div>
                                         
                                         <div class="form-group form-group-default ">

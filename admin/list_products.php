@@ -80,15 +80,27 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
 
                         <!-- START card -->
                         <div class="card card-transparent">
-                            <div class="card-header ">
-                                <div class="card-title">List Products</div>
-                                <div class="pull-right">
-                                    <div class="col-xs-12">
-                                        <a href="form_products.php" id="show-modal" class="btn btn-primary btn-cons" style="color:white"><i class="fa fa-plus"></i> Add Products</a>
+                            <form action="" method="get">
+                                <div class="card-header ">
+                                    <div class="card-title">List Products</div>
+                                    <div class="pull-right">
+                                        <div class="col-xs-12">
+                                            <a href="form_products.php" id="show-modal" class="btn btn-primary btn-cons" style="color:white"><i class="fa fa-plus"></i> Add Products</a>
+                                        </div>
                                     </div>
+                                    <div class="pull-right">
+                                        <div class="col-xs-12">
+                                            <button class="btn btn-info">Search</button>&nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="pull-right">
+                                        <div class="col-xs-12">
+                                            <input type="text" class="form-control" name="v">
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
                                 </div>
-                                <div class="clearfix"></div>
-                            </div>
+                            </form>
                             
                             <div class="card-block">
                                 <table class="table table-hover demo-table-dynamic table-responsive-block" >
@@ -96,21 +108,34 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                         <tr>
                                             <th style="width:5%"></th>
                                             <th style="width:20%">Product Name</th>
-                                            <th style="width:15%">Categories</th>
-                                            <th style="width:15%">Sub </th>
-                                            <th style="width:15%">Price</th>
-                                            <th style="width:5%">Detail</th>
-                                            <th style="width:20%"></th>
+                                            <th style="width:13%">Categories</th>
+                                            <th style="width:13%">Sub </th>
+                                            <th style="width:10%">Price</th>
+                                            <th style="width:5%">Stock</th>
+                                            <th style="width:29%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>';
 
-    $sql_item = mysql_query("SELECT `item`.*, `category`.`category` FROM `item`,`category` WHERE `item`.`id_cat` = `category`.`id_cat` AND `item`.`level` = '0' ORDER BY `id_item` DESC LIMIT $start,$perhalaman  ;");
-    $sql_total_data = mysql_num_rows(mysql_query("SELECT `item`.*, `category`.`category` FROM `item`,`category` WHERE `item`.`id_cat` = `category`.`id_cat` AND `item`.`level` = '0' ORDER BY `id_item`;"));
+    // Set default search query var
+    $search_query = '';
+
+    // Check search text
+    if (isset($_GET['v'])) {
+
+        // Set search value
+        $text_search = isset($_GET['v']) ? mysql_real_escape_string(trim($_GET['v'])) : '';
+
+        // Set query
+        $search_query = "AND (`title` LIKE '%$text_search%' OR `detail` LIKE '%$text_search%')";
+    }
+
+    $sql_item = mysql_query("SELECT `item`.*, `category`.`category` FROM `item`,`category` WHERE `item`.`id_cat` = `category`.`id_cat` AND `item`.`level` = '0' $search_query ORDER BY `id_item` DESC LIMIT $start,$perhalaman  ;");
+    $sql_total_data = mysql_num_rows(mysql_query("SELECT `item`.*, `category`.`category` FROM `item`,`category` WHERE `item`.`id_cat` = `category`.`id_cat` AND `item`.`level` = '0' $search_query ORDER BY `id_item` DESC;"));
 
     while ($row_item = mysql_fetch_array($sql_item)) {
 
-        $row_category = mysql_fetch_array(mysql_query("SELECT * FROM `category` WHERE `id_cat` = '" . $row_item["id_cat"] . "'"));
+        $row_category = mysql_fetch_array(mysql_query("SELECT * FROM `category` WHERE `id_cat` = '" . $row_item["id_category"] . "'"));
         $row_photo = mysql_fetch_array(mysql_query("SELECT * FROM `photo` WHERE `id_item` = '" . $row_item["id_item"] . "' AND `level` = '0' ORDER BY `id_item` ASC LIMIT 0,1"));
 
         $content .= '
@@ -132,25 +157,35 @@ if ($loggedin = logged_inadmin()) { // Check if they are logged in
                                                 <td class="v-align-middle">
                                                     <p>$ ' . $row_item["price"] . '</p>
                                                 </td>
-                                                <td>
-                                                    <a href="detail_product.php?id=' . $row_item["id_item"] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-eye-open"></i> View</a>
+                                                <td class="v-align-middle">
+                                                    <p>' . $row_item["stock"] . '</p>
                                                 </td>
                                                 <td>
-                                                    <div class="btn-group">
-                                                        <a href="form_products.php?id=' . $row_item["id_item"] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '" class="btn btn-success"><i class="fa fa-pencil"></i>
-                                                        </a>
-                                                        <button type="submit" class="btn btn-success" name="delete" value="Delete"><i class="fa fa-trash-o"></i></button>
-                                                    </div>
+                                                    <a href="detail_product.php?id=' . $row_item["id_item"] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '" class="btn btn-xs btn-info">
+                                                        Preview
+                                                    </a>
+                                                    <a href="form_products.php?id=' . $row_item["id_item"] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '" class="btn btn-xs btn-warning" style="color: black;">
+                                                        Edit Product
+                                                    </a>
+                                                    <a href="form_edit_size_product.php?id=' . $row_item["id_item"] . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '') . '" class="btn btn-xs btn-warning" style="color: black;">
+                                                        Edit Size
+                                                    </a>
+                                                    <button type="submit" class="btn btn-xs btn-danger" name="delete" value="Delete">
+                                                       Delete
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </form>';
 
     }
 
+    // Set parameter pagination
+    $param_paginate = isset($_GET['v']) ? ('?v=' . $_GET['v'] . '&') : '?';
+
     $content .= '        
                                     </tbody>
                                 </table>
-                                ' . (halaman($sql_total_data, $perhalaman, 1, '?')) . '
+                                ' . (halaman($sql_total_data, $perhalaman, 1, $param_paginate)) . '
                                 
                                 <div id="view-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                                     <div class="modal-dialog">

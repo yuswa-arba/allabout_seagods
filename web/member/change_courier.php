@@ -52,16 +52,16 @@ if (isset($_POST['action'])) {
         }
 
         // Set session courier
-        $_SESSION['guest']['courier'] = $get_cost->rajaongkir->query->courier;
+        $_SESSION['customer']['courier'] = $get_cost->rajaongkir->query->courier;
 
         // Unset service
-        if (isset($_SESSION['guest']['service'])) {
-            unset($_SESSION['guest']['service']);
+        if (isset($_SESSION['customer']['service'])) {
+            unset($_SESSION['customer']['service']);
         }
 
         // Unset cost
-        if (isset($_SESSION['guest']['courier_cost'])) {
-            unset($_SESSION['guest']['courier_cost']);
+        if (isset($_SESSION['customer']['courier_cost'])) {
+            unset($_SESSION['customer']['courier_cost']);
         }
 
         // Success
@@ -110,13 +110,13 @@ if (isset($_POST['action'])) {
 
             // If service cost is same with request
             if ($service_cost->service == $service_courier) {
-                $_SESSION['guest']['courier_cost'] = $service_cost->cost[0]->value;
+                $_SESSION['customer']['courier_cost'] = $service_cost->cost[0]->value;
             }
 
         }
 
         // Set session courier
-        $_SESSION['guest']['service'] = $service_courier;
+        $_SESSION['customer']['service'] = $service_courier;
 
         // Success
         $msg = 'Set service courier successfully';

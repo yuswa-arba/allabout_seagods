@@ -34,7 +34,7 @@ function admin_template($content = "", $titlebar = "", $titlepage = "", $user = 
                                             <li><a href="list_product.php?id_cats=9"><span>Collection</span></a></li>
                                             <li><a href="custom/"><span>Custom Wetsuit</span></a></li>
                                             <li><a href="blog.php"><span>Blog</span></a></li>
-                                            <li><a href="member/index.php" target="_blank"><span>Memberpage</span></a></li>
+                                            <li><a href="member/index.php" target="_blank"><span>Login</span></a></li>
                                             
                                         </ul>
                                     </nav>
@@ -111,7 +111,7 @@ function admin_template($content = "", $titlebar = "", $titlepage = "", $user = 
 
     while ($row_category = mysql_fetch_array($sql_caregory)) {
         $template .= '
-                                      <li><a href="list_product.php?id_cats=' . $row_category['id_cat'] . '">' . $row_category["category"] . '';
+                                      <li><a href="list_product.php?id_cats=' . $row_category['id_cat'] . '">' . $row_category["category"] . '</a>';
         $sql_subcaregory = mysql_query("SELECT * FROM `category` WHERE `id_parent` = '$row_category[id_cat]' AND `level` = '0' ORDER BY `no_order` ASC  ;");
         while ($row_sucategory = mysql_fetch_array($sql_subcaregory)) {
             $template .= '
